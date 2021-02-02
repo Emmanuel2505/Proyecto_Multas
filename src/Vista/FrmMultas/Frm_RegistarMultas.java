@@ -30,7 +30,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
     NormativaDAO normativaD = new NormativaDAO("Componentes");
     PersonaDAO personaD = new PersonaDAO("Datos");
     LicenciaDAO licenciaD = new LicenciaDAO("Datos");
-    VehiculoDAO vehiculoD;
+    VehiculoDAO vehiculoD = new VehiculoDAO("Datos");
     /**
      * Creates new form Frm_RegistarMultas
      */
@@ -442,8 +442,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
                         licencia = new Licencia("", 0, "", "");
                     }
                     lbNroLicencia.setText(dato.getTelefono());
-                    vehiculoD = new VehiculoDAO("Datos/Vehiculos", dato.getCedula());
-                    Componentes.cargarCombo(cbPlaca, vehiculoD.listarSinClass(), "placa");
+                    Componentes.cargarCombo(cbPlaca, Utilidades.obtenerLista(vehiculoD.listar(), "propietario", String.valueOf(cbCedula.getSelectedItem())), "placa");
                 } catch (Exception e) {
                 }
             }
@@ -457,7 +456,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
                 lbModelo.setText("");
             }else{
                 try {
-                    Vehiculo dato = (Vehiculo)vehiculoD.listarSinClass().obtenerPorPosicion(cbPlaca.getSelectedIndex() - 1);
+                    Vehiculo dato = (Vehiculo)vehiculoD.listar().obtenerPorPosicion(cbPlaca.getSelectedIndex() - 1);
                     lbModelo.setText(dato.getModelo());
                 } catch (Exception e) {
                 }

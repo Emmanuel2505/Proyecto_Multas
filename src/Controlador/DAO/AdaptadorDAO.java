@@ -17,16 +17,10 @@ import java.io.FileReader;
 public class AdaptadorDAO implements InterfazDAO{
     private  Conexion conexion;
     private Class clazz;
-    private String archivo;
 
     public AdaptadorDAO(Conexion conexion, Class clazz) {
         this.conexion = conexion;
         this.clazz = clazz;
-    }
-    
-    public AdaptadorDAO(Conexion conexion, String archivo) {
-        this.conexion = conexion;
-        this.archivo = archivo;
     }
 
     @Override
@@ -43,33 +37,11 @@ public class AdaptadorDAO implements InterfazDAO{
     }
 
     @Override
-    public ListaSimple listarSinClass() {
-        ListaSimple lista = new ListaSimple();
-        try {
-            lista = (ListaSimple) conexion.getXtrStream().fromXML(new FileReader(conexion.getDireccion()+ File.separatorChar + archivo + ".json")); 
-
-        } catch (Exception e) {
-            System.out.println("No se pudo listar " + e);
-            e.printStackTrace();
-        }
-        return lista;
-    }
-
-    @Override
     public void guardar(Object o) throws Exception {
 
         ListaSimple lista = listar();
         lista.insertar(o);
         conexion.getXtrStream().toXML(lista, new FileOutputStream(conexion.getDireccion()+ File.separatorChar + clazz.getSimpleName() + ".json"));
-
-    }
-    
-    @Override
-    public void guardar(Object o, String NombreArchivo) throws Exception {
-
-        ListaSimple lista = listarSinClass();
-        lista.insertar(o);
-        conexion.getXtrStream().toXML(lista, new FileOutputStream(conexion.getDireccion()+ File.separatorChar + NombreArchivo + ".json"));
 
     }
 

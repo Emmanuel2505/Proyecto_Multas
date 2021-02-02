@@ -15,8 +15,8 @@ import javax.swing.JOptionPane;
 public class VehiculoDAO extends AdaptadorDAO{
     private Vehiculo vehiculo;
 
-    public VehiculoDAO(String direccion, String NombreArchivo) {
-        super(new Conexion(direccion), NombreArchivo);
+    public VehiculoDAO(String direccion) {
+        super(new Conexion(direccion), Vehiculo.class);
     }
 
     public Vehiculo getVehiculo() {
@@ -31,7 +31,7 @@ public class VehiculoDAO extends AdaptadorDAO{
     
     public Boolean guardar(String NombreArchivo){
         try {
-            this.guardar(this.getVehiculo(), NombreArchivo);
+            this.guardar(this.getVehiculo());
             return true;
         } catch (Exception e) {
             JOptionPane.showConfirmDialog(null, "Error al guardar");

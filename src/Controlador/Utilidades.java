@@ -72,6 +72,19 @@ public class Utilidades {
         return aux;
     }
     
+    public static ListaSimple obtenerLista(ListaSimple lista, String AtributoClase, String palabra){
+        ListaSimple aux = new ListaSimple();
+        if (!lista.estaVacia()) {
+            for (int i = 0; i < lista.tamanio(); i++) {
+                String dato = extraccionDato(lista.obtenerPorPosicion(i), AtributoClase);
+                if (dato.equalsIgnoreCase(palabra)) {
+                    aux.insertar(lista.obtenerPorPosicion(i));
+                }
+            }
+        }
+        return aux;
+    }
+    
     public static Object obtenerDato(ListaSimple lista, String AtributoClase, String palabra){
         Object aux = null;
         if (!lista.estaVacia()) {
