@@ -19,6 +19,8 @@ import Modelo.Vehiculo;
 import Vista.componentes.Componentes;
 import java.awt.Frame;
 import java.awt.event.ItemEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.Date;
 import javax.swing.SwingUtilities;
 
@@ -27,10 +29,13 @@ import javax.swing.SwingUtilities;
  * @author timoa
  */
 public class Frm_RegistarMultas extends javax.swing.JDialog {
+
     NormativaDAO normativaD = new NormativaDAO("Componentes");
     PersonaDAO personaD = new PersonaDAO("Datos");
     LicenciaDAO licenciaD = new LicenciaDAO("Datos");
     VehiculoDAO vehiculoD = new VehiculoDAO("Datos");
+    String mensaje = "";
+
     /**
      * Creates new form Frm_RegistarMultas
      */
@@ -41,6 +46,44 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
         Componentes.cargarCombo(jComboBoxRubro, normativaD.listar(), "rubro");
         jTextFieldFecha.setText(String.valueOf(new Date()));
         this.setLocationRelativeTo(null);
+        listener();
+    }
+
+    public void listener() {
+        cbCedula.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (Character.isDigit(e.getKeyChar()) || Character.isLetter(e.getKeyChar())) {
+                    System.out.println(mensaje.length());
+                    if ((mensaje.length()+1) < 11) {
+                        mensaje = mensaje + (e.getKeyChar());
+                        ListaSimple tmp = Utilidades.obtenerSubLista(personaD.listar(), "cedula", mensaje);
+                        Componentes.cargarCombo(cbCedula, tmp, "cedula", mensaje);
+                    } else {
+                        System.out.println(mensaje);
+                        Persona dato = (Persona) Utilidades.obtenerDato(personaD.listar(), "cedula", mensaje);
+                        lbNombre.setText(dato.getNombre());
+                        lbApellido.setText(dato.getApellido());
+                        lbNroLicencia.setText(dato.getTelefono());
+                    }
+
+                } else {
+                    if ((e.getKeyCode() == KeyEvent.VK_BACK_SPACE) && mensaje.length() > 0) {
+                        mensaje = mensaje.substring(0, mensaje.length() - 1);
+                        if (mensaje.length() == 0) {
+                            Componentes.cargarCombo(cbCedula, personaD.listar(), "cedula");
+                        } else {
+                            ListaSimple tmp = Utilidades.obtenerSubLista(personaD.listar(), "cedula", mensaje);
+                            Componentes.cargarCombo(cbCedula, tmp, "cedula", mensaje);
+                        }
+                    }
+                    e.consume();
+
+                }
+
+            }
+
+        });
     }
 
     /**
@@ -98,7 +141,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
         jLabel4.setText("Registrar Multa");
 
         jLabel5.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jLabel5.setText("Cedula");
+        jLabel5.setText("Licencia:");
 
         jLabel6.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel6.setText("Puntos a descontar");
@@ -156,6 +199,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel1.setText("Marca:");
 
+        cbCedula.setEditable(true);
         cbCedula.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         cbCedula.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
@@ -190,7 +234,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
         lbModelo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel15.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jLabel15.setText("Nro Licencia");
+        jLabel15.setText("Cedula");
 
         lbNroLicencia.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
@@ -341,9 +385,9 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
                             .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(26, 26, 26)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel10))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel9))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jTextFieldFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -382,11 +426,11 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
             if (jComboBoxRubro.getSelectedIndex() == 0) {
                 jTextAreaRubro.setText("");
                 jTextFieldGravedad.setText("");
-            }else{
+            } else {
                 try {
                     jTextFieldGravedad.setEnabled(true);
                     jTextAreaRubro.setEnabled(true);
-                    Normativa dato = (Normativa)normativaD.listar().obtenerPorPosicion(jComboBoxRubro.getSelectedIndex() - 1);
+                    Normativa dato = (Normativa) normativaD.listar().obtenerPorPosicion(jComboBoxRubro.getSelectedIndex() - 1);
                     jTextAreaRubro.setText(dato.getDescripcion());
                     jTextFieldGravedad.setText(dato.getTipoFalta());
                     jTextFieldGravedad.setEnabled(false);
@@ -400,7 +444,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
 
     private void jComboBoxRubroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxRubroActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_jComboBoxRubroActionPerformed
 
     private void jComboBoxRubroKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jComboBoxRubroKeyTyped
@@ -414,7 +458,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
 
     private void jComboBoxRubroKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jComboBoxRubroKeyReleased
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_jComboBoxRubroKeyReleased
 
     private void btIngresarPersonaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btIngresarPersonaActionPerformed
@@ -422,6 +466,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
         Frm_RegistrarPersona fip;
         fip = new Frm_RegistrarPersona((Frame) SwingUtilities.getWindowAncestor(this), true);
         fip.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_btIngresarPersonaActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -429,6 +474,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
         Frm_RegistrarAuto fip;
         fip = new Frm_RegistrarAuto((Frame) SwingUtilities.getWindowAncestor(this), true);
         fip.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void cbCedulaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbCedulaItemStateChanged
@@ -439,12 +485,12 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
                 lbApellido.setText("");
                 lbNroLicencia.setText("");
                 Componentes.cargarCombo(cbPlaca, new ListaSimple(), "");
-            }else{
+            } else {
                 try {
-                    Persona dato = (Persona)personaD.listar().obtenerPorPosicion(cbCedula.getSelectedIndex() - 1);
+                    Persona dato = (Persona) personaD.listar().obtenerPorPosicion(cbCedula.getSelectedIndex() - 1);
                     lbNombre.setText(dato.getNombre());
                     lbApellido.setText(dato.getApellido());
-                    Licencia licencia = (Licencia)Utilidades.obtenerDato(licenciaD.listar(), "propietario", dato.getCedula());
+                    Licencia licencia = (Licencia) Utilidades.obtenerDato(licenciaD.listar(), "propietario", dato.getCedula());
                     if (licencia == null) {
                         licencia = new Licencia("", 0, "", "");
                     }
@@ -461,9 +507,9 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             if (cbPlaca.getSelectedIndex() == 0) {
                 lbModelo.setText("");
-            }else{
+            } else {
                 try {
-                    Vehiculo dato = (Vehiculo)vehiculoD.listar().obtenerPorPosicion(cbPlaca.getSelectedIndex() - 1);
+                    Vehiculo dato = (Vehiculo) vehiculoD.listar().obtenerPorPosicion(cbPlaca.getSelectedIndex() - 1);
                     lbModelo.setText(dato.getModelo());
                 } catch (Exception e) {
                 }

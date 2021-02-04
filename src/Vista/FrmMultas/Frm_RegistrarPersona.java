@@ -30,6 +30,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
     LicenciaDAO licenciaD = new LicenciaDAO("Datos");
     TipoLicenciaDAO tipoLicenciaD = new TipoLicenciaDAO("Componentes");
     private ArrayList<String> tipos = new ArrayList<>();
+
     public Frm_RegistrarPersona(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -38,21 +39,21 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);
     }
 
-    public void cargarTablaPersona(){
+    public void cargarTablaPersona() {
         modeloPersona.setListaPersona(personaD.listar());
         modeloPersona.setListaLicencia(licenciaD.listar());
         tbPersonas.setModel(modeloPersona);
         tbPersonas.updateUI();
         cargarTablaTipos();
     }
-    
-    public void cargarTablaTipos(){
+
+    public void cargarTablaTipos() {
         modeloTipo.setLista(tipos);
         tbTipos.setModel(modeloTipo);
         tbTipos.updateUI();
     }
-    
-    public void limpiar(){
+
+    public void limpiar() {
         txfCedula.setText(null);
         txfNombre.setText(null);
         txfApellido.setText(null);
@@ -62,7 +63,12 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
         txfFechaCaducidad.setText(null);
         tipos.clear();
     }
-    
+
+    public void FrameMultas() {
+        Frm_RegistarMultas fm = new Frm_RegistarMultas(null, true);
+        fm.setVisible(true);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -108,10 +114,10 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
         jLabel2.setText("Cédula:");
 
         txfCedula.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-            }
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
                 txfCedulaAncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
             }
@@ -183,7 +189,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
         });
 
         jButtonCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Imagenes/114.png"))); // NOI18N
-        jButtonCancelar.setText(" Cancelar");
+        jButtonCancelar.setText("Salir");
         jButtonCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonCancelarActionPerformed(evt);
@@ -381,7 +387,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
     private void jButtonAgregarTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarTipoActionPerformed
         // TODO add your handling code here:
         if (jComboBoxTipoLicencia.getSelectedIndex() != 0) {
-            String dato = (String)jComboBoxTipoLicencia.getSelectedItem();
+            String dato = (String) jComboBoxTipoLicencia.getSelectedItem();
             tipos.add(dato);
             cargarTablaTipos();
         }
@@ -393,7 +399,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
         if (fila >= 0) {
             tipos.remove(fila);
             cargarTablaTipos();
-        }else{
+        } else {
             JOptionPane.showConfirmDialog(null, "Seleccione el tipo de licencia que desea eliminar");
         }
     }//GEN-LAST:event_jButtonEliminarTipoActionPerformed
@@ -408,6 +414,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
                 personaD.getPersona().setApellido(txfApellido.getText());
                 personaD.getPersona().setDireccion(txfDireccion.getText());
                 personaD.getPersona().setTelefono(txfTelefono.getText());
+                personaD.getPersona().setRol(3);
                 licenciaD.setLicencia(null);
                 licenciaD.getLicencia().setPropietario(txfCedula.getText());
                 licenciaD.getLicencia().setNroLicencia(txfNroLicencia.getText());
@@ -418,13 +425,13 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
                     JOptionPane.showConfirmDialog(null, "Se guardo correctamente");
                     limpiar();
                     cargarTablaPersona();
-                }else{
+                } else {
                     JOptionPane.showConfirmDialog(null, "No se pudo guardar");
                 }
-            }else{
+            } else {
                 JOptionPane.showConfirmDialog(null, "Esa persona ya está registrada");
             }
-        }else if(txfCedula.getText().length() > 0 && txfNombre.getText().length() > 0 && txfApellido.getText().length() > 0 && txfDireccion.getText().length() > 0 && txfTelefono.getText().length() > 0 && txfNroLicencia.getText().length() == 0 && txfFechaCaducidad.getText().length() == 0 && tipos.size() == 0){
+        } else if (txfCedula.getText().length() > 0 && txfNombre.getText().length() > 0 && txfApellido.getText().length() > 0 && txfDireccion.getText().length() > 0 && txfTelefono.getText().length() > 0 && txfNroLicencia.getText().length() == 0 && txfFechaCaducidad.getText().length() == 0 && tipos.size() == 0) {
             if (!Utilidades.datoRepetido(personaD.listar(), "cedula", txfCedula.getText())) {
                 personaD.setPersona(null);
                 personaD.getPersona().setCedula(txfCedula.getText());
@@ -436,19 +443,20 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
                     JOptionPane.showConfirmDialog(null, "Se guardo correctamente");
                     limpiar();
                     cargarTablaPersona();
-                }else{
+                } else {
                     JOptionPane.showConfirmDialog(null, "No se pudo guardar");
                 }
-            }else{
+            } else {
                 JOptionPane.showConfirmDialog(null, "Esa persona ya está registrada");
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Llene todos los parametros o solo los de persona");
         }
     }//GEN-LAST:event_jButtonGuardarActionPerformed
 
     private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
         // TODO add your handling code here:
+        FrameMultas();
         this.dispose();
     }//GEN-LAST:event_jButtonCancelarActionPerformed
 

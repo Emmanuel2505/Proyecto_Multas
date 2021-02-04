@@ -33,4 +33,14 @@ public class Componentes extends JFrame {
                 cbx.addItem(dato);
         }
     }
+    
+    public static void cargarCombo(JComboBox cbx, ListaSimple lista, String atributoClase, String mensaje) {
+        cbx.removeAllItems();
+        int tamanio = lista.tamanio();
+        cbx.addItem(mensaje);
+        for (int i = 0; i < tamanio; i++) {
+                String dato = Utilidades.extraccionDato(lista.obtenerPorPosicion(i), atributoClase);
+                cbx.addItem(dato);
+        }
+    }
 }

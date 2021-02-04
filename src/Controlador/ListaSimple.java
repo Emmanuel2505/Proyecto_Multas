@@ -55,6 +55,31 @@ public class ListaSimple {
         return dato;
     }
     
+    public Object buscarporDato(String dato) {
+        Object aux = null;
+        String pos = "";
+        if (estaVacia()) {
+            System.out.println("Lista Vacia");
+        } else {
+            Nodo iterador = cabecera;
+            int cont = 0;
+            while (iterador != null) {
+                if (iterador.getDato().equals(dato)) {
+                    aux = iterador.getDato();
+                    pos += cont + ";";
+                }
+                cont++;
+                iterador = iterador.getSiguiente();
+            }
+            if (pos != "") {
+                System.out.println("Se ecnotro en la posicion: " + pos);
+            } else {
+                System.out.println("No existe dato");
+            }
+        }
+        return aux;
+    }
+    
     public void mostrarDatos(){
         if (!estaVacia()) {
             Nodo temp = cabecera;

@@ -59,7 +59,7 @@ public class Utilidades {
         return i;
     }
 
-    public ListaSimple obtenerSubLista(ListaSimple lista, String AtributoClase, String palabra){
+    public static ListaSimple obtenerSubLista(ListaSimple lista, String AtributoClase, String palabra){
         ListaSimple aux = new ListaSimple();
         if (!lista.estaVacia()) {
             for (int i = 0; i < lista.tamanio(); i++) {
