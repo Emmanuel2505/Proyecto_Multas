@@ -15,16 +15,18 @@ public class Persona {
     private String apellido;
     private String direccion;
     private String telefono;
+    private int idRol;
 
     public Persona() {
     }
 
-    public Persona(String Cedula, String nombre, String apellido, String direccion, String telefono) {
+    public Persona(String Cedula, String nombre, String apellido, String direccion, String telefono, int idRol) {
         this.cedula = Cedula;
         this.nombre = nombre;
         this.apellido = apellido;
         this.direccion = direccion;
         this.telefono = telefono;
+        this.idRol = idRol;
     }
 
     public String getCedula() {
@@ -65,5 +67,13 @@ public class Persona {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    public int getIdRol() {
+        return idRol;
+    }
+
+    public void setIdRol(int idRol) {
+        this.idRol = idRol;
     }
 }

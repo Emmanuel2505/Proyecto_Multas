@@ -15,8 +15,8 @@ public class Agente extends Persona{
     public Agente() {
     }
 
-    public Agente(String codAgente, String Cedula, String nombre, String apellido, String direccion, String telefono) {
-        super(Cedula, nombre, apellido, direccion, telefono);
+    public Agente(String codAgente, String Cedula, String nombre, String apellido, String direccion, String telefono, int idRol) {
+        super(Cedula, nombre, apellido, direccion, telefono, idRol);
         this.codAgente = codAgente;
     }
 
