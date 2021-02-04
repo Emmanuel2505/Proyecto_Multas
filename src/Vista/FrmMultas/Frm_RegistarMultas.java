@@ -37,6 +37,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
     VehiculoDAO vehiculoD = new VehiculoDAO("Datos");
     String mensaje = "";
 
+
     /**
      * Creates new form Frm_RegistarMultas
      */
@@ -47,6 +48,18 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
         lbFecha.setText(String.valueOf(d.format(new Date())));
         Componentes.cargarCombo(cbCedula, personaD.listar(), "cedula");
         Componentes.cargarCombo(jComboBoxRubro, normativaD.listar(), "rubro");
+        this.setLocationRelativeTo(null);
+        listener();
+    }
+    
+    public Frm_RegistarMultas(java.awt.Frame parent, boolean modal, String nombre) {
+        super(parent, modal);
+        initComponents();
+        SimpleDateFormat d = new SimpleDateFormat("dd/MM/yy");
+        lbFecha.setText(String.valueOf(d.format(new Date())));
+        Componentes.cargarCombo(cbCedula, personaD.listar(), "cedula");
+        Componentes.cargarCombo(jComboBoxRubro, normativaD.listar(), "rubro");
+        lbAgente.setText(nombre);
         this.setLocationRelativeTo(null);
         listener();
     }

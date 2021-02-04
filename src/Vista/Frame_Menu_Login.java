@@ -9,7 +9,8 @@ import Vista.FrmMultas.Frm_Biblioteca;
 import Vista.FrmMultas.Frm_Consultar;
 import Vista.FrmMultas.Frm_GenerarInforme;
 import Vista.FrmMultas.Frm_RegistarMultas;
-import Vista.FrmMultas.Frm_RegistrarAgente;
+import Vista.FrmMultas.Frm_RegistrarPersona;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,18 +20,31 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
 
     private boolean verificarInicio = false;
     private int posventana = -1;
+    private int Rol = -1;
+    private String nombre; 
 
     /**
      * Creates new form Frame_Menu_Login
      */
     public Frame_Menu_Login() {
         initComponents();
-        Frame_Login();
         this.setLocationRelativeTo(null);
     }
 
-    public void Frame_Login() {
-        new JFrm_Login(this, true).setVisible(true);
+    public Frame_Menu_Login(int Rol, String nombre) {
+        this.Rol = Rol;
+        this.nombre = nombre;
+        initComponents();
+        this.setLocationRelativeTo(null);
+
+        if (Rol == 1) {
+            Boton_Multas1.setEnabled(false);
+            csboton1.setEnabled(false);
+        }
+    }
+
+    public void Frame_Login(int roles) {
+        new JFrm_Login(this, true,roles).setVisible(true);
     }
 
     public void FrmBiblioteca() {
@@ -52,15 +66,13 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
     }
 
     public void FrmMultas() {
-        Frm_RegistarMultas fm = new Frm_RegistarMultas(this, true);
+        Frm_RegistarMultas fm = new Frm_RegistarMultas(this, true,nombre);
         fm.setVisible(true);
 
     }
 
     public void FrmAgente() {
-        Frm_RegistrarAgente fm = new Frm_RegistrarAgente(this, true);
-        fm.setVisible(true);
-
+        new Frm_RegistrarPersona(this, true, Rol).setVisible(true);
     }
 
     /**
@@ -85,10 +97,12 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
         Boton_Informe1 = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
+        csboton1 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         Boton_Agentes2 = new javax.swing.JButton();
         jLabel18 = new javax.swing.JLabel();
+        csboton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -129,25 +143,24 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(180, 180, 180)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(Boton_Consultar))
-                .addGap(215, 215, 215)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Boton_Biblioteca)
-                    .addComponent(jLabel2))
-                .addGap(243, 243, 243))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(289, 289, 289))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(Boton_Consultar))
+                        .addGap(215, 215, 215)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(Boton_Biblioteca)
+                            .addComponent(jLabel2))))
+                .addContainerGap(329, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addGap(34, 34, 34)
                 .addComponent(jLabel1)
-                .addGap(54, 54, 54)
+                .addGap(43, 43, 43)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
                     .addComponent(jLabel2))
@@ -183,31 +196,46 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
         jLabel16.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel16.setText("Generar informe");
 
+        csboton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Imagenes/boton-x.png"))); // NOI18N
+        csboton1.setText("CERRAR SESION");
+        csboton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                csboton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(320, 320, 320)
+                .addComponent(jLabel11)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(227, 227, 227)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel14)
-                    .addComponent(Boton_Multas1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(210, 210, 210)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(Boton_Multas1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Boton_Informe1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel16))
-                .addContainerGap(227, Short.MAX_VALUE))
+                    .addComponent(jLabel16)
+                    .addComponent(Boton_Informe1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(240, 240, 240))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel11)
-                .addGap(261, 261, 261))
+                .addComponent(csboton1)
+                .addGap(445, 445, 445))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addGap(28, 28, 28)
                 .addComponent(jLabel11)
-                .addGap(48, 48, 48)
+                .addGap(39, 39, 39)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel14)
                     .addComponent(jLabel16))
@@ -215,6 +243,8 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(Boton_Informe1)
                     .addComponent(Boton_Multas1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addComponent(csboton1)
                 .addContainerGap())
         );
 
@@ -233,31 +263,45 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
         jLabel18.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel18.setText("Regisrar agentes");
 
+        csboton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Imagenes/boton-x.png"))); // NOI18N
+        csboton2.setText("CERRAR SESION");
+        csboton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                csboton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                .addContainerGap(340, Short.MAX_VALUE)
+                .addComponent(jLabel12)
+                .addGap(327, 327, 327))
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(397, 397, 397)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel18)
-                            .addComponent(Boton_Agentes2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(450, 450, 450)
+                        .addComponent(jLabel18))
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(281, 281, 281)
-                        .addComponent(jLabel12)))
-                .addContainerGap(300, Short.MAX_VALUE))
+                        .addGap(438, 438, 438)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(csboton2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(Boton_Agentes2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addGap(22, 22, 22)
                 .addComponent(jLabel12)
-                .addGap(46, 46, 46)
+                .addGap(37, 37, 37)
                 .addComponent(jLabel18)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(Boton_Agentes2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
+                .addComponent(csboton2)
                 .addContainerGap())
         );
 
@@ -273,9 +317,7 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 41, Short.MAX_VALUE))
+            .addComponent(jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -283,34 +325,71 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
 
     private void Boton_BibliotecaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Boton_BibliotecaActionPerformed
         // TODO add your handling code here:
+
+        System.out.println(Rol);
         FrmBiblioteca();
+
     }//GEN-LAST:event_Boton_BibliotecaActionPerformed
 
     private void Boton_ConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Boton_ConsultarActionPerformed
+
         FrmConsultar();
     }//GEN-LAST:event_Boton_ConsultarActionPerformed
 
     private void Boton_Multas1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Boton_Multas1ActionPerformed
         // TODO add your handling code here:
+
         FrmMultas();
     }//GEN-LAST:event_Boton_Multas1ActionPerformed
 
     private void Boton_Informe1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Boton_Informe1ActionPerformed
         // TODO add your handling code here:
+
         FrmInforme();
     }//GEN-LAST:event_Boton_Informe1ActionPerformed
 
     private void Boton_Agentes2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Boton_Agentes2ActionPerformed
         // TODO add your handling code here:
+        this.dispose();
         FrmAgente();
     }//GEN-LAST:event_Boton_Agentes2ActionPerformed
 
     private void jTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPaneStateChanged
         // TODO add your handling code here:
-       if (jTabbedPane.getSelectedIndex() == 1 || jTabbedPane.getSelectedIndex() == 2){
-           //Frame_Login();
+        /*if(!(jTabbedPane.getSelectedIndex() == 2 && Rol==1)){
+           this.dispose();
+           Frame_Login();
+       }*/
+        if (jTabbedPane.getSelectedIndex() == 2) {
+            if (Rol != 1) {
+                this.dispose();
+                Frame_Login(1);
+            }
+        } else if (jTabbedPane.getSelectedIndex() == 1) {
+            if (Rol != 2 && Rol != 1) {
+                this.dispose();
+                Frame_Login(2);
+            }
         }
     }//GEN-LAST:event_jTabbedPaneStateChanged
+
+    private void csboton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_csboton1ActionPerformed
+        // TODO add your handling code here:
+        int sel = (JOptionPane.showConfirmDialog(null, "Esta Seguro que desea salir", "CERRAR SESION", JOptionPane.YES_NO_OPTION));
+        if (sel == 0) {
+            this.dispose();
+            new Frame_Menu_Login().setVisible(true);
+        }
+    }//GEN-LAST:event_csboton1ActionPerformed
+
+    private void csboton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_csboton2ActionPerformed
+        // TODO add your handling code here:
+        int sel = (JOptionPane.showConfirmDialog(null, "Esta Seguro que desea salir", "CERRAR SESION", JOptionPane.YES_NO_OPTION));
+        if (sel == 0) {
+            this.dispose();
+            new Frame_Menu_Login().setVisible(true);
+        }
+    }//GEN-LAST:event_csboton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -353,6 +432,8 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
     private javax.swing.JButton Boton_Consultar;
     private javax.swing.JButton Boton_Informe1;
     private javax.swing.JButton Boton_Multas1;
+    private javax.swing.JButton csboton1;
+    private javax.swing.JButton csboton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
