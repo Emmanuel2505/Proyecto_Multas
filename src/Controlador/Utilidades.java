@@ -162,4 +162,45 @@ public class Utilidades {
         }
         return existe;
     }
+    
+    public static double montoMulta(String tipoFalta){
+        double monto = 0.00;
+        double sueldoBasico = 400.00;
+        if (tipoFalta.equalsIgnoreCase("Leve de primera clase")) {
+            monto = sueldoBasico * 0.05;
+        }else if(tipoFalta.equalsIgnoreCase("Leve de segunda clase")){
+            monto = sueldoBasico * 0.1;
+        }else if (tipoFalta.equalsIgnoreCase("Leve de tercera clase")) {
+            monto = sueldoBasico * 0.15;
+        }else if(tipoFalta.equalsIgnoreCase("Grave de primera clase")){
+            monto = sueldoBasico * 0.3;
+        }else if (tipoFalta.equalsIgnoreCase("Grave de segunda clase")) {
+            monto = sueldoBasico * 0.4;
+        }else if(tipoFalta.equalsIgnoreCase("Grave de tercera clase")){
+            monto = sueldoBasico * 0.5;
+        }else if (tipoFalta.equalsIgnoreCase("Muy grave")) {
+            monto = sueldoBasico;
+        }
+        return monto;
+    }
+    
+    public static double puntosQuitar(String tipoFalta){
+        double puntos = 0.00;
+        if (tipoFalta.equalsIgnoreCase("Leve de primera clase")) {
+            puntos = 1.5;
+        }else if(tipoFalta.equalsIgnoreCase("Leve de segunda clase")){
+            puntos = 3;
+        }else if (tipoFalta.equalsIgnoreCase("Leve de tercera clase")) {
+            puntos = 4.5;
+        }else if(tipoFalta.equalsIgnoreCase("Grave de primera clase")){
+            puntos = 6;
+        }else if (tipoFalta.equalsIgnoreCase("Grave de segunda clase")) {
+            puntos = 7.5;
+        }else if(tipoFalta.equalsIgnoreCase("Grave de tercera clase")){
+            puntos = 9;
+        }else if (tipoFalta.equalsIgnoreCase("Muy grave")) {
+            puntos = 10;
+        }
+        return puntos;
+    }
 }

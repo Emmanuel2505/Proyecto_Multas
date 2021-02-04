@@ -12,14 +12,14 @@ import java.util.Date;
  * @author ASUS
  */
 public class Multa {
-    private float valorMulta;
+    private double valorMulta;
     private Date fecha;
-    private float totalPuntos;
+    private double totalPuntos;
     private String tipoMulta;
     private String agente;
     private String nombrePersona;
 
-    public Multa(float valorMulta, Date fecha, float totalPuntos, String tipoMulta, String agente, String nombrePersona) {
+    public Multa(double valorMulta, Date fecha, double totalPuntos, String tipoMulta, String agente, String nombrePersona) {
         this.valorMulta = valorMulta;
         this.fecha = fecha;
         this.totalPuntos = totalPuntos;
@@ -28,11 +28,11 @@ public class Multa {
         this.nombrePersona = nombrePersona;
     }
 
-    public float getValorMulta() {
+    public double getValorMulta() {
         return valorMulta;
     }
 
-    public void setValorMulta(float valorMulta) {
+    public void setValorMulta(double valorMulta) {
         this.valorMulta = valorMulta;
     }
 
@@ -44,11 +44,11 @@ public class Multa {
         this.fecha = fecha;
     }
 
-    public float getTotalPuntos() {
+    public double getTotalPuntos() {
         return totalPuntos;
     }
 
-    public void setTotalPuntos(float totalPuntos) {
+    public void setTotalPuntos(double totalPuntos) {
         this.totalPuntos = totalPuntos;
     }
 
