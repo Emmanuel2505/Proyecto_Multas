@@ -10,24 +10,17 @@ package Modelo;
  * @author ASUS
  */
 public class Cuenta {
-    private String tipo;
     private String propietario;
     private String usuario;
     private String contrasenia;
 
-    public Cuenta(String tipo, String propietario, String usuario, String contrasenia) {
-        this.tipo = tipo;
+    public Cuenta(String propietario, String usuario, String contrasenia) {
         this.propietario = propietario;
         this.usuario = usuario;
         this.contrasenia = contrasenia;
     }
 
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public Cuenta() {
     }
 
     public String getPropietario() {

@@ -301,12 +301,13 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
 
     private void Boton_Agentes2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Boton_Agentes2ActionPerformed
         // TODO add your handling code here:
+        FrmAgente();
     }//GEN-LAST:event_Boton_Agentes2ActionPerformed
 
     private void jTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPaneStateChanged
         // TODO add your handling code here:
        if (jTabbedPane.getSelectedIndex() == 1 || jTabbedPane.getSelectedIndex() == 2){
-           Frame_Login();
+           //Frame_Login();
         }
     }//GEN-LAST:event_jTabbedPaneStateChanged
 

@@ -50,6 +50,11 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
         tbVehiculos.updateUI();
     }
     
+    public void FrameMultas() {
+        Frm_RegistarMultas fm = new Frm_RegistarMultas(null, true);
+        fm.setVisible(true);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -300,6 +305,7 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         this.dispose();
+        FrameMultas();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
