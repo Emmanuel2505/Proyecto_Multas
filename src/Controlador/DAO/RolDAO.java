@@ -5,8 +5,7 @@
  */
 package Controlador.DAO;
 
-import Controlador.ListaSimple;
-import Modelo.Persona;
+
 import Modelo.Rol;
 import javax.swing.JOptionPane;
 

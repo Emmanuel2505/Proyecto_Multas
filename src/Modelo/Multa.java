@@ -12,20 +12,44 @@ import java.util.Date;
  * @author ASUS
  */
 public class Multa {
+    private long idMulta;
     private double valorMulta;
     private Date fecha;
     private double totalPuntos;
     private String tipoMulta;
     private String agente;
-    private String nombrePersona;
+    private String cedulaPersona;
+    private String placa;
 
-    public Multa(double valorMulta, Date fecha, double totalPuntos, String tipoMulta, String agente, String nombrePersona) {
+    public Multa() {
+    }
+
+    public Multa(double valorMulta, Date fecha, double totalPuntos, String tipoMulta, String agente, String cedulaPersona) {
         this.valorMulta = valorMulta;
         this.fecha = fecha;
         this.totalPuntos = totalPuntos;
         this.tipoMulta = tipoMulta;
         this.agente = agente;
-        this.nombrePersona = nombrePersona;
+        this.cedulaPersona = cedulaPersona;
+        this.placa = "Multa Peatonal";
+    }
+
+    public Multa(double valorMulta, Date fecha, double totalPuntos, String tipoMulta, String agente, String cedulaPersona, String placa) {
+        this.valorMulta = valorMulta;
+        this.fecha = fecha;
+        this.totalPuntos = totalPuntos;
+        this.tipoMulta = tipoMulta;
+        this.agente = agente;
+        this.cedulaPersona = cedulaPersona;
+        this.placa = placa;
+    }
+
+    public long getIdMulta() {
+        return idMulta;
+    }
+
+    public void setIdMulta(long idMulta) {
+        this.idMulta = idMulta;
     }
 
     public double getValorMulta() {
@@ -68,11 +92,19 @@ public class Multa {
         this.agente = agente;
     }
 
-    public String getNombrePersona() {
-        return nombrePersona;
+    public String getCedulaPersona() {
+        return cedulaPersona;
     }
 
-    public void setNombrePersona(String nombrePersona) {
-        this.nombrePersona = nombrePersona;
+    public void setCedulaPersona(String cedulaPersona) {
+        this.cedulaPersona = cedulaPersona;
+    }
+
+    public String getPlaca() {
+        return placa;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
     }
 }
