@@ -1,1 +1,0 @@
-{"Controlador.ListaSimple":{"cabecera":{"dato":{"@class":"Modelo.Licencia","NroLicencia":165835,"puntos":30,"propietario":1109678231,"fechaCaducidad":"18\/03\/2030","tipos":[{"string":"C"}]},"siguiente":{"dato":{"@class":"Modelo.Licencia","NroLicencia":6931365,"puntos":30,"propietario":1105328746,"fechaCaducidad":"15\/02\/2025","tipos":[{"string":["B","C1"]}]}}}}}

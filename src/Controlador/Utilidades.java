@@ -33,31 +33,6 @@ public class Utilidades {
         }
         return dato;
     }
-    
-    public static int compareTo(Object o, Object o1, String atributoClase) {
-        int i = 0;
-        if (o instanceof Integer && o1 instanceof Integer) {
-            Integer uno = (Integer) o;
-            Integer dos = (Integer) o1;
-            if (uno > dos) {
-                i = 1;
-            } else if (uno < dos) {
-                i = -1;
-            }
-
-        } else {
-            String uno = extraccionDato(o, atributoClase);
-            String dos = extraccionDato(o1, atributoClase);
-            if (uno != null && dos != null) {
-                if (uno.toUpperCase().compareTo(dos.toUpperCase()) > 0) {
-                    i = 1;
-                } else {
-                    i = -1;
-                }
-            } 
-        }
-        return i;
-    }
 
     public static ListaSimple obtenerSubLista(ListaSimple lista, String AtributoClase, String palabra){
         ListaSimple aux = new ListaSimple();
@@ -98,6 +73,14 @@ public class Utilidades {
         }
         return aux;
     }
+    
+    public static String obtenerStringTipos(ArrayList<String> tipos){
+        String texto = "";
+        for (int i = 0; i < tipos.size(); i++) {
+            texto = texto + tipos.get(i) + " ";
+        }
+        return texto;
+    }
 
     public static String extraccionDato(Object obj, String atributoClase) {
         Class clase = obj.getClass();
@@ -125,28 +108,42 @@ public class Utilidades {
         }
         return (informacion != null) ? informacion.toString() : null;
     }
-
-    public static Boolean comparar(String uno, Object obj, String atributoClase) {
-        String dos = extraccionDato(obj, atributoClase);
-        return (dos != null) ? uno.equals(dos.toString()) : false;
+    
+    public ListaSimple ordenar(ListaSimple lista, String atributo) {
+        ListaSimple temp = lista;
+        temp = qsortInt(0, temp.tamanio() - 1, temp, atributo);
+        return temp;
     }
     
-    public static int comparareTo(String uno, Object obj, String atributoClase) {
-        String dos = extraccionDato(obj, atributoClase);
-        System.out.println("COMPARAR DATOS " + uno + "   " + dos);
-        return (dos != null) ? uno.compareTo(dos.toString()) : -1;
-    }
-
-    public Boolean compararRigido(String uno, String dos) {
-        return uno.equals(dos);
-    }
-    
-    public static String obtenerStringTipos(ArrayList<String> tipos){
-        String texto = "";
-        for (int i = 0; i < tipos.size(); i++) {
-            texto = texto + tipos.get(i) + " ";
+    public ListaSimple qsortInt(int izq, int der, ListaSimple lista, String atributo){
+        int ult, m; 
+        Object temp;
+        if (izq >= der)
+            return lista;
+        temp = lista.obtenerPorPosicion(izq);
+        m = (izq + der)/2;
+        lista.editar(izq, lista.obtenerPorPosicion(m));
+        lista.editar(m, temp);
+        ult = izq;
+        for (int i = izq+1; i <= der; i++) {
+            if (Utilidades.comparar(lista.obtenerPorPosicion(i), lista.obtenerPorPosicion(izq), atributo)) {
+                temp = lista.obtenerPorPosicion(++ult);
+                lista.editar(ult, lista.obtenerPorPosicion(i));
+                lista.editar(i, temp);
+            }
         }
-        return texto;
+        temp = lista.obtenerPorPosicion(izq);
+        lista.editar(izq, lista.obtenerPorPosicion(ult));
+        lista.editar(ult, temp);
+        qsortInt(izq, ult-1, lista, atributo);
+        qsortInt(ult+1, der, lista, atributo);
+        return lista;
+    }
+
+    public static Boolean comparar(Object dato1, Object dato2, String atributoClase) {
+        String uno = extraccionDato(dato1, atributoClase);
+        String dos = extraccionDato(dato2, atributoClase);
+        return (dos != null) ? uno.equals(dos.toString()) : false;
     }
     
     public static Boolean datoRepetido(ListaSimple lista, String atributoClase, String dato){
