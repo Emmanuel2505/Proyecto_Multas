@@ -10,6 +10,7 @@ package Modelo;
  * @author ASUS
  */
 public class TipoLicencia {
+    private boolean estTipoLic;
     private String categoria;
     private String tipo;
     private String caracteristicas;

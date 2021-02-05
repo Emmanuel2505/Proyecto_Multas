@@ -9,58 +9,19 @@ package Modelo;
  *
  * @author ASUS
  */
-public class TipoVehiculo {
-    private String tipo;
-    private String tamanio;
-    private String peso;
-    private String capacidad;
-    private String velocidad;
-
-    public TipoVehiculo(String tipo, String tamanio, String peso, String capacidad, String velocidad) {
-        this.tipo = tipo;
-        this.tamanio = tamanio;
-        this.peso = peso;
-        this.capacidad = capacidad;
-        this.velocidad = velocidad;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-    public String getTamanio() {
-        return tamanio;
-    }
-
-    public void setTamanio(String tamanio) {
-        this.tamanio = tamanio;
-    }
-
-    public String getPeso() {
-        return peso;
-    }
-
-    public void setPeso(String peso) {
-        this.peso = peso;
-    }
-
-    public String getCapacidad() {
-        return capacidad;
-    }
-
-    public void setCapacidad(String capacidad) {
-        this.capacidad = capacidad;
-    }
-
-    public String getVelocidad() {
-        return velocidad;
-    }
-
-    public void setVelocidad(String velocidad) {
-        this.velocidad = velocidad;
-    }
+public enum  TipoVehiculo {
+    Vehiculo_de_traccion_animal,
+    Ciclomotor,
+    Motocicleta,
+    Motocarro,
+    Tricimoto,
+    Quad_Atv,
+    Autobus,
+    Camion,
+    Camioneta,
+    Furgon,
+    Vehiculo,
+    Tractor,
+    Volqueta,
+    Trolebus,
 }

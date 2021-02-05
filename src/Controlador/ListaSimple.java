@@ -6,20 +6,28 @@
 package Controlador;
 
 /**
- *
- * @author ASUS
+ * 
+ * @author Eutimio Arevalo, Roy Leon, James Romero
  */
 public class ListaSimple {
+    
     public Nodo cabecera;
 
     public ListaSimple() {
         this.cabecera = null;
     }
-    
+    /**
+     * Metodo que verifica si la lista simple esta vacia
+     * @return Dato Booleano
+     */
     public boolean estaVacia(){
         return (this.cabecera == null);
     }
     
+    /**
+     * Metodo para calcular el tamaño de la lista simple
+     * @return El tamaño de la lista 
+     */
     public int tamanio(){
         int tamanio = 0;
         if (!estaVacia()) {
@@ -32,6 +40,10 @@ public class ListaSimple {
         return tamanio;
     }
     
+    /**
+     * Metodo para insertar un valor en la lista 
+     * @param dato 
+     */
     public void insertar(Object dato){
         if (dato == null)
             new NullPointerException("Se debe ingresar un Objeto");

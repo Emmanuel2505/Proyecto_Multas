@@ -10,6 +10,8 @@ package Modelo;
  * @author ASUS
  */
 public class Cuenta {
+    private long idCuenta;
+    private boolean estCuenta;
     private String tipo;
     private String propietario;
     private String usuario;

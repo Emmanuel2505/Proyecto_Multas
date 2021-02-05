@@ -10,6 +10,8 @@ package Modelo;
  * @author ASUS
  */
 public class Vehiculo {
+    private long idVehiculo;
+    private boolean estVehiculo;
     private String propietario;
     private String modelo;
     private String color;

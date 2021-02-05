@@ -12,6 +12,8 @@ import java.util.Date;
  * @author ASUS
  */
 public class Multa {
+    private long idMulta;
+    private boolean estMulta;
     private float valorMulta;
     private Date fecha;
     private float totalPuntos;

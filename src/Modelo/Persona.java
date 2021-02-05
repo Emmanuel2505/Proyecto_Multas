@@ -10,6 +10,8 @@ package Modelo;
  * @author ASUS
  */
 public class Persona {
+    private long idPersona;
+    private boolean estPersona;
     private String cedula;
     private String nombre;
     private String apellido;

@@ -14,6 +14,7 @@ import java.util.Date;
  */
 public class Licencia {
     private String NroLicencia;
+    private boolean estLicencia;
     private float puntos;
     private String propietario;
     private String fechaCaducidad;
