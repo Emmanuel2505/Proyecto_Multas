@@ -39,4 +39,15 @@ public class CuentaDAO extends AdaptadorDAO{
             return false;
         }
     }
+    public Object obtenerPersona(long idPersona){
+        Object dato = null;
+        for (int i = 0; i < listar().tamanio(); i++) {
+            Cuenta aux = (Cuenta)listar().obtenerPorPosicion(i);
+            if (aux.getIdPersona() == idPersona) {
+                dato = aux;
+                break;
+            }
+        }
+        return dato;
+    }
 }
