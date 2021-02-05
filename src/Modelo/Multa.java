@@ -18,29 +18,30 @@ public class Multa {
     private double totalPuntos;
     private String tipoMulta;
     private String agente;
-    private String cedulaPersona;
+    private long idPersona;
+    private boolean estadoMulta;
     private String placa;
 
     public Multa() {
     }
 
-    public Multa(double valorMulta, Date fecha, double totalPuntos, String tipoMulta, String agente, String cedulaPersona) {
+    public Multa(double valorMulta, Date fecha, double totalPuntos, String tipoMulta, String agente, long idPersona) {
         this.valorMulta = valorMulta;
         this.fecha = fecha;
         this.totalPuntos = totalPuntos;
         this.tipoMulta = tipoMulta;
         this.agente = agente;
-        this.cedulaPersona = cedulaPersona;
+        this.idPersona = idPersona;
         this.placa = "Multa Peatonal";
     }
 
-    public Multa(double valorMulta, Date fecha, double totalPuntos, String tipoMulta, String agente, String cedulaPersona, String placa) {
+    public Multa(double valorMulta, Date fecha, double totalPuntos, String tipoMulta, String agente, long idPersona, String placa) {
         this.valorMulta = valorMulta;
         this.fecha = fecha;
         this.totalPuntos = totalPuntos;
         this.tipoMulta = tipoMulta;
         this.agente = agente;
-        this.cedulaPersona = cedulaPersona;
+        this.idPersona = idPersona;
         this.placa = placa;
     }
 
@@ -92,12 +93,20 @@ public class Multa {
         this.agente = agente;
     }
 
-    public String getCedulaPersona() {
-        return cedulaPersona;
+    public long getIdPersona() {
+        return idPersona;
     }
 
-    public void setCedulaPersona(String cedulaPersona) {
-        this.cedulaPersona = cedulaPersona;
+    public void setIdPersona(long idPersona) {
+        this.idPersona = idPersona;
+    }
+
+    public boolean isEstadoMulta() {
+        return estadoMulta;
+    }
+
+    public void setEstadoMulta(boolean estadoMulta) {
+        this.estadoMulta = estadoMulta;
     }
 
     public String getPlaca() {

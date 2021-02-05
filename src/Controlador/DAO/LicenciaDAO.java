@@ -31,6 +31,8 @@ public class LicenciaDAO extends AdaptadorDAO{
     
     public Boolean guardar(){
         try {
+            this.getLicencia().setIdLicencia(Long.parseLong(String.valueOf(listar().tamanio() + 1)));
+            this.getLicencia().setEstadoLicencia(true);
             this.guardar(this.getLicencia());
             return true;
         } catch (Exception e) {

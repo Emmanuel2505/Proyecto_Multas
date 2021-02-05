@@ -32,6 +32,7 @@ public class MultaDAO extends AdaptadorDAO{
     public Boolean guardar(){
         try {
             this.getMulta().setIdMulta(Long.parseLong(String.valueOf(listar().tamanio() + 1)));
+            this.getMulta().setEstadoMulta(true);
             this.guardar(this.getMulta());
             return true;
         } catch (Exception e) {

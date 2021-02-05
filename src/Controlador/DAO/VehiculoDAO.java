@@ -31,6 +31,8 @@ public class VehiculoDAO extends AdaptadorDAO{
     
     public Boolean guardar(String NombreArchivo){
         try {
+            this.getVehiculo().setIdVehiculo(Long.parseLong(String.valueOf(listar().tamanio() + 1)));
+            this.getVehiculo().setEstadoVehiculo(true);
             this.guardar(this.getVehiculo());
             return true;
         } catch (Exception e) {

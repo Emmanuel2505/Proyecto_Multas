@@ -10,27 +10,37 @@ package Modelo;
  * @author ASUS
  */
 public class Vehiculo {
-    private String propietario;
+    private long idVehiculo;
+    private long idPersona;
     private String modelo;
     private String color;
     private String placa;
+    private boolean estadoVehiculo;
 
     public Vehiculo() {
     }
 
-    public Vehiculo(String propietario, String modelo, String color, String placa) {
-        this.propietario = propietario;
+    public Vehiculo(long idPersona, String modelo, String color, String placa) {
+        this.idPersona = idPersona;
         this.modelo = modelo;
         this.color = color;
         this.placa = placa;
     }
 
-    public String getPropietario() {
-        return propietario;
+    public long getIdVehiculo() {
+        return idVehiculo;
     }
 
-    public void setPropietario(String propietario) {
-        this.propietario = propietario;
+    public void setIdVehiculo(long idVehiculo) {
+        this.idVehiculo = idVehiculo;
+    }
+
+    public long getIdPersona() {
+        return idPersona;
+    }
+
+    public void setIdPersona(long idPersona) {
+        this.idPersona = idPersona;
     }
 
     public String getModelo() {
@@ -55,5 +65,13 @@ public class Vehiculo {
 
     public void setPlaca(String placa) {
         this.placa = placa;
+    }
+
+    public boolean isEstadoVehiculo() {
+        return estadoVehiculo;
+    }
+
+    public void setEstadoVehiculo(boolean estadoVehiculo) {
+        this.estadoVehiculo = estadoVehiculo;
     }
 }

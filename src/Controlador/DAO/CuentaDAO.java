@@ -30,6 +30,8 @@ public class CuentaDAO extends AdaptadorDAO{
     
     public Boolean guardar() {
         try {
+            this.getCuenta().setIdCuenta(Long.parseLong(String.valueOf(listar().tamanio() + 1)));
+            this.getCuenta().setEstadoCuenta(true);
             this.guardar(this.getCuenta());
             return true;
         } catch (Exception e) {

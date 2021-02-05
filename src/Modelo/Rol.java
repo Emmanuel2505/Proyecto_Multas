@@ -10,22 +10,21 @@ package Modelo;
  * @author ASUS
  */
 public class Rol {
-    private int id;
+    private long idRol;
     private String tipo;
     private String descripcion;
 
-    public Rol(int id, String tipo, String descripcion) {
-        this.id = id;
+    public Rol(String tipo, String descripcion) {
         this.tipo = tipo;
         this.descripcion = descripcion;
     }
 
-    public int getId() {
-        return id;
+    public long getIdRol() {
+        return idRol;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdRol(long idRol) {
+        this.idRol = idRol;
     }
 
     public String getTipo() {

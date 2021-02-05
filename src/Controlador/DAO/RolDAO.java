@@ -30,6 +30,7 @@ public class RolDAO extends AdaptadorDAO{
     
     public Boolean guardar() {
         try {
+            this.getRol().setIdRol(Long.parseLong(String.valueOf(listar().tamanio() + 1)));
             this.guardar(this.getRol());
             return true;
         } catch (Exception e) {
@@ -40,15 +41,15 @@ public class RolDAO extends AdaptadorDAO{
 
     public void crearRoles() {
         if (listar().tamanio()== 0) {
-            Rol admin = new Rol(1,"Administrador","Tiene acceso a todo el programa");
+            Rol admin = new Rol("Administrador","Tiene acceso a todo el programa");
             setRol(admin);
             guardar();
             setRol(null);
-            Rol agen = new Rol(2,"Agente","Tiene acceso solo a consultar multa como ingresarla");
+            Rol agen = new Rol("Agente","Tiene acceso solo a consultar multa como ingresarla");
             setRol(agen);
             guardar();
             setRol(null);
-            Rol part = new Rol(3,"Particular","Solo tiene acceso a consultar multa");
+            Rol part = new Rol("Particular","Solo tiene acceso a consultar multa");
             setRol(part);
             guardar();
             setRol(null);

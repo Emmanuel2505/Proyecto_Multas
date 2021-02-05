@@ -31,6 +31,8 @@ public class PersonaDAO extends AdaptadorDAO{
     
     public Boolean guardar(){
         try {
+            this.getPersona().setIdPersona(Long.parseLong(String.valueOf(listar().tamanio() + 1)));
+            this.getPersona().setEstadoPersona(true);
             this.guardar(this.getPersona());
             return true;
         } catch (Exception e) {

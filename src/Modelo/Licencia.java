@@ -13,20 +13,30 @@ import java.util.Date;
  * @author ASUS
  */
 public class Licencia {
+    private long idLicencia;
     private String NroLicencia;
     private float puntos;
-    private String propietario;
+    private long idPersona;
+    private boolean estadoLicencia;
     private String fechaCaducidad;
     private ArrayList<String> tipos = new ArrayList<>();
 
     public Licencia() {
     }
 
-    public Licencia(String NroLicencia, float puntos, String propietario, String fechaCaducidad) {
+    public Licencia(String NroLicencia, float puntos, long idPersona, String fechaCaducidad) {
         this.NroLicencia = NroLicencia;
         this.puntos = puntos;
-        this.propietario = propietario;
+        this.idPersona = idPersona;
         this.fechaCaducidad = fechaCaducidad;
+    }
+
+    public long getIdLicencia() {
+        return idLicencia;
+    }
+
+    public void setIdLicencia(long idLicencia) {
+        this.idLicencia = idLicencia;
     }
 
     public String getNroLicencia() {
@@ -45,12 +55,20 @@ public class Licencia {
         this.puntos = puntos;
     }
 
-    public String getPropietario() {
-        return propietario;
+    public long getIdPersona() {
+        return idPersona;
     }
 
-    public void setPropietario(String propietario) {
-        this.propietario = propietario;
+    public void setIdPersona(long idPersona) {
+        this.idPersona = idPersona;
+    }
+
+    public boolean isEstadoLicencia() {
+        return estadoLicencia;
+    }
+
+    public void setEstadoLicencia(boolean estadoLicencia) {
+        this.estadoLicencia = estadoLicencia;
     }
 
     public String getFechaCaducidad() {
