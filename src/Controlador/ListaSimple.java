@@ -1,0 +1,136 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Controlador;
+
+/**
+ * 
+ * @author Roy Leon
+ */
+public class ListaSimple {
+    
+    public Nodo cabecera;
+
+    public ListaSimple() {
+        this.cabecera = null;
+    }
+    /**
+     * Metodo que verifica si la lista simple esta vacia
+     * @return Dato Booleano
+     */
+    public boolean estaVacia(){
+        return (this.cabecera == null);
+    }
+    
+    /**
+     * Metodo para calcular el tamaño de la lista simple
+     * @return El tamaño de la lista 
+     */
+    public int tamanio(){
+        int tamanio = 0;
+        if (!estaVacia()) {
+            Nodo temp = cabecera;
+            while (temp != null) {
+                tamanio++;
+                temp = temp.getSiguiente();
+            }
+        }
+        return tamanio;
+    }
+    
+    /**
+     * Metodo para insertar un valor en la lista 
+     * @param dato 
+     */
+    public void insertar(Object dato){
+        if (dato == null)
+            new NullPointerException("Se debe ingresar un Objeto");
+        Nodo temp = new Nodo(dato, null);
+        temp.setSiguiente(cabecera);
+        cabecera = temp;
+    }
+    
+     /**
+     * Metodo para obtener el dato segun la posicion de la lista simple
+     * @return El dato de la lista      
+     */
+    public Object obtenerPorPosicion(int posicion){
+        Object dato = null;
+        if (!estaVacia()) {
+            Nodo temp = cabecera;
+            for (int i = 0; i < posicion; i++) {
+                temp = temp.getSiguiente();
+                if (temp == null)
+                    break;
+            }
+            if (temp != null)
+                dato = temp.getDato();
+        }
+        return dato;
+    }
+    
+
+     /**
+      * Metodo para buscar un dato de la lista
+      * @param dato
+      * @return aux
+      */
+    public Object buscarporDato(String dato) {
+        Object aux = null;
+        String pos = "";
+        if (estaVacia()) {
+            System.out.println("Lista Vacia");
+        } else {
+            Nodo iterador = cabecera;
+            int cont = 0;
+            while (iterador != null) {
+                if (iterador.getDato().equals(dato)) {
+                    aux = iterador.getDato();
+                    pos += cont + ";";
+                }
+                cont++;
+                iterador = iterador.getSiguiente();
+            }
+            if (pos != "") {
+                System.out.println("Se ecnotro en la posicion: " + pos);
+            } else {
+                System.out.println("No existe dato");
+            }
+        }
+        return aux;
+    }
+    
+    /**
+     * Metodo para mostrar los datos de la lista
+     */
+    public void mostrarDatos(){
+        if (!estaVacia()) {
+            Nodo temp = cabecera;
+            while (temp != null) {
+                System.out.println(temp.getDato().toString());
+                temp = temp.getSiguiente();
+            }
+        }
+    }
+    
+    /**
+     * Metodo para editar un dato de la lista segun la posicion
+     * @param posicion
+     * @param dato 
+     */
+    public void editar(int posicion, Object dato) {
+        if (posicion >= 0 && posicion < tamanio()) {
+            if (posicion == 0) {
+                cabecera.setDato(dato);
+            } else {
+                Nodo aux = cabecera;
+                for (int i = 0; i < posicion; i++) {
+                    aux = aux.getSiguiente();
+                }
+                aux.setDato(dato);
+            }
+        }
+    }
+}

@@ -1,0 +1,67 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package Controlador.DAO;
+
+import Controlador.ListaSimple;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+
+/**
+ *
+ * @author  Roy Leon
+ */
+public class AdaptadorDAO implements InterfazDAO{
+    private  Conexion conexion;
+    private Class clazz;
+
+    public AdaptadorDAO(Conexion conexion, Class clazz) {
+        this.conexion = conexion;
+        this.clazz = clazz;
+    }
+    
+    /**
+     * Metodo para listar los datos de la lista mediante el archivo
+     * @return lista
+     */
+    @Override
+    public ListaSimple listar() {
+        ListaSimple lista = new ListaSimple();
+        try {
+            lista = (ListaSimple) conexion.getXtrStream().fromXML(new FileReader(conexion.getDireccion()+ File.separatorChar + clazz.getSimpleName() + ".json"));
+
+        } catch (Exception e) {
+            System.out.println("No se pudo listar " + e);
+            e.printStackTrace();
+        }
+        return lista;
+    }
+    
+    /**
+     * Metodo para guardar los datos de la lista en el archivo
+     * @param o
+     * @throws Exception 
+     */
+    @Override
+    public void guardar(Object o) throws Exception {
+
+        ListaSimple lista = listar();
+        lista.insertar(o);
+        conexion.getXtrStream().toXML(lista, new FileOutputStream(conexion.getDireccion()+ File.separatorChar + clazz.getSimpleName() + ".json"));
+
+    }
+    
+    /**
+     * Metodo para modificacion 
+     * @param o
+     * @return false
+     */
+    @Override
+    public Boolean modificar(Object o) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return false;
+    }
+}
