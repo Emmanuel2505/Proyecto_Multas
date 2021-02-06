@@ -5,6 +5,7 @@
  */
 package Controlador.DAO;
 
+import Controlador.ListaSimple;
 import Modelo.Vehiculo;
 import javax.swing.JOptionPane;
 
@@ -51,5 +52,16 @@ public class VehiculoDAO extends AdaptadorDAO{
             }
         }
         return dato;
+    }
+    
+    public ListaSimple obtenerListaPersona(long idPersona){
+        ListaSimple lista = new ListaSimple();
+        for (int i = 0; i < listar().tamanio(); i++) {
+            Vehiculo aux = (Vehiculo)listar().obtenerPorPosicion(i);
+            if (aux.getIdPersona() == idPersona) {
+                lista.insertar(aux);
+            }
+        }
+        return lista;
     }
 }
