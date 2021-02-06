@@ -5,6 +5,7 @@
  */
 package Vista.Tablas;
 
+import Controlador.DAO.LicenciaDAO;
 import Controlador.ListaSimple;
 import Controlador.Utilidades;
 import Modelo.Licencia;
@@ -22,7 +23,7 @@ import javax.swing.table.TableColumn;
  */
 public class TablaPersona extends AbstractTableModel{
     private ListaSimple listaPersona = new ListaSimple();
-    private ListaSimple listaLicencia = new ListaSimple();
+    private LicenciaDAO listaLicencia;
 
     public ListaSimple getListaPersona() {
         return listaPersona;
@@ -32,11 +33,11 @@ public class TablaPersona extends AbstractTableModel{
         this.listaPersona = listaPersona;
     }
 
-    public ListaSimple getListaLicencia() {
+    public LicenciaDAO getListaLicencia() {
         return listaLicencia;
     }
 
-    public void setListaLicencia(ListaSimple listaLicencia) {
+    public void setListaLicencia(LicenciaDAO listaLicencia) {
         this.listaLicencia = listaLicencia;
     }
 
@@ -53,9 +54,9 @@ public class TablaPersona extends AbstractTableModel{
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Persona persona = (Persona)listaPersona.obtenerPorPosicion(rowIndex);
-        Licencia licencia = (Licencia)Utilidades.obtenerDato(listaLicencia, "propietario", persona.getCedula());
+        Licencia licencia = (Licencia)listaLicencia.obtenerPersona(persona.getIdPersona());
         if (licencia == null) {
-            licencia = new Licencia("", 0, "", "");
+            licencia = new Licencia("", 0, 0, "");
         }
         switch (columnIndex) {
             case 0: return persona.getCedula();

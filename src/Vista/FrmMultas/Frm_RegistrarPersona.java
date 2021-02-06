@@ -46,7 +46,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
         lcVeriClave.setVisible(false);
         this.setLocationRelativeTo(null);
     }
-    
+
     public Frm_RegistrarPersona(java.awt.Frame parent, boolean modal, int rol) {
         super(parent, modal);
         this.rol = rol;
@@ -58,7 +58,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
 
     public void cargarTablaPersona() {
         modeloPersona.setListaPersona(personaD.listar());
-        modeloPersona.setListaLicencia(licenciaD.listar());
+        modeloPersona.setListaLicencia(licenciaD);
         tbPersonas.setModel(modeloPersona);
         tbPersonas.updateUI();
         cargarTablaTipos();
@@ -85,8 +85,8 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
         Frm_RegistarMultas fm = new Frm_RegistarMultas(null, true);
         fm.setVisible(true);
     }
-    
-    public void FrameMenu(){
+
+    public void FrameMenu() {
         Frame_Menu_Login fm = new Frame_Menu_Login(1, "");
         fm.setVisible(true);
     }
@@ -485,15 +485,16 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
         // TODO add your handling code here:
         if (txfCedula.getText().length() > 0 && txfNombre.getText().length() > 0 && txfApellido.getText().length() > 0 && txfDireccion.getText().length() > 0 && txfTelefono.getText().length() > 0 && txfNroLicencia.getText().length() > 0 && txfFechaCaducidad.getText().length() > 0 && tipos.size() > 0) {
             if (!Utilidades.datoRepetido(personaD.listar(), "cedula", txfCedula.getText())) {
+
                 personaD.setPersona(null);
+                personaD.getPersona().setIdRol(3);
                 personaD.getPersona().setCedula(txfCedula.getText());
                 personaD.getPersona().setNombre(txfNombre.getText());
                 personaD.getPersona().setApellido(txfApellido.getText());
                 personaD.getPersona().setDireccion(txfDireccion.getText());
                 personaD.getPersona().setTelefono(txfTelefono.getText());
-                personaD.getPersona().setRol(3);
-                licenciaD.setLicencia(null);
-                licenciaD.getLicencia().setPropietario(txfCedula.getText());
+
+                licenciaD.getLicencia().setIdPersona(personaD.listar().tamanio()+1);
                 licenciaD.getLicencia().setNroLicencia(txfNroLicencia.getText());
                 licenciaD.getLicencia().setPuntos(30);
                 licenciaD.getLicencia().setFechaCaducidad(txfFechaCaducidad.getText());
@@ -505,6 +506,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
                 } else {
                     JOptionPane.showConfirmDialog(null, "No se pudo guardar");
                 }
+
             } else {
                 JOptionPane.showConfirmDialog(null, "Esa persona ya está registrada");
             }
@@ -533,15 +535,15 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
 
     private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
         // TODO add your handling code here:
-        if(rol != 1){
+        if (rol != 1) {
             this.dispose();
             FrameMultas();
-        }else{
+        } else {
             this.dispose();
             FrameMenu();
         }
-        
-        
+
+
     }//GEN-LAST:event_jButtonCancelarActionPerformed
 
     private void tfClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfClaveActionPerformed

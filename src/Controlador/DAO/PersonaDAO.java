@@ -38,4 +38,16 @@ public class PersonaDAO extends AdaptadorDAO{
             return false;
         }
     }
+    
+    public Object obtenerPersona(long idPersona){
+        Object dato = null;
+        for (int i = 0; i < listar().tamanio(); i++) {
+            Persona aux = (Persona)listar().obtenerPorPosicion(i);
+            if (aux.getIdPersona()== idPersona) {
+                dato = aux;
+                break;
+            }
+        }
+        return dato;
+    }
 }

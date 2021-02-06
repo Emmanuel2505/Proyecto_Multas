@@ -10,25 +10,34 @@ package Modelo;
  * @author ASUS
  */
 public class Persona {
+
     private long idPersona;
-    private boolean estPersona;
     private String cedula;
     private String nombre;
     private String apellido;
     private String direccion;
     private String telefono;
-    private int Rol;
+    private boolean estadoPersona;
+    private int idRol;
 
     public Persona() {
     }
 
-    public Persona(String Cedula, String nombre, String apellido, String direccion, String telefono, int Rol) {
+    public Persona(String Cedula, String nombre, String apellido, String direccion, String telefono, int idRol) {
         this.cedula = Cedula;
         this.nombre = nombre;
         this.apellido = apellido;
         this.direccion = direccion;
         this.telefono = telefono;
-        this.Rol = Rol;
+        this.idRol = idRol;
+    }
+
+    public long getIdPersona() {
+        return idPersona;
+    }
+
+    public void setIdPersona(long idPersona) {
+        this.idPersona = idPersona;
     }
 
     public String getCedula() {
@@ -71,13 +80,19 @@ public class Persona {
         this.telefono = telefono;
     }
 
-    public int getRol() {
-        return Rol;
+    public boolean isEstadoPersona() {
+        return estadoPersona;
     }
 
-    public void setRol(int Rol) {
-        this.Rol = Rol;
+    public void setEstadoPersona(boolean estadoPersona) {
+        this.estadoPersona = estadoPersona;
     }
-    
-    
+
+    public int getIdRol() {
+        return idRol;
+    }
+
+    public void setIdRol(int idRol) {
+        this.idRol = idRol;
+    }
 }

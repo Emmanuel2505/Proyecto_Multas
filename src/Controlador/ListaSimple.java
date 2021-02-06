@@ -51,6 +51,7 @@ public class ListaSimple {
         temp.setSiguiente(cabecera);
         cabecera = temp;
     }
+  
     
     public Object obtenerPorPosicion(int posicion){
         Object dato = null;

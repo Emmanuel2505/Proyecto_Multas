@@ -6,6 +6,7 @@
 package Vista.FrmMultas;
 
 import Controlador.DAO.LicenciaDAO;
+import Controlador.DAO.MarcaDAO;
 import Controlador.DAO.NormativaDAO;
 import Controlador.DAO.PersonaDAO;
 import Controlador.DAO.VehiculoDAO;
@@ -36,7 +37,6 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
     VehiculoDAO vehiculoD = new VehiculoDAO("Datos");
     String mensaje = "";
 
-
     /**
      * Creates new form Frm_RegistarMultas
      */
@@ -51,7 +51,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);
         listener();
     }
-    
+
     public Frm_RegistarMultas(java.awt.Frame parent, boolean modal, String nombre) {
         super(parent, modal);
         initComponents();
@@ -71,16 +71,17 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
             public void keyReleased(KeyEvent e) {
                 if (Character.isDigit(e.getKeyChar()) || Character.isLetter(e.getKeyChar())) {
                     System.out.println(mensaje.length());
-                    if ((mensaje.length()+1) < 11) {
+                    if ((mensaje.length() + 1) < 11) {
                         mensaje = mensaje + (e.getKeyChar());
                         ListaSimple tmp = Utilidades.obtenerSubLista(personaD.listar(), "cedula", mensaje);
                         Componentes.cargarCombo(cbCedula, tmp, "cedula", mensaje);
                     } else {
                         System.out.println(mensaje);
                         Persona dato = (Persona) Utilidades.obtenerDato(personaD.listar(), "cedula", mensaje);
+                        Licencia lic = (Licencia) Utilidades.obtenerDato(licenciaD.listar(), "idPersona", String.valueOf(dato.getIdPersona()));
                         lbNombre.setText(dato.getNombre());
                         lbApellido.setText(dato.getApellido());
-                        lbNroLicencia.setText(dato.getTelefono());
+                        lbNroLicencia.setText(lic.getNroLicencia());
                     }
 
                 } else {
@@ -493,7 +494,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
                     lbGravedad.setText(dato.getTipoFalta());
                     lbMonto.setText(String.valueOf(Utilidades.montoMulta(lbGravedad.getText())));
                     lbPuntosDesc.setText(String.valueOf(Utilidades.puntosQuitar(lbGravedad.getText())));
-                    
+
                     //jTextFieldGravedad.setEnabled(false);
                     jTextAreaRubro.setEditable(false);
                 } catch (Exception e) {
@@ -528,7 +529,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
         Frm_RegistrarPersona fip;
         fip = new Frm_RegistrarPersona((Frame) SwingUtilities.getWindowAncestor(this), true);
         fip.setVisible(true);
-        
+
     }//GEN-LAST:event_btIngresarPersonaActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -537,7 +538,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
         Frm_RegistrarAuto fip;
         fip = new Frm_RegistrarAuto((Frame) SwingUtilities.getWindowAncestor(this), true);
         fip.setVisible(true);
-        
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void cbCedulaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbCedulaItemStateChanged
@@ -550,16 +551,19 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
                 Componentes.cargarCombo(cbPlaca, new ListaSimple(), "");
             } else {
                 try {
-                    Persona dato = (Persona) Utilidades.obtenerDato(personaD.listar(),"cedula",cbCedula.getSelectedItem().toString());
+                    Persona dato = (Persona) Utilidades.obtenerDato(personaD.listar(), "cedula", cbCedula.getSelectedItem().toString());
+                    System.out.println(dato.getNombre());
+                    System.out.println(dato.getIdPersona());
                     lbNombre.setText(dato.getNombre());
                     lbApellido.setText(dato.getApellido());
-                    Licencia licencia = (Licencia) Utilidades.obtenerDato(licenciaD.listar(), "propietario", dato.getCedula());
+                    Licencia licencia = (Licencia) licenciaD.obtenerPersona(dato.getIdPersona());
                     if (licencia == null) {
-                        licencia = new Licencia("", 0, "", "");
+                        licencia = new Licencia("", 0, 0, "");
                     }
                     lbNroLicencia.setText(licencia.getNroLicencia());
                     lbPuntosAct.setText(String.valueOf(licencia.getPuntos()));
-                    Componentes.cargarCombo(cbPlaca, Utilidades.obtenerLista(vehiculoD.listar(), "propietario", String.valueOf(cbCedula.getSelectedItem())), "placa");
+                    //Persona dat = (Persona) Utilidades.obtenerDato(personaD.listar(), "idPersona", cbCedula.getSelectedItem().toString());
+                    Componentes.cargarCombo(cbPlaca, vehiculoD.obtenerListaPersona(dato.getIdPersona()), "placa");
                 } catch (Exception e) {
                 }
             }

@@ -5,7 +5,6 @@
  */
 package Controlador.DAO;
 
-import Controlador.ListaSimple;
 import Modelo.TipoLicencia;
 
 /**

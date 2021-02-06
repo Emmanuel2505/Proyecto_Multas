@@ -10,18 +10,46 @@ package Modelo;
  * @author ASUS
  */
 public class Cuenta {
+
     private long idCuenta;
-    private boolean estCuenta;
+    private boolean estadoCuenta;
     private String tipo;
-    private String propietario;
+    private long idPersona;
     private String usuario;
     private String contrasenia;
 
-    public Cuenta(String tipo, String propietario, String usuario, String contrasenia) {
+    public Cuenta() {
+    }
+
+    public Cuenta(String tipo, long idPersona, String usuario, String contrasenia) {
         this.tipo = tipo;
-        this.propietario = propietario;
+        this.idPersona = idPersona;
         this.usuario = usuario;
         this.contrasenia = contrasenia;
+    }
+
+    public long getIdCuenta() {
+        return idCuenta;
+    }
+
+    public void setIdCuenta(long idCuenta) {
+        this.idCuenta = idCuenta;
+    }
+
+    public boolean isEstadoCuenta() {
+        return estadoCuenta;
+    }
+
+    public void setEstadoCuenta(boolean estadoCuenta) {
+        this.estadoCuenta = estadoCuenta;
+    }
+
+    public long getIdPersona() {
+        return idPersona;
+    }
+
+    public void setIdPersona(long idPersona) {
+        this.idPersona = idPersona;
     }
 
     public String getTipo() {
@@ -30,14 +58,6 @@ public class Cuenta {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
-    }
-
-    public String getPropietario() {
-        return propietario;
-    }
-
-    public void setPropietario(String propietario) {
-        this.propietario = propietario;
     }
 
     public String getUsuario() {
@@ -55,4 +75,5 @@ public class Cuenta {
     public void setContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
     }
+
 }

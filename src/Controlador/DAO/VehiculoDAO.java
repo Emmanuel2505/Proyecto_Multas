@@ -5,6 +5,7 @@
  */
 package Controlador.DAO;
 
+import Controlador.ListaSimple;
 import Modelo.Vehiculo;
 import javax.swing.JOptionPane;
 
@@ -37,5 +38,28 @@ public class VehiculoDAO extends AdaptadorDAO{
             JOptionPane.showConfirmDialog(null, "Error al guardar");
             return false;
         }
+    }
+    
+    public Object obtenerPersona(long idPersona){
+        Object dato = null;
+        for (int i = 0; i < listar().tamanio(); i++) {
+            Vehiculo aux = (Vehiculo)listar().obtenerPorPosicion(i);
+            if (aux.getIdPersona() == idPersona) {
+                dato = aux;
+                break;
+            }
+        }
+        return dato;
+    }
+    
+    public ListaSimple obtenerListaPersona(long idPersona){
+        ListaSimple lista = new ListaSimple();
+        for (int i = 0; i < listar().tamanio(); i++) {
+            Vehiculo aux = (Vehiculo)listar().obtenerPorPosicion(i);
+            if (aux.getIdPersona() == idPersona) {
+                lista.insertar(aux);
+            }
+        }
+        return lista;
     }
 }
