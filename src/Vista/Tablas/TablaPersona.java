@@ -56,7 +56,7 @@ public class TablaPersona extends AbstractTableModel{
         Persona persona = (Persona)listaPersona.obtenerPorPosicion(rowIndex);
         Licencia licencia = (Licencia)listaLicencia.obtenerPersona(persona.getIdPersona());
         if (licencia == null) {
-            licencia = new Licencia("", 0, 0, "");
+            licencia = new Licencia("", 0, -1, "");
         }
         switch (columnIndex) {
             case 0: return persona.getCedula();

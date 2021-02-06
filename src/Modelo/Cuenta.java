@@ -13,7 +13,6 @@ public class Cuenta {
 
     private long idCuenta;
     private boolean estadoCuenta;
-    private String tipo;
     private long idPersona;
     private String usuario;
     private String contrasenia;
@@ -21,8 +20,7 @@ public class Cuenta {
     public Cuenta() {
     }
 
-    public Cuenta(String tipo, long idPersona, String usuario, String contrasenia) {
-        this.tipo = tipo;
+    public Cuenta(long idPersona, String usuario, String contrasenia) {
         this.idPersona = idPersona;
         this.usuario = usuario;
         this.contrasenia = contrasenia;
@@ -51,15 +49,7 @@ public class Cuenta {
     public void setIdPersona(long idPersona) {
         this.idPersona = idPersona;
     }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
+    
     public String getUsuario() {
         return usuario;
     }

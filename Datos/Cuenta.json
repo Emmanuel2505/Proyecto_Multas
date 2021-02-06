@@ -1,0 +1,1 @@
+{"Controlador.ListaSimple":{"cabecera":{"dato":{"@class":"Modelo.Cuenta","idCuenta":2,"estadoCuenta":true,"idPersona":6,"usuario":"User","contrasenia":123},"siguiente":{"dato":{"@class":"Modelo.Cuenta","idCuenta":1,"estadoCuenta":true,"idPersona":4,"usuario":"Julio12","contrasenia":123}}}}}

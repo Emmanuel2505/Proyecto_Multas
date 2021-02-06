@@ -5,6 +5,7 @@
  */
 package Vista.FrmMultas;
 
+import Controlador.DAO.CuentaDAO;
 import Controlador.DAO.LicenciaDAO;
 import Controlador.DAO.PersonaDAO;
 import Controlador.DAO.TipoLicenciaDAO;
@@ -29,6 +30,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
     TablaPersona modeloPersona = new TablaPersona();
     PersonaDAO personaD = new PersonaDAO("Datos");
     LicenciaDAO licenciaD = new LicenciaDAO("Datos");
+    CuentaDAO cuentaD = new CuentaDAO("Datos");
     TipoLicenciaDAO tipoLicenciaD = new TipoLicenciaDAO("Componentes");
     private ArrayList<String> tipos = new ArrayList<>();
     private int rol;
@@ -78,6 +80,9 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
         txfTelefono.setText(null);
         txfNroLicencia.setText(null);
         txfFechaCaducidad.setText(null);
+        tfUser.setText(null);
+        tfClave.setText(null);
+        tfVeriClave.setText(null);
         tipos.clear();
     }
 
@@ -487,24 +492,56 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
             if (!Utilidades.datoRepetido(personaD.listar(), "cedula", txfCedula.getText())) {
 
                 personaD.setPersona(null);
-                personaD.getPersona().setIdRol(3);
+
+                if (rol == 2) {
+                    personaD.getPersona().setIdRol(3);
+                } else if (rol == 1) {
+                    personaD.getPersona().setIdRol(2);
+                }
+                
                 personaD.getPersona().setCedula(txfCedula.getText());
                 personaD.getPersona().setNombre(txfNombre.getText());
                 personaD.getPersona().setApellido(txfApellido.getText());
                 personaD.getPersona().setDireccion(txfDireccion.getText());
                 personaD.getPersona().setTelefono(txfTelefono.getText());
 
-                licenciaD.getLicencia().setIdPersona(personaD.listar().tamanio()+1);
+                licenciaD.setLicencia(null);
+                licenciaD.getLicencia().setIdPersona(personaD.listar().tamanio() + 1);
                 licenciaD.getLicencia().setNroLicencia(txfNroLicencia.getText());
                 licenciaD.getLicencia().setPuntos(30);
                 licenciaD.getLicencia().setFechaCaducidad(txfFechaCaducidad.getText());
                 licenciaD.getLicencia().setTipos(tipos);
-                if (personaD.guardar() && licenciaD.guardar()) {
-                    JOptionPane.showConfirmDialog(null, "Se guardo correctamente");
-                    limpiar();
-                    cargarTablaPersona();
-                } else {
-                    JOptionPane.showConfirmDialog(null, "No se pudo guardar");
+
+                if (rol == 2) {
+                    if (personaD.guardar() && licenciaD.guardar()) {
+                        JOptionPane.showConfirmDialog(null, "Se guardo correctamente");
+                        limpiar();
+                        cargarTablaPersona();
+                    } else {
+                        JOptionPane.showConfirmDialog(null, "No se pudo guardar");
+                    }
+                } else if (rol == 1) {
+
+                    if (tfUser.getText().length() > 0 && tfClave.getText().length() > 0 && tfVeriClave.getText().length() > 0) {
+                        System.out.println(tfUser.getText() + " " + tfVeriClave.getText());
+                        if (tfClave.getText().equals(tfVeriClave.getText())) {
+                            cuentaD.setCuenta(null);
+                            cuentaD.getCuenta().setUsuario(tfUser.getText());
+                            cuentaD.getCuenta().setContrasenia(tfClave.getText());
+                            cuentaD.getCuenta().setIdPersona(personaD.listar().tamanio() + 1);
+                            if (personaD.guardar() && cuentaD.guardar() && licenciaD.guardar()) {
+                                JOptionPane.showConfirmDialog(null, "Se guardo correctamente");
+                                limpiar();
+                                cargarTablaPersona();
+                            } else {
+                                JOptionPane.showConfirmDialog(null, "No se pudo guardar");
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Las claves no coinciden");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Llene todos los parametros");
+                    }
                 }
 
             } else {
@@ -513,18 +550,50 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
         } else if (txfCedula.getText().length() > 0 && txfNombre.getText().length() > 0 && txfApellido.getText().length() > 0 && txfDireccion.getText().length() > 0 && txfTelefono.getText().length() > 0 && txfNroLicencia.getText().length() == 0 && txfFechaCaducidad.getText().length() == 0 && tipos.size() == 0) {
             if (!Utilidades.datoRepetido(personaD.listar(), "cedula", txfCedula.getText())) {
                 personaD.setPersona(null);
+                if (rol == 2) {
+                    personaD.getPersona().setIdRol(3);
+                } else if (rol == 1) {
+                    personaD.getPersona().setIdRol(2);
+                }
+
                 personaD.getPersona().setCedula(txfCedula.getText());
                 personaD.getPersona().setNombre(txfNombre.getText());
                 personaD.getPersona().setApellido(txfApellido.getText());
                 personaD.getPersona().setDireccion(txfDireccion.getText());
                 personaD.getPersona().setTelefono(txfTelefono.getText());
-                if (personaD.guardar()) {
-                    JOptionPane.showConfirmDialog(null, "Se guardo correctamente");
-                    limpiar();
-                    cargarTablaPersona();
-                } else {
-                    JOptionPane.showConfirmDialog(null, "No se pudo guardar");
+
+                if (rol == 2) {
+                    if (personaD.guardar()) {
+                        JOptionPane.showConfirmDialog(null, "Se guardo correctamente");
+                        limpiar();
+                        cargarTablaPersona();
+                    } else {
+                        JOptionPane.showConfirmDialog(null, "No se pudo guardar");
+                    }
+                } else if (rol == 1) {
+
+                    if (tfUser.getText().length() > 0 && tfClave.getText().length() > 0 && tfVeriClave.getText().length() > 0) {
+                        System.out.println(tfUser.getText() + " " + tfVeriClave.getText());
+                        if (tfClave.getText().equals(tfVeriClave.getText())) {
+                            cuentaD.setCuenta(null);
+                            cuentaD.getCuenta().setUsuario(tfUser.getText());
+                            cuentaD.getCuenta().setContrasenia(tfClave.getText());
+                            cuentaD.getCuenta().setIdPersona(personaD.listar().tamanio() + 1);
+                            if (personaD.guardar() && cuentaD.guardar()) {
+                                JOptionPane.showConfirmDialog(null, "Se guardo correctamente");
+                                limpiar();
+                                cargarTablaPersona();
+                            } else {
+                                JOptionPane.showConfirmDialog(null, "No se pudo guardar");
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Las claves no coinciden");
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Llene todos los parametros");
+                    }
                 }
+
             } else {
                 JOptionPane.showConfirmDialog(null, "Esa persona ya está registrada");
             }

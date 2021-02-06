@@ -299,7 +299,7 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
                     lbNombre.setText(dato.getNombre());
                     lbApellido.setText(dato.getApellido());
                     lbTelefono.setText(dato.getTelefono());
-                    cargarTabla(Utilidades.obtenerLista(vehiculoD.listar(), "propietario", dato.getCedula()));
+                    cargarTabla(vehiculoD.obtenerListaPersona(dato.getIdPersona()));
                 } catch (Exception e) {
                 }
             }
@@ -312,19 +312,14 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
             if (!Utilidades.datoRepetido(vehiculoD.listar(), "placa", tfPlaca.getText())) {
                 vehiculoD.setVehiculo(null);
                 Persona dato = (Persona)(Utilidades.obtenerDato(personaD.listar(), "cedula", cbPersona.getSelectedItem().toString()));
-                if(vehiculoD.listar().estaVacia()){
-                    vehiculoD.getVehiculo().setIdVehiculo(0);
-                }else{
-                    vehiculoD.getVehiculo().setIdVehiculo(vehiculoD.listar().tamanio());
-                }
-                vehiculoD.getVehiculo().setIdPersona(dato.getIdPersona());
                 vehiculoD.getVehiculo().setPlaca(tfPlaca.getText());
                 vehiculoD.getVehiculo().setModelo(String.valueOf(cbMarca.getSelectedItem()));
                 vehiculoD.getVehiculo().setColor(tfColor.getText());
+                vehiculoD.getVehiculo().setIdPersona(dato.getIdPersona());
                 if (vehiculoD.guardar(String.valueOf(cbPersona.getSelectedItem()))) {
                     JOptionPane.showConfirmDialog(null, "Se guardo correctamente");
                     limpiar();
-                    cargarTabla(Utilidades.obtenerLista(vehiculoD.listar(), "propietario", String.valueOf(cbPersona.getSelectedItem())));
+                    cargarTabla(vehiculoD.obtenerListaPersona(dato.getIdPersona()));
                 }else{
                     JOptionPane.showConfirmDialog(null, "No se pudo guardar");
                 }
