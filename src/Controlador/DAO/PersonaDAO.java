@@ -5,6 +5,7 @@
  */
 package Controlador.DAO;
 
+import Controlador.ListaSimple;
 import Modelo.Persona;
 import javax.swing.JOptionPane;
 
@@ -63,5 +64,16 @@ public class PersonaDAO extends AdaptadorDAO{
             }
         }
         return dato;
+    }
+    
+    public ListaSimple obtenerListaPersona(long idRol){
+        ListaSimple lista = new ListaSimple();
+        for (int i = 0; i < listar().tamanio(); i++) {
+            Persona aux = (Persona)listar().obtenerPorPosicion(i);
+            if (aux.getIdRol()== idRol) {
+                lista.insertar(aux);
+            }
+        }
+        return lista;
     }
 }
