@@ -9,11 +9,13 @@ import Controlador.DAO.CuentaDAO;
 import Controlador.DAO.LicenciaDAO;
 import Controlador.DAO.PersonaDAO;
 import Controlador.DAO.TipoLicenciaDAO;
+import Controlador.ListaSimple;
 import Vista.Tablas.TablaPersona;
 import Vista.Tablas.TablaTipo;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import Controlador.Utilidades;
+import Modelo.Persona;
 import Vista.Frame_Menu_Login;
 import Vista.componentes.Componentes;
 
@@ -26,6 +28,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
     /**
      * Creates new form Frm_RegistrarPersona
      */
+    ListaSimple ls = new ListaSimple();
     TablaTipo modeloTipo = new TablaTipo();
     TablaPersona modeloPersona = new TablaPersona();
     PersonaDAO personaD = new PersonaDAO("Datos");
@@ -34,32 +37,51 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
     TipoLicenciaDAO tipoLicenciaD = new TipoLicenciaDAO("Componentes");
     private ArrayList<String> tipos = new ArrayList<>();
     private int rol;
+    private Persona persona;
 
     public Frm_RegistrarPersona(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         Componentes.cargarCombo(jComboBoxTipoLicencia, tipoLicenciaD.listar(), "tipo");
-        cargarTablaPersona();
+        ls = personaD.listar();
+        mostrarCheck();
         tfUser.setVisible(false);
         tfClave.setVisible(false);
         tfVeriClave.setVisible(false);
         lUser.setVisible(false);
         lbClave.setVisible(false);
         lcVeriClave.setVisible(false);
+        chbtodos.setSelected(true);
+        chbtodos.setEnabled(false);
         this.setLocationRelativeTo(null);
     }
 
-    public Frm_RegistrarPersona(java.awt.Frame parent, boolean modal, int rol) {
+    public Frm_RegistrarPersona(java.awt.Frame parent, boolean modal, long idPersona) {
         super(parent, modal);
-        this.rol = rol;
         initComponents();
+        chbtodos.setSelected(true);
+        chbtodos.setEnabled(false);
+        persona = (Persona) personaD.obtenerPersona(idPersona);
+        if (idPersona == -1) {
+            this.rol = 1;
+        } else {
+            this.rol = persona.getIdRol();
+            tfUser.setVisible(false);
+            tfClave.setVisible(false);
+            tfVeriClave.setVisible(false);
+            lUser.setVisible(false);
+            lbClave.setVisible(false);
+            lcVeriClave.setVisible(false);
+        }
+
         Componentes.cargarCombo(jComboBoxTipoLicencia, tipoLicenciaD.listar(), "tipo");
-        cargarTablaPersona();
+        mostrarCheck();
         this.setLocationRelativeTo(null);
+
     }
 
     public void cargarTablaPersona() {
-        modeloPersona.setListaPersona(personaD.listar());
+        modeloPersona.setListaPersona(ls);
         modeloPersona.setListaLicencia(licenciaD);
         tbPersonas.setModel(modeloPersona);
         tbPersonas.updateUI();
@@ -86,13 +108,25 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
         tipos.clear();
     }
 
+    public void mostrarCheck() {
+
+        if (chbtodos.isSelected()) {
+            ls = personaD.listar();
+        } else if (chbagentes.isSelected()) {
+            ls = personaD.obtenerListaPersona(2);
+        } else if (chbparticulares.isSelected()) {
+            ls = personaD.obtenerListaPersona(3);
+        }
+        cargarTablaPersona();
+    }
+
     public void FrameMultas() {
-        Frm_RegistarMultas fm = new Frm_RegistarMultas(null, true);
+        Frm_RegistarMultas fm = new Frm_RegistarMultas(null, true, persona.getIdPersona());
         fm.setVisible(true);
     }
 
     public void FrameMenu() {
-        Frame_Menu_Login fm = new Frame_Menu_Login(1, "");
+        Frame_Menu_Login fm = new Frame_Menu_Login(-1);
         fm.setVisible(true);
     }
 
@@ -137,6 +171,10 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
         lcVeriClave = new javax.swing.JLabel();
         tfClave = new javax.swing.JTextField();
         tfVeriClave = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        chbtodos = new javax.swing.JCheckBox();
+        chbagentes = new javax.swing.JCheckBox();
+        chbparticulares = new javax.swing.JCheckBox();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -276,6 +314,35 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
             }
         });
 
+        jLabel11.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel11.setText("MOSTRAR PERSONAS");
+
+        chbtodos.setText("TODOS");
+        chbtodos.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                chbtodosStateChanged(evt);
+            }
+        });
+        chbtodos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbtodosActionPerformed(evt);
+            }
+        });
+
+        chbagentes.setText("AGENTES");
+        chbagentes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbagentesActionPerformed(evt);
+            }
+        });
+
+        chbparticulares.setText("PARTICULARES");
+        chbparticulares.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chbparticularesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -333,9 +400,9 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
                                     .addComponent(jButtonAgregarTipo)
                                     .addComponent(jButtonEliminarTipo)))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(170, 170, 170)
-                                .addComponent(jButtonGuardar)
                                 .addGap(171, 171, 171)
+                                .addComponent(jButtonGuardar)
+                                .addGap(170, 170, 170)
                                 .addComponent(jButtonCancelar))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(14, 14, 14)
@@ -343,22 +410,34 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addGap(33, 33, 33))
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lbClave)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addGap(31, 31, 31)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbClave)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(txfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel7))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(txfCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(151, 151, 151)
-                                .addComponent(jLabel5))))
-                    .addComponent(lcVeriClave))
+                                .addComponent(jLabel2)
+                                .addGap(31, 31, 31)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jLabel7))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txfCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(151, 151, 151)
+                                        .addComponent(jLabel5))))
+                            .addComponent(lcVeriClave)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(223, 223, 223)
+                        .addComponent(jLabel11))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(94, 94, 94)
+                        .addComponent(chbtodos, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(128, 128, 128)
+                        .addComponent(chbagentes, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(114, 114, 114)
+                        .addComponent(chbparticulares)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -385,13 +464,12 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(17, 17, 17)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(tfClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(1, 1, 1)
-                                .addComponent(jLabel6))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(1, 1, 1)
-                                .addComponent(txfDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(tfClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel6)
+                                    .addComponent(txfDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(lbClave)))
@@ -430,11 +508,18 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
                         .addComponent(jButtonAgregarTipo)
                         .addGap(43, 43, 43)
                         .addComponent(jButtonEliminarTipo)))
-                .addGap(73, 73, 73)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(43, 43, 43)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonGuardar)
                     .addComponent(jButtonCancelar))
-                .addGap(44, 44, 44)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel11)
+                .addGap(4, 4, 4)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(chbtodos)
+                    .addComponent(chbagentes)
+                    .addComponent(chbparticulares))
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -488,6 +573,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
 
     private void jButtonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
         // TODO add your handling code here:
+
         if (txfCedula.getText().length() > 0 && txfNombre.getText().length() > 0 && txfApellido.getText().length() > 0 && txfDireccion.getText().length() > 0 && txfTelefono.getText().length() > 0 && txfNroLicencia.getText().length() > 0 && txfFechaCaducidad.getText().length() > 0 && tipos.size() > 0) {
             if (!Utilidades.datoRepetido(personaD.listar(), "cedula", txfCedula.getText())) {
 
@@ -498,7 +584,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
                 } else if (rol == 1) {
                     personaD.getPersona().setIdRol(2);
                 }
-                
+
                 personaD.getPersona().setCedula(txfCedula.getText());
                 personaD.getPersona().setNombre(txfNombre.getText());
                 personaD.getPersona().setApellido(txfApellido.getText());
@@ -516,7 +602,8 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
                     if (personaD.guardar() && licenciaD.guardar()) {
                         JOptionPane.showConfirmDialog(null, "Se guardo correctamente");
                         limpiar();
-                        cargarTablaPersona();
+                        mostrarCheck();
+
                     } else {
                         JOptionPane.showConfirmDialog(null, "No se pudo guardar");
                     }
@@ -532,7 +619,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
                             if (personaD.guardar() && cuentaD.guardar() && licenciaD.guardar()) {
                                 JOptionPane.showConfirmDialog(null, "Se guardo correctamente");
                                 limpiar();
-                                cargarTablaPersona();
+                                mostrarCheck();
                             } else {
                                 JOptionPane.showConfirmDialog(null, "No se pudo guardar");
                             }
@@ -566,7 +653,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
                     if (personaD.guardar()) {
                         JOptionPane.showConfirmDialog(null, "Se guardo correctamente");
                         limpiar();
-                        cargarTablaPersona();
+                        mostrarCheck();
                     } else {
                         JOptionPane.showConfirmDialog(null, "No se pudo guardar");
                     }
@@ -582,7 +669,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
                             if (personaD.guardar() && cuentaD.guardar()) {
                                 JOptionPane.showConfirmDialog(null, "Se guardo correctamente");
                                 limpiar();
-                                cargarTablaPersona();
+                                mostrarCheck();
                             } else {
                                 JOptionPane.showConfirmDialog(null, "No se pudo guardar");
                             }
@@ -618,6 +705,47 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
     private void tfClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfClaveActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_tfClaveActionPerformed
+
+    private void chbtodosStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chbtodosStateChanged
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_chbtodosStateChanged
+
+    private void chbtodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbtodosActionPerformed
+        // TODO add your handling code here:
+        if (chbtodos.isSelected()) {
+            chbagentes.setEnabled(true);
+            chbparticulares.setEnabled(true);
+            chbagentes.setSelected(false);
+            chbparticulares.setSelected(false);
+            chbtodos.setEnabled(false);
+        }
+        mostrarCheck();
+    }//GEN-LAST:event_chbtodosActionPerformed
+
+    private void chbagentesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbagentesActionPerformed
+        // TODO add your handling code here:
+        if (chbagentes.isSelected()) {
+            chbtodos.setEnabled(true);
+            chbparticulares.setEnabled(true);
+            chbtodos.setSelected(false);
+            chbparticulares.setSelected(false);
+            chbagentes.setEnabled(false);
+        }
+        mostrarCheck();
+    }//GEN-LAST:event_chbagentesActionPerformed
+
+    private void chbparticularesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbparticularesActionPerformed
+        // TODO add your handling code here:
+        if (chbparticulares.isSelected()) {
+            chbtodos.setEnabled(true);
+            chbagentes.setEnabled(true);
+            chbtodos.setSelected(false);
+            chbagentes.setSelected(false);
+            chbparticulares.setEnabled(false);
+        }
+        mostrarCheck();
+    }//GEN-LAST:event_chbparticularesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -662,6 +790,9 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox chbagentes;
+    private javax.swing.JCheckBox chbparticulares;
+    private javax.swing.JCheckBox chbtodos;
     private javax.swing.JButton jButtonAgregarTipo;
     private javax.swing.JButton jButtonCancelar;
     private javax.swing.JButton jButtonEliminarTipo;
@@ -669,6 +800,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> jComboBoxTipoLicencia;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;

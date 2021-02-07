@@ -5,6 +5,8 @@
  */
 package Vista;
 
+import Controlador.DAO.PersonaDAO;
+import Modelo.Persona;
 import Vista.FrmMultas.Frm_Biblioteca;
 import Vista.FrmMultas.Frm_Consultar;
 import Vista.FrmMultas.Frm_GenerarInforme;
@@ -18,10 +20,12 @@ import javax.swing.JOptionPane;
  */
 public class Frame_Menu_Login extends javax.swing.JFrame {
 
-    private boolean verificarInicio = false;
-    private int posventana = -1;
-    private int Rol = -1;
-    private String nombre; 
+    Persona persona;
+    private PersonaDAO personaD = new PersonaDAO("Datos");
+   // private boolean verificarInicio = false;
+    //private int posventana = -1;
+    private long idPersona;
+    private int Rol;
 
     /**
      * Creates new form Frame_Menu_Login
@@ -31,20 +35,30 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
     }
 
-    public Frame_Menu_Login(int Rol, String nombre) {
-        this.Rol = Rol;
-        this.nombre = nombre;
+    public Frame_Menu_Login(long idPersona) {
+        this.idPersona = idPersona;
+        persona = (Persona) personaD.obtenerPersona(idPersona);
+        if (idPersona == -1) {
+            this.Rol = 1;
+        } else {
+            this.Rol = persona.getIdRol();
+        }
+
         initComponents();
         this.setLocationRelativeTo(null);
 
         if (Rol == 1) {
             Boton_Multas1.setEnabled(false);
             csboton1.setEnabled(false);
+            jTabbedPane.setSelectedIndex(2);
+        }else{
+            jTabbedPane.setSelectedIndex(1);
         }
+        
     }
 
     public void Frame_Login(int roles) {
-        new JFrm_Login(this, true,roles).setVisible(true);
+        new JFrm_Login(this, true, roles).setVisible(true);
     }
 
     public void FrmBiblioteca() {
@@ -65,14 +79,14 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
 
     }
 
-    public void FrmMultas() {
-        Frm_RegistarMultas fm = new Frm_RegistarMultas(this, true,nombre);
+    public void FrmMultas(long idPersona) {
+        Frm_RegistarMultas fm = new Frm_RegistarMultas(this, true, idPersona);
         fm.setVisible(true);
 
     }
 
     public void FrmAgente() {
-        new Frm_RegistrarPersona(this, true, Rol).setVisible(true);
+        new Frm_RegistrarPersona(this, true, -1).setVisible(true);
     }
 
     /**
@@ -338,8 +352,7 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
 
     private void Boton_Multas1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Boton_Multas1ActionPerformed
         // TODO add your handling code here:
-
-        FrmMultas();
+        FrmMultas(persona.getIdPersona());
     }//GEN-LAST:event_Boton_Multas1ActionPerformed
 
     private void Boton_Informe1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Boton_Informe1ActionPerformed
@@ -356,10 +369,6 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
 
     private void jTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPaneStateChanged
         // TODO add your handling code here:
-        /*if(!(jTabbedPane.getSelectedIndex() == 2 && Rol==1)){
-           this.dispose();
-           Frame_Login();
-       }*/
         if (jTabbedPane.getSelectedIndex() == 2) {
             if (Rol != 1) {
                 this.dispose();
@@ -371,6 +380,7 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
                 Frame_Login(2);
             }
         }
+        
     }//GEN-LAST:event_jTabbedPaneStateChanged
 
     private void csboton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_csboton1ActionPerformed

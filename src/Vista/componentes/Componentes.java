@@ -34,6 +34,7 @@ public class Componentes extends JFrame {
         }
     }
     
+    
     public static void cargarCombo(JComboBox cbx, ListaSimple lista, String atributoClase, String mensaje) {
         cbx.removeAllItems();
         int tamanio = lista.tamanio();
@@ -48,6 +49,30 @@ public class Componentes extends JFrame {
         cb.removeAllItems();
         for (int i = 0; i < Utilidades.tipoVehiculo().length; i++) {
             cb.addItem(Utilidades.tipoVehiculo()[i]);
+        }
+    }
+    
+    public static void cargarComboRestriccion(JComboBox cbx, ListaSimple lista, String atributoClase, String dato) {
+        cbx.removeAllItems();
+        int tamanio = lista.tamanio();
+        cbx.addItem("");
+        for (int i = 0; i < tamanio; i++) {
+                String aux = Utilidades.extraccionDato(lista.obtenerPorPosicion(i), atributoClase);
+                if(!aux.equals(dato)){
+                    cbx.addItem(aux);
+                }
+        }
+    }
+    
+    public static void cargarComboRestriccion(JComboBox cbx, ListaSimple lista, String atributoClase, String dato, String mensaje) {
+        cbx.removeAllItems();
+        int tamanio = lista.tamanio();
+        cbx.addItem(mensaje);
+        for (int i = 0; i < tamanio; i++) {
+                String aux = Utilidades.extraccionDato(lista.obtenerPorPosicion(i), atributoClase);
+                if(!aux.equals(dato)){
+                    cbx.addItem(aux);
+                }
         }
     }
 }

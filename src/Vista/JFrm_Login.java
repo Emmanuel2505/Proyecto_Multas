@@ -5,6 +5,11 @@
  */
 package Vista;
 
+import Controlador.DAO.CuentaDAO;
+import Controlador.DAO.PersonaDAO;
+import Controlador.Utilidades;
+import Modelo.Cuenta;
+import Modelo.Persona;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,6 +18,8 @@ import javax.swing.JOptionPane;
  */
 public class JFrm_Login extends javax.swing.JDialog {
 
+    private PersonaDAO personaD = new PersonaDAO("Datos");
+    private CuentaDAO cuentaD = new CuentaDAO("Datos");
     private int rol = -1;
 
     /**
@@ -58,7 +65,7 @@ public class JFrm_Login extends javax.swing.JDialog {
         jPanel1.setBackground(new java.awt.Color(204, 204, 255));
 
         jLabel1.setFont(new java.awt.Font("Bodoni MT", 1, 24)); // NOI18N
-        jLabel1.setText("Iniciar Sesión ADMIN");
+        jLabel1.setText("Iniciar Sesión");
 
         jPanel2.setBackground(new java.awt.Color(153, 153, 255));
 
@@ -141,12 +148,10 @@ public class JFrm_Login extends javax.swing.JDialog {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(23, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(109, 109, 109))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(141, 141, 141))
         );
         jPanel1Layout.setVerticalGroup(
@@ -191,18 +196,25 @@ public class JFrm_Login extends javax.swing.JDialog {
             if ((tfClave.getText().equals("admin") || tfUsuario.getText().equals("admin"))) {
                 JOptionPane.showMessageDialog(null, "Ingreso existoso");
                 this.dispose();
-                new Frame_Menu_Login(1,"").setVisible(true);
+                new Frame_Menu_Login(-1).setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(null, "No hay coincidencias");
             }
         } else {
-            if ((tfClave.getText().equals("agente") || tfUsuario.getText().equals("agente"))) {
-                JOptionPane.showMessageDialog(null, "Ingreso existoso");
-                this.dispose();
-                new Frame_Menu_Login(2,"agente").setVisible(true);
-            } else {
-                JOptionPane.showMessageDialog(null, "No hay coincidencias");
+            try {
+                Cuenta cuenta = (Cuenta) Utilidades.obtenerDato(cuentaD.listar(), "usuario", tfUsuario.getText());
+                Persona persona = (Persona)personaD.obtenerPersona(cuenta.getIdPersona());
+                if ((tfClave.getText().equals(cuenta.getContrasenia()) && tfUsuario.getText().equals(cuenta.getUsuario()))) {
+                    JOptionPane.showMessageDialog(null, "Bienvenido "+persona.getNombre()+" "+persona.getApellido());
+                    this.dispose();
+                    new Frame_Menu_Login(cuenta.getIdPersona()).setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(null, "No hay coincidencias");
+                }
+            } catch (Exception e) {
+                System.out.println("Datos ingresados incorrectos");
             }
+
         }
     }//GEN-LAST:event_jButtonIngresarActionPerformed
 

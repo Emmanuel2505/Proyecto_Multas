@@ -36,6 +36,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
     LicenciaDAO licenciaD = new LicenciaDAO("Datos");
     VehiculoDAO vehiculoD = new VehiculoDAO("Datos");
     String mensaje = "";
+    Persona persona;
 
     /**
      * Creates new form Frm_RegistarMultas
@@ -52,17 +53,22 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
         listener();
     }
 
-    public Frm_RegistarMultas(java.awt.Frame parent, boolean modal, String nombre) {
-        super(parent, modal);
+    public Frm_RegistarMultas(java.awt.Frame parent, boolean modal, long idPersona) {
+        super(parent, modal);  
         initComponents();
+        persona = (Persona)personaD.obtenerPersona(idPersona);
         SimpleDateFormat d = new SimpleDateFormat("dd/MM/yy");
         lbFecha.setText(String.valueOf(d.format(new Date())));
-        Componentes.cargarCombo(cbCedula, personaD.listar(), "cedula");
+        Componentes.cargarComboRestriccion(cbCedula, personaD.listar(), "cedula",persona.getCedula());
         Componentes.cargarCombo(jComboBoxRubro, normativaD.listar(), "rubro");
         Componentes.cargarCombo(cbTipoVehiculo);
-        lbAgente.setText(nombre);
+        lbAgente.setText(persona.getNombre()+" "+persona.getApellido());
         this.setLocationRelativeTo(null);
         listener();
+    }
+    
+    public void FrmPersona(){
+        new Frm_RegistrarPersona(null, true, persona.getIdPersona()).setVisible(true);
     }
 
     public void listener() {
@@ -74,7 +80,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
                     if ((mensaje.length() + 1) < 11) {
                         mensaje = mensaje + (e.getKeyChar());
                         ListaSimple tmp = Utilidades.obtenerSubLista(personaD.listar(), "cedula", mensaje);
-                        Componentes.cargarCombo(cbCedula, tmp, "cedula", mensaje);
+                        Componentes.cargarComboRestriccion(cbCedula, tmp, "cedula", persona.getCedula(),mensaje);
                     } else {
                         System.out.println(mensaje);
                         Persona dato = (Persona) Utilidades.obtenerDato(personaD.listar(), "cedula", mensaje);
@@ -88,10 +94,10 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
                     if ((e.getKeyCode() == KeyEvent.VK_BACK_SPACE) && mensaje.length() > 0) {
                         mensaje = mensaje.substring(0, mensaje.length() - 1);
                         if (mensaje.length() == 0) {
-                            Componentes.cargarCombo(cbCedula, personaD.listar(), "cedula");
+                            Componentes.cargarComboRestriccion(cbCedula, personaD.listar(),persona.getCedula(), "cedula");
                         } else {
                             ListaSimple tmp = Utilidades.obtenerSubLista(personaD.listar(), "cedula", mensaje);
-                            Componentes.cargarCombo(cbCedula, tmp, "cedula", mensaje);
+                            Componentes.cargarComboRestriccion(cbCedula, tmp, "cedula", persona.getCedula(),mensaje);
                         }
                     }
                     e.consume();
@@ -526,9 +532,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
     private void btIngresarPersonaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btIngresarPersonaActionPerformed
         // TODO add your handling code here:
         this.dispose();
-        Frm_RegistrarPersona fip;
-        fip = new Frm_RegistrarPersona((Frame) SwingUtilities.getWindowAncestor(this), true);
-        fip.setVisible(true);
+        FrmPersona();
 
     }//GEN-LAST:event_btIngresarPersonaActionPerformed
 
@@ -551,7 +555,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
                 Componentes.cargarCombo(cbPlaca, new ListaSimple(), "");
             } else {
                 try {
-                    Persona dato = (Persona) Utilidades.obtenerDato(personaD.listar(), "cedula", cbCedula.getSelectedItem().toString());
+                    Persona dato = (Persona) personaD.obtenerPersona(cbCedula.getSelectedItem().toString());
                     System.out.println(dato.getNombre());
                     System.out.println(dato.getIdPersona());
                     lbNombre.setText(dato.getNombre());
