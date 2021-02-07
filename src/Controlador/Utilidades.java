@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package Controlador;
+import Modelo.TipoVehiculo;
 import java.io.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -14,6 +15,10 @@ import java.util.ArrayList;
  * @author ASUS
  */
 public class Utilidades {
+    public static TipoVehiculo[] tipoVehiculo(){
+        return TipoVehiculo.values();
+    }
+    
     public String leerTxtProcetajeMulta(){
         String dato = "";
         try {

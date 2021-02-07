@@ -43,4 +43,11 @@ public class Componentes extends JFrame {
                 cbx.addItem(dato);
         }
     }
+    
+    public static void cargarCombo(JComboBox cb){
+        cb.removeAllItems();
+        for (int i = 0; i < Utilidades.tipoVehiculo().length; i++) {
+            cb.addItem(Utilidades.tipoVehiculo()[i]);
+        }
+    }
 }

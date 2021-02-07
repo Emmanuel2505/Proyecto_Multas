@@ -5,14 +5,15 @@
  */
 package Vista.Tablas;
 
+import Controlador.DAO.PersonaDAO;
+import Controlador.DAO.VehiculoDAO;
 import Controlador.ListaSimple;
 import Controlador.Utilidades;
-import Modelo.Licencia;
 import Modelo.Persona;
 import Modelo.Vehiculo;
 import java.awt.Component;
 import javax.swing.JTable;
-import javax.swing.event.EventListenerList;
+
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableCellRenderer;
@@ -24,7 +25,7 @@ import javax.swing.table.TableColumn;
  */
 public class TablaVehiculos extends AbstractTableModel{
     private ListaSimple listaVehiculos = new ListaSimple();
-    private ListaSimple listaPersona = new ListaSimple();
+    private PersonaDAO listaPersona;
 
     public ListaSimple getListaVehiculos() {
         return listaVehiculos;
@@ -34,11 +35,11 @@ public class TablaVehiculos extends AbstractTableModel{
         this.listaVehiculos = listaVehiculos;
     }
 
-    public ListaSimple getListaPersona() {
+    public PersonaDAO getListaPersona() {
         return listaPersona;
     }
 
-    public void setListaPersona(ListaSimple listaPersona) {
+    public void setListaPersona(PersonaDAO listaPersona) {
         this.listaPersona = listaPersona;
     }
     
@@ -55,7 +56,7 @@ public class TablaVehiculos extends AbstractTableModel{
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         Vehiculo vehiculo = (Vehiculo)listaVehiculos.obtenerPorPosicion(rowIndex);
-        Persona persona = (Persona)Utilidades.obtenerDato(listaPersona, "cedula", vehiculo.getPropietario());
+        Persona persona = (Persona)listaPersona.obtenerPersona(vehiculo.getIdPersona());
         switch (columnIndex) {
             case 0: return persona.getCedula();
             case 1: return persona.getNombre();

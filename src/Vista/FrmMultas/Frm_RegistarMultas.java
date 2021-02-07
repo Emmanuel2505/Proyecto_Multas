@@ -21,6 +21,7 @@ import java.awt.Frame;
 import java.awt.event.ItemEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.SwingUtilities;
 
@@ -42,13 +43,27 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
     public Frm_RegistarMultas(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        SimpleDateFormat d = new SimpleDateFormat("dd/MM/yy");
+        lbFecha.setText(String.valueOf(d.format(new Date())));
         Componentes.cargarCombo(cbCedula, personaD.listar(), "cedula");
         Componentes.cargarCombo(jComboBoxRubro, normativaD.listar(), "rubro");
-        jTextFieldFecha.setText(String.valueOf(new Date()));
+        Componentes.cargarCombo(cbTipoVehiculo);
         this.setLocationRelativeTo(null);
         listener();
     }
-    
+
+    public Frm_RegistarMultas(java.awt.Frame parent, boolean modal, String nombre) {
+        super(parent, modal);
+        initComponents();
+        SimpleDateFormat d = new SimpleDateFormat("dd/MM/yy");
+        lbFecha.setText(String.valueOf(d.format(new Date())));
+        Componentes.cargarCombo(cbCedula, personaD.listar(), "cedula");
+        Componentes.cargarCombo(jComboBoxRubro, normativaD.listar(), "rubro");
+        Componentes.cargarCombo(cbTipoVehiculo);
+        lbAgente.setText(nombre);
+        this.setLocationRelativeTo(null);
+        listener();
+    }
 
     public void listener() {
         cbCedula.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
@@ -56,16 +71,17 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
             public void keyReleased(KeyEvent e) {
                 if (Character.isDigit(e.getKeyChar()) || Character.isLetter(e.getKeyChar())) {
                     System.out.println(mensaje.length());
-                    if ((mensaje.length()+1) < 11) {
+                    if ((mensaje.length() + 1) < 11) {
                         mensaje = mensaje + (e.getKeyChar());
                         ListaSimple tmp = Utilidades.obtenerSubLista(personaD.listar(), "cedula", mensaje);
                         Componentes.cargarCombo(cbCedula, tmp, "cedula", mensaje);
                     } else {
                         System.out.println(mensaje);
                         Persona dato = (Persona) Utilidades.obtenerDato(personaD.listar(), "cedula", mensaje);
+                        Licencia lic = (Licencia) Utilidades.obtenerDato(licenciaD.listar(), "idPersona", String.valueOf(dato.getIdPersona()));
                         lbNombre.setText(dato.getNombre());
                         lbApellido.setText(dato.getApellido());
-                        lbNroLicencia.setText(dato.getTelefono());
+                        lbNroLicencia.setText(lic.getNroLicencia());
                     }
 
                 } else {
@@ -100,7 +116,6 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -109,15 +124,10 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextAreaRubro = new javax.swing.JTextArea();
         jTextField1 = new javax.swing.JTextField();
-        jTextFieldGravedad = new javax.swing.JTextField();
-        jLabel9 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
-        jTextFieldFecha = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
-        jTextField7 = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cbTipoVehiculo = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         cbCedula = new javax.swing.JComboBox<>();
         cbPlaca = new javax.swing.JComboBox<>();
@@ -130,6 +140,14 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
         jLabel15 = new javax.swing.JLabel();
         lbNroLicencia = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
+        lbMonto = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
+        lbGravedad = new javax.swing.JLabel();
+        lbPuntosDesc = new javax.swing.JLabel();
+        lbPuntosAct = new javax.swing.JLabel();
+        lbFecha = new javax.swing.JLabel();
+        lbAgente = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -145,13 +163,13 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
         jLabel5.setText("Licencia:");
 
         jLabel6.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jLabel6.setText("Puntos a descontar");
+        jLabel6.setText("Puntos Actuales:");
 
         jLabel7.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel7.setText("Placa Vehicular");
 
         jLabel8.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jLabel8.setText("Observaciones");
+        jLabel8.setText("Observaciones:");
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel2.setText("Rubro");
@@ -178,13 +196,15 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
         });
 
         jButton3.setText("AGREGAR");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jTextAreaRubro.setColumns(20);
         jTextAreaRubro.setRows(5);
         jScrollPane1.setViewportView(jTextAreaRubro);
-
-        jLabel9.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jLabel9.setText("Valor a pagar");
 
         jLabel11.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel11.setText("Nombre del Agente");
@@ -195,7 +215,8 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
         jLabel12.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel12.setText("Tipo de Vehiculo");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Camion", "Bus", "Moto", "Auto", "Camioneta" }));
+        cbTipoVehiculo.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        cbTipoVehiculo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Camion", "Bus", "Moto", "Auto", "Camioneta" }));
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel1.setText("Marca:");
@@ -247,159 +268,196 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
             }
         });
 
+        lbMonto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        jLabel14.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jLabel14.setText("Monto a Pagar:");
+
+        jLabel16.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jLabel16.setText("Descuento de puntos:");
+
+        lbGravedad.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        lbPuntosDesc.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        lbPuntosAct.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        lbFecha.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        lbAgente.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(390, 390, 390)
+                .addComponent(jLabel4))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(jLabel5)
+                .addGap(19, 19, 19)
+                .addComponent(lbNroLicencia, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(70, 70, 70)
+                .addComponent(jLabel3)
+                .addGap(13, 13, 13)
+                .addComponent(lbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(66, 66, 66)
+                .addComponent(jLabel13)
+                .addGap(13, 13, 13)
+                .addComponent(lbApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(jLabel15)
+                .addGap(18, 18, 18)
+                .addComponent(cbCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(btIngresarPersona)
+                .addGap(298, 298, 298)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jComboBoxRubro, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(16, 16, 16)
+                .addComponent(lbGravedad, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel7)
+                    .addComponent(jLabel12))
+                .addGap(9, 9, 9)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(359, 359, 359)
-                        .addComponent(jLabel4))
+                        .addComponent(cbPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel1)
+                        .addGap(10, 10, 10)
+                        .addComponent(lbModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(8, 8, 8)
-                                .addComponent(jLabel5)
-                                .addGap(18, 18, 18)
-                                .addComponent(lbNroLicencia, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(26, 26, 26)
-                                .addComponent(jLabel3)
-                                .addGap(18, 18, 18)
-                                .addComponent(lbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(35, 35, 35)
-                                .addComponent(jLabel13)
-                                .addGap(18, 18, 18)
-                                .addComponent(lbApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btIngresarPersona)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel7)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(cbPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addComponent(jLabel1)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(lbModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jLabel6)
-                                                .addComponent(jLabel9)
-                                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addComponent(jLabel11)))
-                                        .addGap(47, 47, 47)
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel12)
-                                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(jLabel10)))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(199, 199, 199)
-                                        .addComponent(jTextFieldFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel15)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(cbCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jButton2)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                        .addComponent(jButton3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jTextField7, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)))
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(59, 59, 59)
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addComponent(jComboBoxRubro, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                .addComponent(jTextFieldGravedad, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                    .addComponent(jLabel2)
-                                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                    .addComponent(jLabel8))
-                                                .addGap(0, 0, Short.MAX_VALUE))))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                .addContainerGap(23, Short.MAX_VALUE))
+                        .addGap(1, 1, 1)
+                        .addComponent(cbTipoVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(63, 63, 63)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(jButton2)
+                .addGap(347, 347, 347)
+                .addComponent(jLabel6)
+                .addGap(12, 12, 12)
+                .addComponent(lbPuntosAct, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(jLabel10)
+                .addGap(372, 372, 372)
+                .addComponent(jLabel16)
+                .addGap(14, 14, 14)
+                .addComponent(lbPuntosDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(lbFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(296, 296, 296)
+                .addComponent(jLabel14)
+                .addGap(19, 19, 19)
+                .addComponent(lbMonto, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(jLabel11)
+                .addGap(330, 330, 330)
+                .addComponent(jLabel8))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbAgente, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 390, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(52, 52, 52)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 420, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jLabel4)
+                .addGap(9, 9, 9)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(lbNroLicencia, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(lbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13)
+                    .addComponent(lbApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel15)
+                    .addComponent(cbCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(9, 9, 9)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(86, 86, 86)
-                        .addComponent(jLabel2)
-                        .addGap(3, 3, 3)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldGravedad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBoxRubro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(9, 9, 9)
+                        .addComponent(btIngresarPersona))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                        .addComponent(jLabel2)
+                        .addGap(6, 6, 6)
+                        .addComponent(jComboBoxRubro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(lbGravedad, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(13, 13, 13)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel7)
+                        .addGap(23, 23, 23)
+                        .addComponent(jLabel12))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lbNroLicencia, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel15)
-                                    .addComponent(cbCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(btIngresarPersona)
-                                .addGap(18, 18, 18))
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel13)
-                                        .addComponent(jLabel3))
-                                    .addComponent(lbNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lbApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(108, 108, 108)))
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(5, 5, 5)
+                                .addComponent(cbPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel7)
-                                    .addComponent(cbPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lbModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel1))))
-                        .addGap(25, 25, 25)
-                        .addComponent(jButton2)
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel12)
-                            .addComponent(jLabel6))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(26, 26, 26)
+                                .addGap(6, 6, 6)
+                                .addComponent(jLabel1))
+                            .addComponent(lbModelo, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(12, 12, 12)
+                        .addComponent(cbTipoVehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(32, 32, 32)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton2)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel6))
+                    .addComponent(lbPuntosAct, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(11, 11, 11)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(jLabel10))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(jLabel16))
+                    .addComponent(lbPuntosDesc, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(6, 6, 6)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbMonto, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel9))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel11)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32))))
+                            .addComponent(lbFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel14))))
+                .addGap(19, 19, 19)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel11)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(jLabel8)))
+                .addGap(17, 17, 17)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(lbAgente, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(65, 65, 65)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -409,7 +467,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(28, 28, 28))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -426,15 +484,18 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
         if (evt.getStateChange() == ItemEvent.SELECTED) {
             if (jComboBoxRubro.getSelectedIndex() == 0) {
                 jTextAreaRubro.setText("");
-                jTextFieldGravedad.setText("");
+                lbGravedad.setText("");
             } else {
                 try {
-                    jTextFieldGravedad.setEnabled(true);
+                    //lbGravedad.setEnabled(true);
                     jTextAreaRubro.setEnabled(true);
                     Normativa dato = (Normativa) normativaD.listar().obtenerPorPosicion(jComboBoxRubro.getSelectedIndex() - 1);
                     jTextAreaRubro.setText(dato.getDescripcion());
-                    jTextFieldGravedad.setText(dato.getTipoFalta());
-                    jTextFieldGravedad.setEnabled(false);
+                    lbGravedad.setText(dato.getTipoFalta());
+                    lbMonto.setText(String.valueOf(Utilidades.montoMulta(lbGravedad.getText())));
+                    lbPuntosDesc.setText(String.valueOf(Utilidades.puntosQuitar(lbGravedad.getText())));
+
+                    //jTextFieldGravedad.setEnabled(false);
                     jTextAreaRubro.setEditable(false);
                 } catch (Exception e) {
 
@@ -464,18 +525,20 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
 
     private void btIngresarPersonaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btIngresarPersonaActionPerformed
         // TODO add your handling code here:
+        this.dispose();
         Frm_RegistrarPersona fip;
         fip = new Frm_RegistrarPersona((Frame) SwingUtilities.getWindowAncestor(this), true);
         fip.setVisible(true);
-        this.dispose();
+
     }//GEN-LAST:event_btIngresarPersonaActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        this.dispose();
         Frm_RegistrarAuto fip;
         fip = new Frm_RegistrarAuto((Frame) SwingUtilities.getWindowAncestor(this), true);
         fip.setVisible(true);
-        this.dispose();
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void cbCedulaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cbCedulaItemStateChanged
@@ -488,15 +551,19 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
                 Componentes.cargarCombo(cbPlaca, new ListaSimple(), "");
             } else {
                 try {
-                    Persona dato = (Persona) personaD.listar().obtenerPorPosicion(cbCedula.getSelectedIndex() - 1);
+                    Persona dato = (Persona) Utilidades.obtenerDato(personaD.listar(), "cedula", cbCedula.getSelectedItem().toString());
+                    System.out.println(dato.getNombre());
+                    System.out.println(dato.getIdPersona());
                     lbNombre.setText(dato.getNombre());
                     lbApellido.setText(dato.getApellido());
-                    Licencia licencia = (Licencia) Utilidades.obtenerDato(licenciaD.listar(), "propietario", dato.getCedula());
+                    Licencia licencia = (Licencia) licenciaD.obtenerPersona(dato.getIdPersona());
                     if (licencia == null) {
-                        licencia = new Licencia("", 0, "", "");
+                        licencia = new Licencia("", 0, 0, "");
                     }
-                    lbNroLicencia.setText(dato.getTelefono());
-                    Componentes.cargarCombo(cbPlaca, Utilidades.obtenerLista(vehiculoD.listar(), "propietario", String.valueOf(cbCedula.getSelectedItem())), "placa");
+                    lbNroLicencia.setText(licencia.getNroLicencia());
+                    lbPuntosAct.setText(String.valueOf(licencia.getPuntos()));
+                    //Persona dat = (Persona) Utilidades.obtenerDato(personaD.listar(), "idPersona", cbCedula.getSelectedItem().toString());
+                    Componentes.cargarCombo(cbPlaca, vehiculoD.obtenerListaPersona(dato.getIdPersona()), "placa");
                 } catch (Exception e) {
                 }
             }
@@ -517,6 +584,12 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_cbPlacaItemStateChanged
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        System.out.println(lbMonto.getText());
+        System.out.println(lbGravedad.getText());
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -564,16 +637,18 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
     private javax.swing.JButton btIngresarPersona;
     private javax.swing.JComboBox<String> cbCedula;
     private javax.swing.JComboBox<String> cbPlaca;
+    private javax.swing.JComboBox<String> cbTipoVehiculo;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JComboBox<String> jComboBoxRubro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -581,19 +656,19 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea jTextAreaRubro;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextFieldFecha;
-    private javax.swing.JTextField jTextFieldGravedad;
+    private javax.swing.JLabel lbAgente;
     private javax.swing.JLabel lbApellido;
+    private javax.swing.JLabel lbFecha;
+    private javax.swing.JLabel lbGravedad;
     private javax.swing.JLabel lbModelo;
+    private javax.swing.JLabel lbMonto;
     private javax.swing.JLabel lbNombre;
     private javax.swing.JLabel lbNroLicencia;
+    private javax.swing.JLabel lbPuntosAct;
+    private javax.swing.JLabel lbPuntosDesc;
     // End of variables declaration//GEN-END:variables
 }

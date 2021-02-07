@@ -10,8 +10,6 @@ import Controlador.ListaSimple;
 import Controlador.Utilidades;
 import Modelo.Persona;
 import Vista.componentes.Componentes;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
 /**

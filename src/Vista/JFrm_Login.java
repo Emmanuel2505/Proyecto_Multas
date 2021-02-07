@@ -5,17 +5,29 @@
  */
 package Vista;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author timoa
  */
 public class JFrm_Login extends javax.swing.JDialog {
 
+    private int rol = -1;
+
     /**
      * Creates new form JFrm_Login
      */
     public JFrm_Login(Frame_Menu_Login ventana, boolean modal) {
         super(ventana, modal);
+        initComponents();
+        this.setLocationRelativeTo(null);
+    }
+
+    public JFrm_Login(Frame_Menu_Login ventana, boolean modal, int rol) {
+
+        super(ventana, modal);
+        this.rol = rol;
         initComponents();
         this.setLocationRelativeTo(null);
     }
@@ -35,8 +47,8 @@ public class JFrm_Login extends javax.swing.JDialog {
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        tfUsuario = new javax.swing.JTextField();
+        tfClave = new javax.swing.JPasswordField();
         jButtonIngresar = new javax.swing.JButton();
         JbuttonCancelar = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
@@ -46,7 +58,7 @@ public class JFrm_Login extends javax.swing.JDialog {
         jPanel1.setBackground(new java.awt.Color(204, 204, 255));
 
         jLabel1.setFont(new java.awt.Font("Bodoni MT", 1, 24)); // NOI18N
-        jLabel1.setText("Iniciar Sesión");
+        jLabel1.setText("Iniciar Sesión ADMIN");
 
         jPanel2.setBackground(new java.awt.Color(153, 153, 255));
 
@@ -56,9 +68,9 @@ public class JFrm_Login extends javax.swing.JDialog {
         jLabel4.setFont(new java.awt.Font("Microsoft YaHei", 1, 12)); // NOI18N
         jLabel4.setText("Contraseña:");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        tfUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                tfUsuarioActionPerformed(evt);
             }
         });
 
@@ -85,16 +97,14 @@ public class JFrm_Login extends javax.swing.JDialog {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(49, 49, 49)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jLabel4)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(46, 46, 46)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
-                            .addComponent(jTextField1))
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                            .addComponent(tfClave, javax.swing.GroupLayout.DEFAULT_SIZE, 181, Short.MAX_VALUE)
+                            .addComponent(tfUsuario))))
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(29, 29, 29)
                 .addComponent(jButtonIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -108,11 +118,11 @@ public class JFrm_Login extends javax.swing.JDialog {
                 .addGap(34, 34, 34)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(tfClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonIngresar)
@@ -127,16 +137,17 @@ public class JFrm_Login extends javax.swing.JDialog {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(156, 156, 156)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(26, 26, 26)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(23, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(109, 109, 109))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(141, 141, 141))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -145,7 +156,7 @@ public class JFrm_Login extends javax.swing.JDialog {
                 .addComponent(jLabel1)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(10, 10, 10)
                 .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(23, 23, 23))
         );
@@ -166,17 +177,40 @@ public class JFrm_Login extends javax.swing.JDialog {
 
     private void JbuttonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JbuttonCancelarActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false);
+
+        this.dispose();
+        new Frame_Menu_Login().setVisible(true);
+
     }//GEN-LAST:event_JbuttonCancelarActionPerformed
 
     private void jButtonIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonIngresarActionPerformed
         // TODO add your handling code here:
-        this.dispose();
+        if (tfClave.getText().isBlank() || tfUsuario.getText().isBlank()) {
+            JOptionPane.showMessageDialog(null, "Ingrese datos");
+        } else if (rol == 1) {
+            if ((tfClave.getText().equals("admin") || tfUsuario.getText().equals("admin"))) {
+                JOptionPane.showMessageDialog(null, "Ingreso existoso");
+                this.dispose();
+                new Frame_Menu_Login(1,"").setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "No hay coincidencias");
+            }
+        } else {
+            if ((tfClave.getText().equals("agente") || tfUsuario.getText().equals("agente"))) {
+                JOptionPane.showMessageDialog(null, "Ingreso existoso");
+                this.dispose();
+                new Frame_Menu_Login(2,"agente").setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(null, "No hay coincidencias");
+            }
+        }
     }//GEN-LAST:event_jButtonIngresarActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void tfUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfUsuarioActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+        this.dispose();
+        new Frame_Menu_Login().setVisible(true);
+    }//GEN-LAST:event_tfUsuarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -229,8 +263,8 @@ public class JFrm_Login extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JScrollBar jScrollBar1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JPasswordField tfClave;
+    private javax.swing.JTextField tfUsuario;
     // End of variables declaration//GEN-END:variables
 }
