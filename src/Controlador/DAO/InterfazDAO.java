@@ -13,6 +13,6 @@ import Controlador.ListaSimple;
  */
 public interface InterfazDAO {
     public void guardar(Object o)throws Exception;
-    public Boolean modificar(Object o);
+    public void modificar(ListaSimple lista, String direccion);
     public ListaSimple listar();
 }

@@ -5,7 +5,10 @@
  */
 package Controlador.DAO;
 
+import Controlador.ListaSimple;
 import Modelo.Licencia;
+import java.io.File;
+import java.io.PrintWriter;
 import javax.swing.JOptionPane;
 
 /**
@@ -51,5 +54,37 @@ public class LicenciaDAO extends AdaptadorDAO{
             }
         }
         return dato;
+    }
+    
+    public void cambiarEstado(long idPersona, String direccion) {
+        ListaSimple lista = listar();
+        boolean estado;
+        for (int i = 0; i < listar().tamanio(); i++) {
+            Licencia aux = (Licencia) listar().obtenerPorPosicion(i);
+            if (aux.getIdPersona()== idPersona) {
+                if (aux.isEstadoLicencia()) {
+                    estado = false;
+                } else {
+                    estado = true;
+                }
+                aux.setEstadoLicencia(estado);
+                lista.editar(i, aux);
+            }
+        }
+        File fichero = new File(direccion);
+        try {
+            PrintWriter pw = new PrintWriter(fichero);
+            pw.print("");
+            pw.close();
+        } catch (Exception e) {
+        }
+        for (int i = lista.tamanio() - 1; i >= 0; i--) {
+            try {
+                Licencia aux = (Licencia) lista.obtenerPorPosicion(i);
+                this.guardar(aux);
+            } catch (Exception e) {
+                System.out.println("no se guardo");
+            }
+        }
     }
 }
