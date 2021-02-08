@@ -101,7 +101,7 @@ public class Multa {
         this.idPersona = idPersona;
     }
 
-    public boolean isEstadoMulta() {
+    public boolean getEstadoMulta() {
         return estadoMulta;
     }
 

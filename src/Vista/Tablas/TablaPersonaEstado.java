@@ -64,12 +64,12 @@ public class TablaPersonaEstado extends AbstractTableModel{
             case 2: return persona.getApellido();
             case 3: return persona.getDireccion();
             case 4: return persona.getTelefono();
-            case 5: return (persona.isEstadoPersona() == true) ? "HABILTADO" : "DESHABILITADO";
+            case 5: return (persona.getEstadoPersona() == true) ? "HABILTADO" : "DESHABILITADO";
             case 6: return licencia.getNroLicencia();
             case 7: return licencia.getPuntos();
             case 8: return licencia.getFechaCaducidad();
             case 9: return Utilidades.obtenerStringTipos(licencia.getTipos());
-            case 10: return (licencia.isEstadoLicencia() == true) ? "HABILTADO" : "DESHABILITADO";
+            case 10: return (licencia.getEstadoLicencia() == true) ? "HABILTADO" : "DESHABILITADO";
             default: return null;
         }
     }

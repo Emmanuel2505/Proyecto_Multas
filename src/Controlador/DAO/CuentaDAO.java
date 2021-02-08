@@ -60,7 +60,7 @@ public class CuentaDAO extends AdaptadorDAO{
         for (int i = 0; i < listar().tamanio(); i++) {
             Cuenta aux = (Cuenta) listar().obtenerPorPosicion(i);
             if (aux.getIdPersona()== idPersona) {
-                if (aux.isEstadoCuenta()) {
+                if (aux.getEstadoCuenta()) {
                     estado = false;
                 } else {
                     estado = true;

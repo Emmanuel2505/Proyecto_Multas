@@ -62,7 +62,7 @@ public class LicenciaDAO extends AdaptadorDAO{
         for (int i = 0; i < listar().tamanio(); i++) {
             Licencia aux = (Licencia) listar().obtenerPorPosicion(i);
             if (aux.getIdPersona()== idPersona) {
-                if (aux.isEstadoLicencia()) {
+                if (aux.getEstadoLicencia()) {
                     estado = false;
                 } else {
                     estado = true;

@@ -33,7 +33,7 @@ public class Cuenta {
         this.idCuenta = idCuenta;
     }
 
-    public boolean isEstadoCuenta() {
+    public boolean getEstadoCuenta() {
         return estadoCuenta;
     }
 

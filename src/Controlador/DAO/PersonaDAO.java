@@ -99,7 +99,7 @@ public class PersonaDAO extends AdaptadorDAO {
         ListaSimple lista = new ListaSimple();
         for (int i = 0; i < listar().tamanio(); i++) {
             Persona aux = (Persona) listar().obtenerPorPosicion(i);
-            if (aux.getIdRol() == idRol && aux.isEstadoPersona() == estado) {
+            if (aux.getIdRol() == idRol && aux.getEstadoPersona() == estado) {
                 lista.insertar(aux);
             }
         }
@@ -110,7 +110,7 @@ public class PersonaDAO extends AdaptadorDAO {
         ListaSimple lista = new ListaSimple();
         for (int i = 0; i < listar().tamanio(); i++) {
             Persona aux = (Persona) listar().obtenerPorPosicion(i);
-            if (aux.isEstadoPersona()) {
+            if (aux.getEstadoPersona()) {
                 lista.insertar(aux);
             }
         }
@@ -123,7 +123,7 @@ public class PersonaDAO extends AdaptadorDAO {
         for (int i = 0; i < listar().tamanio(); i++) {
             Persona aux = (Persona) listar().obtenerPorPosicion(i);
             if (aux.getIdPersona()== idPersona) {
-                if (aux.isEstadoPersona()) {
+                if (aux.getEstadoPersona()) {
                     estado = false;
                 } else {
                     estado = true;

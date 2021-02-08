@@ -63,7 +63,7 @@ public class Licencia {
         this.idPersona = idPersona;
     }
 
-    public boolean isEstadoLicencia() {
+    public boolean getEstadoLicencia() {
         return estadoLicencia;
     }
 
