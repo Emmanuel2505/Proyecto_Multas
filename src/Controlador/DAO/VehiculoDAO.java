@@ -6,6 +6,7 @@
 package Controlador.DAO;
 
 import Controlador.ListaSimple;
+import Modelo.Persona;
 import Modelo.Vehiculo;
 import java.io.File;
 import java.io.PrintWriter;
@@ -32,9 +33,10 @@ public class VehiculoDAO extends AdaptadorDAO{
         this.vehiculo = vehiculo;
     }
     
-    public Boolean guardar(String NombreArchivo){
+    public Boolean guardar(long idPersona){
         try {
             this.getVehiculo().setIdVehiculo(Long.parseLong(String.valueOf(listar().tamanio() + 1)));
+            this.getVehiculo().setIdPersona(idPersona);
             this.getVehiculo().setEstadoVehiculo(true);
             this.guardar(this.getVehiculo());
             return true;
@@ -67,12 +69,35 @@ public class VehiculoDAO extends AdaptadorDAO{
         return lista;
     }
     
-    public void cambiarEstado(long idPersona, String direccion) {
+    public ListaSimple obtenerListaPersona(boolean estado) {
+        ListaSimple lista = new ListaSimple();
+        for (int i = 0; i < listar().tamanio(); i++) {
+            Vehiculo aux = (Vehiculo) listar().obtenerPorPosicion(i);
+            if (aux.isEstadoVehiculo()== estado) {
+                lista.insertar(aux);
+            }
+        }
+        return lista;
+    }
+    
+    public ListaSimple obtenerListaPersona(long idPersona, boolean estado) {
+        ListaSimple lista = new ListaSimple();
+        for (int i = 0; i < listar().tamanio(); i++) {
+            Vehiculo aux = (Vehiculo) listar().obtenerPorPosicion(i);
+            if (aux.getIdPersona()== idPersona && aux.isEstadoVehiculo() == estado) {
+                System.out.println("hola");
+                lista.insertar(aux);
+            }
+        }
+        return lista;
+    }
+    
+    public void cambiarEstado(long idVehiculo, String direccion) {
         ListaSimple lista = listar();
         boolean estado;
         for (int i = 0; i < listar().tamanio(); i++) {
             Vehiculo aux = (Vehiculo) listar().obtenerPorPosicion(i);
-            if (aux.getIdPersona()== idPersona) {
+            if (aux.getIdVehiculo()== idVehiculo) {
                 if (aux.isEstadoVehiculo()) {
                     estado = false;
                 } else {

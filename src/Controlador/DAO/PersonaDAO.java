@@ -52,14 +52,6 @@ public class PersonaDAO extends AdaptadorDAO {
         }
     }
 
-    public ListaSimple clonar(ListaSimple lista) {
-        ListaSimple ls = new ListaSimple();
-        for (int i = 0; i < lista.tamanio(); i++) {
-            ls.insertar(lista.obtenerPorPosicion(i));
-        }
-        return ls;
-    }
-
     public Object obtenerPersona(long idPersona) {
         Object dato = null;
         for (int i = 0; i < listar().tamanio(); i++) {
