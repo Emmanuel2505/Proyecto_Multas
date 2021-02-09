@@ -16,7 +16,7 @@ public class Licencia {
 
     private long idLicencia;
     private String NroLicencia;
-    private float puntos;
+    private double puntos;
     private long idPersona;
     private boolean estadoLicencia;
     private String fechaCaducidad;
@@ -48,11 +48,11 @@ public class Licencia {
         this.NroLicencia = NroLicencia;
     }
 
-    public float getPuntos() {
+    public double getPuntos() {
         return puntos;
     }
 
-    public void setPuntos(float puntos) {
+    public void setPuntos(double puntos) {
         this.puntos = puntos;
     }
 
