@@ -5,11 +5,14 @@
  */
 package Controlador.DAO;
 
+import Controlador.ListaSimple;
 import Modelo.Cuenta;
+import java.io.File;
+import java.io.PrintWriter;
 
 /**
  *
- * @author timoa
+ * @author ASUS
  */
 public class CuentaDAO extends AdaptadorDAO{
     private Cuenta cuenta;
@@ -49,5 +52,37 @@ public class CuentaDAO extends AdaptadorDAO{
             }
         }
         return dato;
+    }
+    
+    public void cambiarEstado(long idPersona, String direccion) {
+        ListaSimple lista = listar();
+        boolean estado;
+        for (int i = 0; i < listar().tamanio(); i++) {
+            Cuenta aux = (Cuenta) listar().obtenerPorPosicion(i);
+            if (aux.getIdPersona()== idPersona) {
+                if (aux.isEstadoCuenta()) {
+                    estado = false;
+                } else {
+                    estado = true;
+                }
+                aux.setEstadoCuenta(estado);
+                lista.editar(i, aux);
+            }
+        }
+        File fichero = new File(direccion);
+        try {
+            PrintWriter pw = new PrintWriter(fichero);
+            pw.print("");
+            pw.close();
+        } catch (Exception e) {
+        }
+        for (int i = lista.tamanio() - 1; i >= 0; i--) {
+            try {
+                Cuenta aux = (Cuenta) lista.obtenerPorPosicion(i);
+                this.guardar(aux);
+            } catch (Exception e) {
+                System.out.println("no se guardo");
+            }
+        }
     }
 }

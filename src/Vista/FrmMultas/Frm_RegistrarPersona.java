@@ -15,9 +15,16 @@ import Vista.Tablas.TablaTipo;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import Controlador.Utilidades;
+import Modelo.Cuenta;
+import Modelo.Licencia;
 import Modelo.Persona;
 import Vista.Frame_Menu_Login;
+import Vista.Tablas.TablaPersonaEstado;
 import Vista.componentes.Componentes;
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
 
 /**
  *
@@ -31,6 +38,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
     ListaSimple ls = new ListaSimple();
     TablaTipo modeloTipo = new TablaTipo();
     TablaPersona modeloPersona = new TablaPersona();
+    TablaPersonaEstado modeloPersonaEstado = new TablaPersonaEstado();
     PersonaDAO personaD = new PersonaDAO("Datos");
     LicenciaDAO licenciaD = new LicenciaDAO("Datos");
     CuentaDAO cuentaD = new CuentaDAO("Datos");
@@ -42,6 +50,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
     public Frm_RegistrarPersona(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setSize(new Dimension(800, 700));
         Componentes.cargarCombo(jComboBoxTipoLicencia, tipoLicenciaD.listar(), "tipo");
         ls = personaD.listar();
         mostrarCheck();
@@ -59,6 +68,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
     public Frm_RegistrarPersona(java.awt.Frame parent, boolean modal, long idPersona) {
         super(parent, modal);
         initComponents();
+        this.setSize(new Dimension(800, 700));
         chbtodos.setSelected(true);
         chbtodos.setEnabled(false);
         persona = (Persona) personaD.obtenerPersona(idPersona);
@@ -66,12 +76,17 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
             this.rol = 1;
         } else {
             this.rol = persona.getIdRol();
+            lbDatosCuenta.setVisible(false);
             tfUser.setVisible(false);
             tfClave.setVisible(false);
             tfVeriClave.setVisible(false);
             lUser.setVisible(false);
             lbClave.setVisible(false);
             lcVeriClave.setVisible(false);
+            lbRol.setVisible(false);
+            cbRol.setVisible(false);
+            jButtonEditar.setVisible(false);
+            jButtonEliminar.setVisible(false);
         }
 
         Componentes.cargarCombo(jComboBoxTipoLicencia, tipoLicenciaD.listar(), "tipo");
@@ -81,10 +96,18 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
     }
 
     public void cargarTablaPersona() {
-        modeloPersona.setListaPersona(ls);
-        modeloPersona.setListaLicencia(licenciaD);
-        tbPersonas.setModel(modeloPersona);
-        tbPersonas.updateUI();
+        if (rol == 1) {
+            modeloPersonaEstado.setListaPersona(ls);
+            modeloPersonaEstado.setListaLicencia(licenciaD);
+            modeloPersonaEstado.setListaCuenta(cuentaD);
+            tbPersonas.setModel(modeloPersonaEstado);
+            tbPersonas.updateUI();
+        } else if (rol == 2) {
+            modeloPersona.setListaPersona(ls);
+            modeloPersona.setListaLicencia(licenciaD);
+            tbPersonas.setModel(modeloPersona);
+            tbPersonas.updateUI();
+        }
         cargarTablaTipos();
     }
 
@@ -109,13 +132,24 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
     }
 
     public void mostrarCheck() {
-
         if (chbtodos.isSelected()) {
-            ls = personaD.listar();
+            if (rol == 1) {
+                ls = personaD.listar();
+            } else if (rol == 2) {
+                ls = personaD.obtenerListaPersona();
+            }
         } else if (chbagentes.isSelected()) {
-            ls = personaD.obtenerListaPersona(2);
+            if (rol == 1) {
+                ls = personaD.obtenerListaPersona(2);
+            } else if (rol == 2) {
+                ls = personaD.obtenerListaPersona(2, true);
+            }
         } else if (chbparticulares.isSelected()) {
-            ls = personaD.obtenerListaPersona(3);
+            if (rol == 1) {
+                ls = personaD.obtenerListaPersona(3);
+            } else if (rol == 2) {
+                ls = personaD.obtenerListaPersona(3, true);
+            }
         }
         cargarTablaPersona();
     }
@@ -139,29 +173,12 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel4 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        txfCedula = new javax.swing.JTextField();
-        txfApellido = new javax.swing.JTextField();
-        jLabel5 = new javax.swing.JLabel();
-        txfTelefono = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        txfNombre = new javax.swing.JTextField();
-        txfDireccion = new javax.swing.JTextField();
-        jLabel8 = new javax.swing.JLabel();
-        txfNroLicencia = new javax.swing.JTextField();
-        jLabel10 = new javax.swing.JLabel();
-        txfFechaCaducidad = new javax.swing.JTextField();
-        jButtonAgregarTipo = new javax.swing.JButton();
-        jButtonEliminarTipo = new javax.swing.JButton();
-        jComboBoxTipoLicencia = new javax.swing.JComboBox<>();
-        jLabel1 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         jButtonGuardar = new javax.swing.JButton();
+        jButtonEliminar = new javax.swing.JButton();
         jButtonCancelar = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         tbPersonas = new javax.swing.JTable();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbTipos = new javax.swing.JTable();
@@ -170,92 +187,49 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
         lbClave = new javax.swing.JLabel();
         lcVeriClave = new javax.swing.JLabel();
         tfClave = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        txfNroLicencia = new javax.swing.JTextField();
         tfVeriClave = new javax.swing.JTextField();
         jLabel11 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
         chbtodos = new javax.swing.JCheckBox();
+        txfFechaCaducidad = new javax.swing.JTextField();
         chbagentes = new javax.swing.JCheckBox();
+        jButtonAgregarTipo = new javax.swing.JButton();
         chbparticulares = new javax.swing.JCheckBox();
+        jButtonEliminarTipo = new javax.swing.JButton();
+        jComboBoxTipoLicencia = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        jButtonEditar = new javax.swing.JButton();
+        lbDatosCuenta = new javax.swing.JLabel();
+        lbDatosPersona = new javax.swing.JLabel();
+        lbCedula = new javax.swing.JLabel();
+        lbNombre = new javax.swing.JLabel();
+        lbDireccion = new javax.swing.JLabel();
+        txfDireccion = new javax.swing.JTextField();
+        txfTelefono = new javax.swing.JTextField();
+        txfApellido = new javax.swing.JTextField();
+        lbApellido = new javax.swing.JLabel();
+        lbTelefono = new javax.swing.JLabel();
+        txfCedula = new javax.swing.JTextField();
+        txfNombre = new javax.swing.JTextField();
+        cbRol = new javax.swing.JComboBox<>();
+        lbRol = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        jLabel4.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jLabel4.setText("DATOS DE LA PERSONA");
-
-        jLabel2.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jLabel2.setText("Cédula:");
-
-        txfCedula.addAncestorListener(new javax.swing.event.AncestorListener() {
-            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
-                txfCedulaAncestorAdded(evt);
-            }
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
-            }
-            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-            }
-        });
-        txfCedula.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txfCedulaFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txfCedulaFocusLost(evt);
-            }
-        });
-        txfCedula.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txfCedulaActionPerformed(evt);
-            }
-        });
-        txfCedula.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txfCedulaKeyTyped(evt);
-            }
-        });
-
-        jLabel5.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jLabel5.setText("Apellido:");
-
-        jLabel7.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jLabel7.setText("Teléfono:");
-
-        jLabel8.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jLabel8.setText("DATOS DE LA LICENCIA");
-
-        jLabel10.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jLabel10.setText("Fecha Caducidad:");
-
-        txfFechaCaducidad.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txfFechaCaducidadActionPerformed(evt);
-            }
-        });
-
-        jButtonAgregarTipo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Imagenes/110.png"))); // NOI18N
-        jButtonAgregarTipo.setText(" Agregar Tipo");
-        jButtonAgregarTipo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonAgregarTipoActionPerformed(evt);
-            }
-        });
-
-        jButtonEliminarTipo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Imagenes/boton-x.png"))); // NOI18N
-        jButtonEliminarTipo.setText(" Eliminar Tipo");
-        jButtonEliminarTipo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonEliminarTipoActionPerformed(evt);
-            }
-        });
-
-        jComboBoxTipoLicencia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jLabel1.setText("Tipo Licencia:");
 
         jButtonGuardar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Imagenes/56.png"))); // NOI18N
         jButtonGuardar.setText(" Guardar");
         jButtonGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonGuardarActionPerformed(evt);
+            }
+        });
+
+        jButtonEliminar.setText("Eliminar");
+        jButtonEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEliminarActionPerformed(evt);
             }
         });
 
@@ -278,13 +252,12 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tbPersonas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbPersonasMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tbPersonas);
-
-        jLabel3.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jLabel3.setText("Nombre:");
-
-        jLabel6.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        jLabel6.setText("Dirrección:");
 
         jLabel9.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel9.setText("Nro Licencia:");
@@ -308,21 +281,16 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
         lcVeriClave.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         lcVeriClave.setText("Verificar Contaseña:");
 
-        tfClave.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                tfClaveActionPerformed(evt);
-            }
-        });
+        jLabel8.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel8.setText("DATOS DE LA LICENCIA");
 
         jLabel11.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel11.setText("MOSTRAR PERSONAS");
 
+        jLabel10.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jLabel10.setText("Fecha Caducidad:");
+
         chbtodos.setText("TODOS");
-        chbtodos.addChangeListener(new javax.swing.event.ChangeListener() {
-            public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                chbtodosStateChanged(evt);
-            }
-        });
         chbtodos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chbtodosActionPerformed(evt);
@@ -336,6 +304,14 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
             }
         });
 
+        jButtonAgregarTipo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Imagenes/110.png"))); // NOI18N
+        jButtonAgregarTipo.setText(" Agregar Tipo");
+        jButtonAgregarTipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAgregarTipoActionPerformed(evt);
+            }
+        });
+
         chbparticulares.setText("PARTICULARES");
         chbparticulares.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -343,222 +319,408 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
             }
         });
 
+        jButtonEliminarTipo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Imagenes/boton-x.png"))); // NOI18N
+        jButtonEliminarTipo.setText(" Eliminar Tipo");
+        jButtonEliminarTipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEliminarTipoActionPerformed(evt);
+            }
+        });
+
+        jComboBoxTipoLicencia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jLabel1.setText("Tipo Licencia:");
+
+        jButtonEditar.setText("Editar");
+        jButtonEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditarActionPerformed(evt);
+            }
+        });
+
+        lbDatosCuenta.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        lbDatosCuenta.setText("DATOS DE LA CUENTA");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel10)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txfFechaCaducidad, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel9)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(txfNroLicencia, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(jLabel1)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jComboBoxTipoLicencia, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(89, 89, 89)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(223, 223, 223)
+                        .addComponent(lbDatosCuenta)))
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane3)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jButtonGuardar)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                            .addGap(167, 167, 167)
+                                            .addComponent(jButtonEditar)
+                                            .addGap(46, 46, 46)
+                                            .addComponent(jButtonEliminar)
+                                            .addGap(60, 60, 60)
+                                            .addComponent(jButtonCancelar)))
+                                    .addComponent(jButtonEliminarTipo)
+                                    .addComponent(jButtonAgregarTipo)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addGap(47, 47, 47)
+                                                .addComponent(lUser)
+                                                .addGap(23, 23, 23))
+                                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                                .addComponent(lbClave)
+                                                .addGap(18, 18, 18)))
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(tfClave, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(tfUser, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(61, 61, 61)
+                                                .addComponent(lcVeriClave)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(tfVeriClave, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addGap(0, 145, Short.MAX_VALUE))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(222, 222, 222)
+                                .addComponent(jLabel8))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(216, 216, 216)
+                                .addComponent(jLabel11)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(137, 137, 137)
+                .addComponent(chbtodos)
+                .addGap(55, 55, 55)
+                .addComponent(chbagentes)
+                .addGap(83, 83, 83)
+                .addComponent(chbparticulares)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(lbDatosCuenta)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tfUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lUser)
+                    .addComponent(lcVeriClave)
+                    .addComponent(tfVeriClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tfClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbClave))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel9)
+                            .addComponent(txfNroLicencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(8, 8, 8)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel10)
+                            .addComponent(txfFechaCaducidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(jComboBoxTipoLicencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jButtonAgregarTipo)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonEliminarTipo)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonGuardar)
+                    .addComponent(jButtonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonCancelar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(chbtodos)
+                    .addComponent(chbagentes)
+                    .addComponent(chbparticulares))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        lbDatosPersona.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        lbDatosPersona.setText("DATOS DE LA PERSONA");
+
+        lbCedula.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lbCedula.setText("Cédula:");
+
+        lbNombre.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lbNombre.setText("Nombre:");
+
+        lbDireccion.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lbDireccion.setText("Dirrección:");
+
+        txfApellido.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txfApellidoActionPerformed(evt);
+            }
+        });
+
+        lbApellido.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lbApellido.setText("Apellido:");
+
+        lbTelefono.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lbTelefono.setText("Teléfono:");
+
+        cbRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "", "Agente", "Particular" }));
+
+        lbRol.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        lbRol.setText("Rol:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel6)
-                                        .addGap(10, 10, 10)
-                                        .addComponent(txfDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(1, 1, 1))
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(19, 19, 19)
-                                .addComponent(lUser, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(10, 10, 10)
-                                .addComponent(tfUser, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfClave, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txfTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(tfVeriClave, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txfApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(242, 242, 242)
-                                .addComponent(jLabel4))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(234, 234, 234)
-                                .addComponent(jLabel8))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(14, 14, 14)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel10)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel1))
-                                .addGap(15, 15, 15)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jComboBoxTipoLicencia, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(3, 3, 3)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(txfFechaCaducidad, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(txfNroLicencia, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(68, 68, 68)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(34, 34, 34)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jButtonAgregarTipo)
-                                    .addComponent(jButtonEliminarTipo)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(171, 171, 171)
-                                .addComponent(jButtonGuardar)
-                                .addGap(170, 170, 170)
-                                .addComponent(jButtonCancelar))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(14, 14, 14)
-                                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 685, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addGap(33, 33, 33))
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
+                        .addGap(211, 211, 211)
+                        .addComponent(lbDatosPersona))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(lbClave)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(31, 31, 31)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(txfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jLabel7))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(txfCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(151, 151, 151)
-                                        .addComponent(jLabel5))))
-                            .addComponent(lcVeriClave)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(223, 223, 223)
-                        .addComponent(jLabel11))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(94, 94, 94)
-                        .addComponent(chbtodos, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(128, 128, 128)
-                        .addComponent(chbagentes, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(114, 114, 114)
-                        .addComponent(chbparticulares)))
+                            .addComponent(lbCedula)
+                            .addComponent(lbNombre)
+                            .addComponent(lbDireccion))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txfCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txfDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(83, 83, 83)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbApellido)
+                            .addComponent(lbTelefono)
+                            .addComponent(lbRol))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txfTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txfApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbRol, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(10, 10, 10)
-                .addComponent(jLabel4)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(txfCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel5)
-                        .addComponent(txfApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel3))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel7)
-                        .addComponent(txfTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(lbDatosPersona)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lbCedula)
+                            .addComponent(txfCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(tfClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(1, 1, 1)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel6)
-                                    .addComponent(txfDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addComponent(txfNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbNombre))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txfDireccion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cbRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lbRol))
+                            .addComponent(lbDireccion)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(lbClave)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(lUser))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(tfUser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(14, 14, 14)
-                        .addComponent(tfVeriClave, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(lcVeriClave)))
-                .addGap(21, 21, 21)
-                .addComponent(jLabel8)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addGap(30, 30, 30)
-                        .addComponent(jLabel9)
-                        .addGap(41, 41, 41)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txfFechaCaducidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
-                        .addComponent(txfNroLicencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(39, 39, 39)
-                        .addComponent(jComboBoxTipoLicencia, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(jButtonAgregarTipo)
-                        .addGap(43, 43, 43)
-                        .addComponent(jButtonEliminarTipo)))
-                .addGap(43, 43, 43)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonGuardar)
-                    .addComponent(jButtonCancelar))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel11)
-                .addGap(4, 4, 4)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(chbtodos)
-                    .addComponent(chbagentes)
-                    .addComponent(chbparticulares))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txfApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lbApellido))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(lbTelefono)
+                            .addComponent(txfTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txfCedulaAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_txfCedulaAncestorAdded
+    private void jButtonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txfCedulaAncestorAdded
+        int fila = tbPersonas.getSelectedRow();
+        if (fila >= 0) {
 
-    private void txfCedulaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txfCedulaFocusGained
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txfCedulaFocusGained
+            Persona temp = (Persona) ls.obtenerPorPosicion(fila);
+            Cuenta cuentaTmp = (Cuenta) cuentaD.obtenerPersona(temp.getIdPersona());
+            Licencia licenciaTmp = (Licencia) licenciaD.obtenerPersona(temp.getIdPersona());
 
-    private void txfCedulaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txfCedulaFocusLost
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txfCedulaFocusLost
+            if (txfCedula.getText().length() > 0 && txfNombre.getText().length() > 0 && txfApellido.getText().length() > 0 && txfDireccion.getText().length() > 0 && txfTelefono.getText().length() > 0 && txfNroLicencia.getText().length() > 0 && txfFechaCaducidad.getText().length() > 0 && tipos.size() > 0 && cbRol.getSelectedIndex() > 0) {
+                if (!txfCedula.getText().equals(temp.getCedula()) || !txfNombre.getText().equals(temp.getNombre()) || !txfApellido.getText().equals(temp.getApellido()) || !txfDireccion.getText().equals(temp.getDireccion()) || !txfTelefono.getText().equals(temp.getTelefono()) || !txfNroLicencia.getText().equals(licenciaTmp.getNroLicencia()) || !txfFechaCaducidad.getText().equals(licenciaTmp.getFechaCaducidad()) || !tipos.toString().equals(licenciaTmp.getTipos().toString()) || cbRol.getSelectedIndex() != (temp.getIdRol() - 1)) {
+                    if (!Utilidades.datoRepetido(personaD.listar(), "cedula", txfCedula.getText())) {
 
-    private void txfCedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txfCedulaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txfCedulaActionPerformed
+                        personaD.setPersona(null);
 
-    private void txfCedulaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txfCedulaKeyTyped
-        // TODO add your handling code here:
+                        if (rol == 2) {
+                            personaD.getPersona().setIdRol(3);
+                        } else if (rol == 1) {
+                            if (cbRol.getSelectedIndex() == 1) {
+                                personaD.getPersona().setIdRol(2);
+                            } else if (cbRol.getSelectedIndex() == 2) {
+                                personaD.getPersona().setIdRol(3);
+                            }
+                        }
 
-    }//GEN-LAST:event_txfCedulaKeyTyped
+                        personaD.getPersona().setCedula(txfCedula.getText());
+                        personaD.getPersona().setNombre(txfNombre.getText());
+                        personaD.getPersona().setApellido(txfApellido.getText());
+                        personaD.getPersona().setDireccion(txfDireccion.getText());
+                        personaD.getPersona().setTelefono(txfTelefono.getText());
 
-    private void txfFechaCaducidadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txfFechaCaducidadActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txfFechaCaducidadActionPerformed
+                        licenciaD.setLicencia(null);
+                        licenciaD.getLicencia().setIdPersona(personaD.listar().tamanio() + 1);
+                        licenciaD.getLicencia().setNroLicencia(txfNroLicencia.getText());
+                        licenciaD.getLicencia().setPuntos(30);
+                        licenciaD.getLicencia().setFechaCaducidad(txfFechaCaducidad.getText());
+                        licenciaD.getLicencia().setTipos(tipos);
 
-    private void jButtonAgregarTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarTipoActionPerformed
-        // TODO add your handling code here:
-        if (jComboBoxTipoLicencia.getSelectedIndex() != 0) {
-            String dato = (String) jComboBoxTipoLicencia.getSelectedItem();
-            tipos.add(dato);
-            cargarTablaTipos();
+                        if (rol == 2 || (rol == 1 && cbRol.getSelectedIndex() == 2)) {
+                            if (personaD.guardar() && licenciaD.guardar()) {
+                                JOptionPane.showConfirmDialog(null, "Se guardo correctamente");
+                                limpiar();
+                                mostrarCheck();
+
+                            } else {
+                                JOptionPane.showConfirmDialog(null, "No se pudo guardar");
+                            }
+                        } else if (rol == 1 && cbRol.getSelectedIndex() == 1) {
+
+                            if (tfUser.getText().length() > 0 && tfClave.getText().length() > 0 && tfVeriClave.getText().length() > 0) {
+                                System.out.println(tfUser.getText() + " " + tfVeriClave.getText());
+                                if (tfClave.getText().equals(tfVeriClave.getText())) {
+                                    cuentaD.setCuenta(null);
+                                    cuentaD.getCuenta().setUsuario(tfUser.getText());
+                                    cuentaD.getCuenta().setContrasenia(tfClave.getText());
+                                    cuentaD.getCuenta().setIdPersona(personaD.listar().tamanio() + 1);
+                                    if (personaD.guardar() && cuentaD.guardar() && licenciaD.guardar()) {
+                                        JOptionPane.showConfirmDialog(null, "Se guardo correctamente");
+                                        limpiar();
+                                        mostrarCheck();
+                                    } else {
+                                        JOptionPane.showConfirmDialog(null, "No se pudo guardar");
+                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Las claves no coinciden");
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Llene todos los parametros");
+                            }
+                        }
+
+                    } else {
+                        JOptionPane.showConfirmDialog(null, "Esa persona ya está registrada");
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "No realizo cambios");
+                }
+            } else if (txfCedula.getText().length() > 0 && txfNombre.getText().length() > 0 && txfApellido.getText().length() > 0 && txfDireccion.getText().length() > 0 && txfTelefono.getText().length() > 0 && cbRol.getSelectedIndex() > 0) {
+                if (!txfCedula.getText().equals(temp.getCedula()) || !txfNombre.getText().equals(temp.getNombre()) || !txfApellido.getText().equals(temp.getApellido()) || !txfDireccion.getText().equals(temp.getDireccion()) || !txfTelefono.getText().equals(temp.getTelefono()) || cbRol.getSelectedIndex() != (temp.getIdRol() - 1)) {
+                    if (!Utilidades.datoRepetido(personaD.listar(), "cedula", txfCedula.getText())) {
+                        personaD.setPersona(null);
+                        if (rol == 2) {
+                            personaD.getPersona().setIdRol(3);
+                        } else if (rol == 1) {
+                            if (cbRol.getSelectedIndex() == 1) {
+                                personaD.getPersona().setIdRol(2);
+                            } else if (cbRol.getSelectedIndex() == 2) {
+                                personaD.getPersona().setIdRol(3);
+                            }
+                        }
+
+                        personaD.getPersona().setCedula(txfCedula.getText());
+                        personaD.getPersona().setNombre(txfNombre.getText());
+                        personaD.getPersona().setApellido(txfApellido.getText());
+                        personaD.getPersona().setDireccion(txfDireccion.getText());
+                        personaD.getPersona().setTelefono(txfTelefono.getText());
+
+                        if (rol == 2 || (rol == 1 && cbRol.getSelectedIndex() == 2)) {
+                            if (personaD.guardar()) {
+                                JOptionPane.showConfirmDialog(null, "Se guardo correctamente");
+                                limpiar();
+                                mostrarCheck();
+                            } else {
+                                JOptionPane.showConfirmDialog(null, "No se pudo guardar");
+                            }
+                        } else if (rol == 1 && cbRol.getSelectedIndex() == 1) {
+
+                            if (tfUser.getText().length() > 0 && tfClave.getText().length() > 0 && tfVeriClave.getText().length() > 0) {
+                                System.out.println(tfUser.getText() + " " + tfVeriClave.getText());
+                                if (tfClave.getText().equals(tfVeriClave.getText())) {
+                                    cuentaD.setCuenta(null);
+                                    cuentaD.getCuenta().setUsuario(tfUser.getText());
+                                    cuentaD.getCuenta().setContrasenia(tfClave.getText());
+                                    cuentaD.getCuenta().setIdPersona(personaD.listar().tamanio() + 1);
+                                    if (personaD.guardar() && cuentaD.guardar()) {
+                                        JOptionPane.showConfirmDialog(null, "Se guardo correctamente");
+                                        limpiar();
+                                        mostrarCheck();
+                                    } else {
+                                        JOptionPane.showConfirmDialog(null, "No se pudo guardar");
+                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Las claves no coinciden");
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Llene todos los parametros");
+                            }
+                        }
+
+                    } else {
+                        JOptionPane.showConfirmDialog(null, "Esa persona ya está registrada");
+                    }
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Llene todos los parametros o solo los de persona");
+            }
+            mostrarCheck();
+        } else {
+            JOptionPane.showConfirmDialog(null, "Seleccione la persona que desea editar");
         }
-    }//GEN-LAST:event_jButtonAgregarTipoActionPerformed
+    }//GEN-LAST:event_jButtonEditarActionPerformed
 
     private void jButtonEliminarTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarTipoActionPerformed
         // TODO add your handling code here:
@@ -571,10 +733,116 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButtonEliminarTipoActionPerformed
 
+    private void chbparticularesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbparticularesActionPerformed
+        // TODO add your handling code here:
+        if (chbparticulares.isSelected()) {
+            chbtodos.setEnabled(true);
+            chbagentes.setEnabled(true);
+            chbtodos.setSelected(false);
+            chbagentes.setSelected(false);
+            chbparticulares.setEnabled(false);
+        }
+        mostrarCheck();
+    }//GEN-LAST:event_chbparticularesActionPerformed
+
+    private void jButtonAgregarTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAgregarTipoActionPerformed
+        // TODO add your handling code here:
+        if (jComboBoxTipoLicencia.getSelectedIndex() != 0) {
+            String dato = (String) jComboBoxTipoLicencia.getSelectedItem();
+            tipos.add(dato);
+            cargarTablaTipos();
+        }
+    }//GEN-LAST:event_jButtonAgregarTipoActionPerformed
+
+    private void chbagentesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbagentesActionPerformed
+        // TODO add your handling code here:
+        if (chbagentes.isSelected()) {
+            chbtodos.setEnabled(true);
+            chbparticulares.setEnabled(true);
+            chbtodos.setSelected(false);
+            chbparticulares.setSelected(false);
+            chbagentes.setEnabled(false);
+        }
+        mostrarCheck();
+    }//GEN-LAST:event_chbagentesActionPerformed
+
+    private void chbtodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbtodosActionPerformed
+        // TODO add your handling code here:
+        if (chbtodos.isSelected()) {
+            chbagentes.setEnabled(true);
+            chbparticulares.setEnabled(true);
+            chbagentes.setSelected(false);
+            chbparticulares.setSelected(false);
+            chbtodos.setEnabled(false);
+        }
+        mostrarCheck();
+    }//GEN-LAST:event_chbtodosActionPerformed
+
+    private void txfApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txfApellidoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txfApellidoActionPerformed
+
+    private void tbPersonasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbPersonasMouseClicked
+        // TODO add your handling code here:
+        int fila = tbPersonas.getSelectedRow();
+        if (fila >= 0) {
+            Persona temp = (Persona) ls.obtenerPorPosicion(fila);
+            txfCedula.setText(temp.getCedula());
+            txfNombre.setText(temp.getNombre());
+            txfApellido.setText(temp.getApellido());
+            txfDireccion.setText(temp.getDireccion());
+            txfTelefono.setText(temp.getTelefono());
+            cbRol.setSelectedIndex(temp.getIdRol() - 1);
+            Cuenta cuentaTmp = (Cuenta) cuentaD.obtenerPersona(temp.getIdPersona());
+            Licencia licenciaTmp = (Licencia) licenciaD.obtenerPersona(temp.getIdPersona());
+            if (cuentaTmp != null) {
+                tfUser.setText(cuentaTmp.getUsuario());
+                tfClave.setText(cuentaTmp.getContrasenia());
+                tfVeriClave.setText(cuentaTmp.getContrasenia());
+            }
+            if (licenciaTmp != null) {
+                txfNroLicencia.setText(licenciaTmp.getNroLicencia());
+                txfFechaCaducidad.setText(licenciaTmp.getFechaCaducidad());
+                tipos = licenciaTmp.getTipos();
+                cargarTablaTipos();
+            }
+        }
+    }//GEN-LAST:event_tbPersonasMouseClicked
+
+    private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
+        // TODO add your handling code here:
+        if (rol != 1) {
+            this.dispose();
+            FrameMultas();
+        } else {
+            this.dispose();
+            FrameMenu();
+        }
+    }//GEN-LAST:event_jButtonCancelarActionPerformed
+
+    private void jButtonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarActionPerformed
+        // TODO add your handling code here:
+        int fila = tbPersonas.getSelectedRow();
+        if (fila >= 0) {
+            Persona temp = (Persona) ls.obtenerPorPosicion(fila);
+            personaD.cambiarEstado(temp.getIdPersona(), "Datos/Persona.json");
+            Cuenta cuentaTmp = (Cuenta) cuentaD.obtenerPersona(temp.getIdPersona());
+            Licencia licenciaTmp = (Licencia) licenciaD.obtenerPersona(temp.getIdPersona());
+            if (cuentaTmp != null) {
+                cuentaD.cambiarEstado(temp.getIdPersona(), "Datos/Cuenta.json");
+            }
+            if (licenciaTmp != null) {
+                licenciaD.cambiarEstado(temp.getIdPersona(), "Datos/Licencia.json");
+            }
+            mostrarCheck();
+        } else {
+            JOptionPane.showConfirmDialog(null, "Seleccione la persona que desea eliminar");
+        }
+    }//GEN-LAST:event_jButtonEliminarActionPerformed
+
     private void jButtonGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarActionPerformed
         // TODO add your handling code here:
-
-        if (txfCedula.getText().length() > 0 && txfNombre.getText().length() > 0 && txfApellido.getText().length() > 0 && txfDireccion.getText().length() > 0 && txfTelefono.getText().length() > 0 && txfNroLicencia.getText().length() > 0 && txfFechaCaducidad.getText().length() > 0 && tipos.size() > 0) {
+        if (txfCedula.getText().length() > 0 && txfNombre.getText().length() > 0 && txfApellido.getText().length() > 0 && txfDireccion.getText().length() > 0 && txfTelefono.getText().length() > 0 && txfNroLicencia.getText().length() > 0 && txfFechaCaducidad.getText().length() > 0 && tipos.size() > 0 && cbRol.getSelectedIndex() > 0) {
             if (!Utilidades.datoRepetido(personaD.listar(), "cedula", txfCedula.getText())) {
 
                 personaD.setPersona(null);
@@ -582,7 +850,11 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
                 if (rol == 2) {
                     personaD.getPersona().setIdRol(3);
                 } else if (rol == 1) {
-                    personaD.getPersona().setIdRol(2);
+                    if (cbRol.getSelectedIndex() == 1) {
+                        personaD.getPersona().setIdRol(2);
+                    } else if (cbRol.getSelectedIndex() == 2) {
+                        personaD.getPersona().setIdRol(3);
+                    }
                 }
 
                 personaD.getPersona().setCedula(txfCedula.getText());
@@ -598,7 +870,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
                 licenciaD.getLicencia().setFechaCaducidad(txfFechaCaducidad.getText());
                 licenciaD.getLicencia().setTipos(tipos);
 
-                if (rol == 2) {
+                if (rol == 2 || (rol == 1 && cbRol.getSelectedIndex() == 2)) {
                     if (personaD.guardar() && licenciaD.guardar()) {
                         JOptionPane.showConfirmDialog(null, "Se guardo correctamente");
                         limpiar();
@@ -607,7 +879,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
                     } else {
                         JOptionPane.showConfirmDialog(null, "No se pudo guardar");
                     }
-                } else if (rol == 1) {
+                } else if (rol == 1 && cbRol.getSelectedIndex() == 1) {
 
                     if (tfUser.getText().length() > 0 && tfClave.getText().length() > 0 && tfVeriClave.getText().length() > 0) {
                         System.out.println(tfUser.getText() + " " + tfVeriClave.getText());
@@ -634,13 +906,17 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
             } else {
                 JOptionPane.showConfirmDialog(null, "Esa persona ya está registrada");
             }
-        } else if (txfCedula.getText().length() > 0 && txfNombre.getText().length() > 0 && txfApellido.getText().length() > 0 && txfDireccion.getText().length() > 0 && txfTelefono.getText().length() > 0 && txfNroLicencia.getText().length() == 0 && txfFechaCaducidad.getText().length() == 0 && tipos.size() == 0) {
+        } else if (txfCedula.getText().length() > 0 && txfNombre.getText().length() > 0 && txfApellido.getText().length() > 0 && txfDireccion.getText().length() > 0 && txfTelefono.getText().length() > 0 && cbRol.getSelectedIndex() > 0) {
             if (!Utilidades.datoRepetido(personaD.listar(), "cedula", txfCedula.getText())) {
                 personaD.setPersona(null);
                 if (rol == 2) {
                     personaD.getPersona().setIdRol(3);
                 } else if (rol == 1) {
-                    personaD.getPersona().setIdRol(2);
+                    if (cbRol.getSelectedIndex() == 1) {
+                        personaD.getPersona().setIdRol(2);
+                    } else if (cbRol.getSelectedIndex() == 2) {
+                        personaD.getPersona().setIdRol(3);
+                    }
                 }
 
                 personaD.getPersona().setCedula(txfCedula.getText());
@@ -649,7 +925,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
                 personaD.getPersona().setDireccion(txfDireccion.getText());
                 personaD.getPersona().setTelefono(txfTelefono.getText());
 
-                if (rol == 2) {
+                if (rol == 2 || (rol == 1 && cbRol.getSelectedIndex() == 2)) {
                     if (personaD.guardar()) {
                         JOptionPane.showConfirmDialog(null, "Se guardo correctamente");
                         limpiar();
@@ -657,7 +933,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
                     } else {
                         JOptionPane.showConfirmDialog(null, "No se pudo guardar");
                     }
-                } else if (rol == 1) {
+                } else if (rol == 1 && cbRol.getSelectedIndex() == 1) {
 
                     if (tfUser.getText().length() > 0 && tfClave.getText().length() > 0 && tfVeriClave.getText().length() > 0) {
                         System.out.println(tfUser.getText() + " " + tfVeriClave.getText());
@@ -689,64 +965,6 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
         }
     }//GEN-LAST:event_jButtonGuardarActionPerformed
 
-    private void jButtonCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCancelarActionPerformed
-        // TODO add your handling code here:
-        if (rol != 1) {
-            this.dispose();
-            FrameMultas();
-        } else {
-            this.dispose();
-            FrameMenu();
-        }
-
-
-    }//GEN-LAST:event_jButtonCancelarActionPerformed
-
-    private void tfClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tfClaveActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_tfClaveActionPerformed
-
-    private void chbtodosStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_chbtodosStateChanged
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_chbtodosStateChanged
-
-    private void chbtodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbtodosActionPerformed
-        // TODO add your handling code here:
-        if (chbtodos.isSelected()) {
-            chbagentes.setEnabled(true);
-            chbparticulares.setEnabled(true);
-            chbagentes.setSelected(false);
-            chbparticulares.setSelected(false);
-            chbtodos.setEnabled(false);
-        }
-        mostrarCheck();
-    }//GEN-LAST:event_chbtodosActionPerformed
-
-    private void chbagentesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbagentesActionPerformed
-        // TODO add your handling code here:
-        if (chbagentes.isSelected()) {
-            chbtodos.setEnabled(true);
-            chbparticulares.setEnabled(true);
-            chbtodos.setSelected(false);
-            chbparticulares.setSelected(false);
-            chbagentes.setEnabled(false);
-        }
-        mostrarCheck();
-    }//GEN-LAST:event_chbagentesActionPerformed
-
-    private void chbparticularesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chbparticularesActionPerformed
-        // TODO add your handling code here:
-        if (chbparticulares.isSelected()) {
-            chbtodos.setEnabled(true);
-            chbagentes.setEnabled(true);
-            chbtodos.setSelected(false);
-            chbagentes.setSelected(false);
-            chbparticulares.setEnabled(false);
-        }
-        mostrarCheck();
-    }//GEN-LAST:event_chbparticularesActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -773,6 +991,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
             java.util.logging.Logger.getLogger(Frm_RegistrarPersona.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -790,29 +1009,35 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cbRol;
     private javax.swing.JCheckBox chbagentes;
     private javax.swing.JCheckBox chbparticulares;
     private javax.swing.JCheckBox chbtodos;
     private javax.swing.JButton jButtonAgregarTipo;
     private javax.swing.JButton jButtonCancelar;
+    private javax.swing.JButton jButtonEditar;
+    private javax.swing.JButton jButtonEliminar;
     private javax.swing.JButton jButtonEliminarTipo;
     private javax.swing.JButton jButtonGuardar;
     private javax.swing.JComboBox<String> jComboBoxTipoLicencia;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lUser;
+    private javax.swing.JLabel lbApellido;
+    private javax.swing.JLabel lbCedula;
     private javax.swing.JLabel lbClave;
+    private javax.swing.JLabel lbDatosCuenta;
+    private javax.swing.JLabel lbDatosPersona;
+    private javax.swing.JLabel lbDireccion;
+    private javax.swing.JLabel lbNombre;
+    private javax.swing.JLabel lbRol;
+    private javax.swing.JLabel lbTelefono;
     private javax.swing.JLabel lcVeriClave;
     private javax.swing.JTable tbPersonas;
     private javax.swing.JTable tbTipos;
