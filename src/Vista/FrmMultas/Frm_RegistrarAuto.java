@@ -11,6 +11,7 @@ import Controlador.DAO.VehiculoDAO;
 import Controlador.ListaSimple;
 import Controlador.Utilidades;
 import Modelo.Persona;
+import Vista.Frame_Menu_Login;
 import Vista.Tablas.TablaVehiculos;
 import Vista.componentes.Componentes;
 import java.awt.event.ItemEvent;
@@ -29,6 +30,9 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
     MarcaDAO marcaD = new MarcaDAO("Componentes");
     TablaVehiculos modelo = new TablaVehiculos();
     VehiculoDAO vehiculoD = new VehiculoDAO("Datos");
+    private Persona persona;
+    private int rol;
+
     public Frm_RegistrarAuto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -38,23 +42,49 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);
     }
 
-    public void limpiar(){
+    public Frm_RegistrarAuto(java.awt.Frame parent, boolean modal, long idPersona) {
+        super(parent, modal);
+        initComponents();
+        if (idPersona == -1) {
+            this.rol = 1;
+        } else {
+            this.rol = persona.getIdRol();
+            /*jPanel2.setVisible(false);
+            lbRol.setVisible(false);
+            cbRol.setSelectedIndex(2);
+            cbRol.setVisible(false);
+            jButtonEditar.setVisible(false);
+            jButtonEliminar.setVisible(false);*/
+        }
+        persona = (Persona) personaD.obtenerPersona(idPersona);
+        Componentes.cargarCombo(cbPersona, personaD.listar(), "cedula");
+        Componentes.cargarCombo(cbMarca, marcaD.listar(), "nombre");
+        cargarTabla(vehiculoD.listar());
+        this.setLocationRelativeTo(null);
+    }
+
+    public void limpiar() {
         tfPlaca.setText(null);
         tfColor.setText(null);
     }
 
-    public void cargarTabla(ListaSimple lista){
+    public void cargarTabla(ListaSimple lista) {
         modelo.setListaPersona(personaD);
         modelo.setListaVehiculos(lista);
         tbVehiculos.setModel(modelo);
         tbVehiculos.updateUI();
     }
-    
+
     public void FrameMultas() {
-        Frm_RegistarMultas fm = new Frm_RegistarMultas(null, true);
+        Frm_RegistarMultas fm = new Frm_RegistarMultas(null, true, persona.getIdPersona());
         fm.setVisible(true);
     }
-    
+
+    public void FrameMenu() {
+        Frame_Menu_Login fm = new Frame_Menu_Login(-1);
+        fm.setVisible(true);
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -143,7 +173,7 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
         });
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Imagenes/114.png"))); // NOI18N
-        jButton2.setText(" Cancelar");
+        jButton2.setText("Salir");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -293,9 +323,9 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
                 lbApellido.setText("");
                 lbTelefono.setText("");
                 cargarTabla(vehiculoD.listar());
-            }else{
+            } else {
                 try {
-                    Persona dato = (Persona)personaD.listar().obtenerPorPosicion(cbPersona.getSelectedIndex() - 1);
+                    Persona dato = (Persona) personaD.listar().obtenerPorPosicion(cbPersona.getSelectedIndex() - 1);
                     lbNombre.setText(dato.getNombre());
                     lbApellido.setText(dato.getApellido());
                     lbTelefono.setText(dato.getTelefono());
@@ -311,7 +341,7 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
         if (tfColor.getText().length() > 0 && tfPlaca.getText().length() > 0 && cbPersona.getSelectedIndex() != 0 && cbPersona.getSelectedIndex() != 0) {
             if (!Utilidades.datoRepetido(vehiculoD.listar(), "placa", tfPlaca.getText())) {
                 vehiculoD.setVehiculo(null);
-                Persona dato = (Persona)(Utilidades.obtenerDato(personaD.listar(), "cedula", cbPersona.getSelectedItem().toString()));
+                Persona dato = (Persona) (Utilidades.obtenerDato(personaD.listar(), "cedula", cbPersona.getSelectedItem().toString()));
                 vehiculoD.getVehiculo().setPlaca(tfPlaca.getText());
                 vehiculoD.getVehiculo().setModelo(String.valueOf(cbMarca.getSelectedItem()));
                 vehiculoD.getVehiculo().setColor(tfColor.getText());
@@ -320,19 +350,24 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
                     JOptionPane.showConfirmDialog(null, "Se guardo correctamente");
                     limpiar();
                     cargarTabla(vehiculoD.obtenerListaPersona(dato.getIdPersona()));
-                }else{
+                } else {
                     JOptionPane.showConfirmDialog(null, "No se pudo guardar");
                 }
             }
-        }else{
+        } else {
             JOptionPane.showMessageDialog(null, "Llene todos los parametros");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        this.dispose();
-        FrameMultas();
+        if (rol != 1) {
+            this.dispose();
+            FrameMultas();
+        } else {
+            this.dispose();
+            FrameMenu();
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
