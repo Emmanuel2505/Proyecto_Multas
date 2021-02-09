@@ -67,7 +67,7 @@ public class Vehiculo {
         this.placa = placa;
     }
 
-    public boolean getEstadoVehiculo() {
+    public boolean isEstadoVehiculo() {
         return estadoVehiculo;
     }
 

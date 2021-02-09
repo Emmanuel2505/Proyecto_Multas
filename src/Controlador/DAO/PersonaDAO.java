@@ -51,7 +51,7 @@ public class PersonaDAO extends AdaptadorDAO {
             return false;
         }
     }
-    
+
     public ListaSimple clonar(ListaSimple lista) {
         ListaSimple ls = new ListaSimple();
         for (int i = 0; i < lista.tamanio(); i++) {
@@ -99,7 +99,7 @@ public class PersonaDAO extends AdaptadorDAO {
         ListaSimple lista = new ListaSimple();
         for (int i = 0; i < listar().tamanio(); i++) {
             Persona aux = (Persona) listar().obtenerPorPosicion(i);
-            if (aux.getIdRol() == idRol && aux.getEstadoPersona() == estado) {
+            if (aux.getIdRol() == idRol && aux.isEstadoPersona() == estado) {
                 lista.insertar(aux);
             }
         }
@@ -110,7 +110,7 @@ public class PersonaDAO extends AdaptadorDAO {
         ListaSimple lista = new ListaSimple();
         for (int i = 0; i < listar().tamanio(); i++) {
             Persona aux = (Persona) listar().obtenerPorPosicion(i);
-            if (aux.getEstadoPersona()) {
+            if (aux.isEstadoPersona()) {
                 lista.insertar(aux);
             }
         }
@@ -122,8 +122,8 @@ public class PersonaDAO extends AdaptadorDAO {
         boolean estado;
         for (int i = 0; i < listar().tamanio(); i++) {
             Persona aux = (Persona) listar().obtenerPorPosicion(i);
-            if (aux.getIdPersona()== idPersona) {
-                if (aux.getEstadoPersona()) {
+            if (aux.getIdPersona() == idPersona) {
+                if (aux.isEstadoPersona()) {
                     estado = false;
                 } else {
                     estado = true;
@@ -146,6 +146,37 @@ public class PersonaDAO extends AdaptadorDAO {
             } catch (Exception e) {
                 System.out.println("no se guardo");
             }
+        }
+    }
+
+    public Boolean editar(long idPersona, Object dato, String direccion) {
+        try {
+            ListaSimple lista = listar();
+            boolean estado;
+            for (int i = 0; i < listar().tamanio(); i++) {
+                Persona aux = (Persona) listar().obtenerPorPosicion(i);
+                if (aux.getIdPersona() == idPersona) {
+                    lista.editar(i, dato);
+                }
+            }
+            File fichero = new File(direccion);
+            try {
+                PrintWriter pw = new PrintWriter(fichero);
+                pw.print("");
+                pw.close();
+            } catch (Exception e) {
+            }
+            for (int i = lista.tamanio() - 1; i >= 0; i--) {
+                try {
+                    Persona aux = (Persona) lista.obtenerPorPosicion(i);
+                    this.guardar(aux);
+                } catch (Exception e) {
+                    System.out.println("no se guardo");
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 }

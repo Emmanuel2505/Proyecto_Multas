@@ -7,6 +7,8 @@ package Controlador.DAO;
 
 import Controlador.ListaSimple;
 import Modelo.Vehiculo;
+import java.io.File;
+import java.io.PrintWriter;
 import javax.swing.JOptionPane;
 
 /**
@@ -63,5 +65,68 @@ public class VehiculoDAO extends AdaptadorDAO{
             }
         }
         return lista;
+    }
+    
+    public void cambiarEstado(long idPersona, String direccion) {
+        ListaSimple lista = listar();
+        boolean estado;
+        for (int i = 0; i < listar().tamanio(); i++) {
+            Vehiculo aux = (Vehiculo) listar().obtenerPorPosicion(i);
+            if (aux.getIdPersona()== idPersona) {
+                if (aux.isEstadoVehiculo()) {
+                    estado = false;
+                } else {
+                    estado = true;
+                }
+                aux.setEstadoVehiculo(estado);
+                lista.editar(i, aux);
+            }
+        }
+        File fichero = new File(direccion);
+        try {
+            PrintWriter pw = new PrintWriter(fichero);
+            pw.print("");
+            pw.close();
+        } catch (Exception e) {
+        }
+        for (int i = lista.tamanio() - 1; i >= 0; i--) {
+            try {
+                Vehiculo aux = (Vehiculo) lista.obtenerPorPosicion(i);
+                this.guardar(aux);
+            } catch (Exception e) {
+                System.out.println("no se guardo");
+            }
+        }
+    }
+    
+    public Boolean editar(long idPersona, Object dato, String direccion) {
+        try {
+            ListaSimple lista = listar();
+            boolean estado;
+            for (int i = 0; i < listar().tamanio(); i++) {
+                Vehiculo aux = (Vehiculo) listar().obtenerPorPosicion(i);
+                if (aux.getIdPersona() == idPersona) {
+                    lista.editar(i, dato);
+                }
+            }
+            File fichero = new File(direccion);
+            try {
+                PrintWriter pw = new PrintWriter(fichero);
+                pw.print("");
+                pw.close();
+            } catch (Exception e) {
+            }
+            for (int i = lista.tamanio() - 1; i >= 0; i--) {
+                try {
+                    Vehiculo aux = (Vehiculo) lista.obtenerPorPosicion(i);
+                    this.guardar(aux);
+                } catch (Exception e) {
+                    System.out.println("no se guardo");
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

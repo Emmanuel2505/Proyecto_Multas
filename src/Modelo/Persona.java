@@ -79,7 +79,7 @@ public class Persona {
         this.telefono = telefono;
     }
 
-    public boolean getEstadoPersona() {
+    public boolean isEstadoPersona() {
         return estadoPersona;
     }
 
