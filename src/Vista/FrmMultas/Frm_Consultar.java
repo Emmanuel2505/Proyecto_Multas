@@ -258,9 +258,9 @@ public class Frm_Consultar extends javax.swing.JDialog {
                         + "Direccion: "+p.getDireccion()+" Cedula: "+p.getCedula());
             }else if(cbCedula.getSelectedIndex() == 1){
                 Vehiculo v = (Vehiculo) vehiculoD.obtenerVehiculo(tfconsulta.getText());
-                Multa m = (Multa)multaD.obtenerPersona(v.getIdPersona());
+                /*Multa m = (Multa)multaD.obtenerPersona(v.getIdPersona());
                 jTextArea1.setText("Persona: "+p.getNombre()+" "+p.getApellido()+"\n"
-                        + "Direccion: "+p.getDireccion()+" Cedula: "+p.getCedula());
+                        + "Direccion: "+p.getDireccion()+" Cedula: "+p.getCedula());*/
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
