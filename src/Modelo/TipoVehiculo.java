@@ -10,12 +10,11 @@ package Modelo;
  * @author ASUS
  */
 public enum  TipoVehiculo {
-    Vehiculo_de_traccion_animal,
     Ciclomotor,
     Motocicleta,
     Motocarro,
     Tricimoto,
-    Quad_Atv,
+    QuadAtv,
     Autobus,
     Camion,
     Camioneta,

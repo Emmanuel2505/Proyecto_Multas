@@ -146,4 +146,16 @@ public class VehiculoDAO extends AdaptadorDAO{
             return false;
         }
     }
+    
+    public Object obtenerVehiculo(String placa){
+        Object dato = null;
+        for (int i = 0; i < listar().tamanio(); i++) {
+            Vehiculo aux = (Vehiculo)listar().obtenerPorPosicion(i);
+            if (aux.getPlaca() == placa) {
+                dato = aux;
+                break;
+            }
+        }
+        return dato;
+    }
 }

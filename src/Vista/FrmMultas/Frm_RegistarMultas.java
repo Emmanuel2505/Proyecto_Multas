@@ -62,20 +62,20 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
     }
 
     public Frm_RegistarMultas(java.awt.Frame parent, boolean modal, long idPersona) {
-        super(parent, modal);  
+        super(parent, modal);
         initComponents();
-        agente = (Persona)personaD.obtenerPersona(idPersona);
+        agente = (Persona) personaD.obtenerPersona(idPersona);
         lbFecha.setText(String.valueOf(fecha));
         lista = personaD.obtenerListaPersona();
-        Componentes.cargarComboRestriccion(cbCedula, lista, "cedula",agente.getCedula());
+        Componentes.cargarComboRestriccion(cbCedula, lista, "cedula", agente.getCedula());
         Componentes.cargarCombo(jComboBoxRubro, normativaD.listar(), "rubro");
         Componentes.cargarCombo(cbTipoVehiculo);
-        lbAgente.setText(agente.getNombre()+" "+agente.getApellido());
+        lbAgente.setText(agente.getNombre() + " " + agente.getApellido());
         this.setLocationRelativeTo(null);
         listener();
     }
-    
-    public void FrmPersona(){
+
+    public void FrmPersona() {
         new Frm_RegistrarPersona(null, true, agente.getIdPersona()).setVisible(true);
     }
 
@@ -88,7 +88,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
                     if ((mensaje.length() + 1) < 11) {
                         mensaje = mensaje + (e.getKeyChar());
                         ListaSimple tmp = Utilidades.obtenerSubLista(lista, "cedula", mensaje);
-                        Componentes.cargarComboRestriccion(cbCedula, tmp, "cedula", agente.getCedula(),mensaje);
+                        Componentes.cargarComboRestriccion(cbCedula, tmp, "cedula", agente.getCedula(), mensaje);
                     } else {
                         System.out.println(mensaje);
                         persona = (Persona) Utilidades.obtenerDato(lista, "cedula", mensaje);
@@ -102,10 +102,10 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
                     if ((e.getKeyCode() == KeyEvent.VK_BACK_SPACE) && mensaje.length() > 0) {
                         mensaje = mensaje.substring(0, mensaje.length() - 1);
                         if (mensaje.length() == 0) {
-                            Componentes.cargarComboRestriccion(cbCedula, lista, "cedula",agente.getCedula());
+                            Componentes.cargarComboRestriccion(cbCedula, lista, "cedula", agente.getCedula());
                         } else {
                             ListaSimple tmp = Utilidades.obtenerSubLista(lista, "cedula", mensaje);
-                            Componentes.cargarComboRestriccion(cbCedula, tmp, "cedula", agente.getCedula(),mensaje);
+                            Componentes.cargarComboRestriccion(cbCedula, tmp, "cedula", agente.getCedula(), mensaje);
                         }
                     }
                     e.consume();
@@ -592,7 +592,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
                 lbModelo.setText("");
             } else {
                 try {
-                    Vehiculo dato = (Vehiculo)(Utilidades.obtenerDato(vehiculoD.listar(), "placa", cbPlaca.getSelectedItem().toString()));
+                    Vehiculo dato = (Vehiculo) (Utilidades.obtenerDato(vehiculoD.listar(), "placa", cbPlaca.getSelectedItem().toString()));
                     lbModelo.setText(dato.getModelo());
                 } catch (Exception e) {
                 }
@@ -602,29 +602,38 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-         Persona per = (Persona)personaD.obtenerPersona(cbCedula.getSelectedItem().toString());
+        Persona per = (Persona) personaD.obtenerPersona(cbCedula.getSelectedItem().toString());
         Licencia lic = (Licencia) licenciaD.obtenerPersona(per.getIdPersona());
-        if(lbNombre.getText().length() > 0 && jTextAreaRubro.getText().length() > 0 && taObservaciones.getText().length() > 0){
+        Vehiculo veh = (Vehiculo) vehiculoD.obtenerVehiculo(cbPlaca.getSelectedItem().toString());
+        if (lbNombre.getText().length() > 0 && jTextAreaRubro.getText().length() > 0 && taObservaciones.getText().length() > 0) {
             multaD.setMulta(null);
             multaD.getMulta().setIdAgente(agente.getIdPersona());
             multaD.getMulta().setFecha(fecha);
             multaD.getMulta().setTipoMulta(jComboBoxRubro.getSelectedItem().toString());
             multaD.getMulta().setIdPersona(per.getIdPersona());
-           // multaD.getMulta().setIdVehiculo(personaD.obtenerPersona(mensaje));
-           // multaD.getMulta().setPlaca(cbPlaca.getSelectedItem().toString());
+            multaD.getMulta().setIdVehiculo(veh.getIdVehiculo());
             multaD.getMulta().setValorMulta(Double.valueOf(lbMonto.getText()));
-            double puntoAct = Double.valueOf(lbPuntosAct.getText());
-            double puntoDes = Double.valueOf(lbPuntosDesc.getText());
+            double puntoAct = Double.parseDouble(lbPuntosAct.getText());
+            double puntoDes = Double.parseDouble(lbPuntosDesc.getText());
             multaD.getMulta().setTotalPuntos(puntoDes);
-            
-            if(multaD.guardar()){
+
+            if (multaD.guardar()) {
                 JOptionPane.showMessageDialog(null, "La multa se ha registrado con exito");
-                //lic.setPuntos(puntoAct-puntoDes);
-            }else{
+                float pa = Float.parseFloat(lbPuntosAct.getText());
+                float pD = Float.parseFloat(lbPuntosDesc.getText());
+                float total = (pa-pD);
+                if(total < 0){
+                    lic.setPuntos(0);
+                    JOptionPane.showMessageDialog(null,"Los puntos de licencia");
+                }else{
+                    lic.setPuntos(total);
+                }
+                if (licenciaD.editar(per.getIdPersona(), lic));
+            } else {
                 JOptionPane.showMessageDialog(null, "La multa NO se ha registrado");
-                
-            }        
-        }else{
+
+            }
+        } else {
             JOptionPane.showMessageDialog(null, "Ingrese datos");
         }
     }//GEN-LAST:event_jButton3ActionPerformed

@@ -5,11 +5,12 @@
  */
 package Vista.FrmMultas;
 
+import Controlador.DAO.MultaDAO;
 import Controlador.DAO.PersonaDAO;
-import Controlador.ListaSimple;
-import Controlador.Utilidades;
+import Controlador.DAO.VehiculoDAO;
+import Modelo.Multa;
 import Modelo.Persona;
-import Vista.componentes.Componentes;
+import Modelo.Vehiculo;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,8 +19,9 @@ import javax.swing.JOptionPane;
  */
 public class Frm_Consultar extends javax.swing.JDialog {
 
-    ListaSimple ls = new ListaSimple();
+    VehiculoDAO vehiculoD = new VehiculoDAO("Datos");
     PersonaDAO personaD = new PersonaDAO("Datos");
+    MultaDAO multaD = new MultaDAO("Datos");
     String mensaje = "";
 
     /**
@@ -29,7 +31,7 @@ public class Frm_Consultar extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
-        Componentes.cargarCombo(cbCedula, personaD.listar(), "cedula");
+        //Componentes.cargarCombo(cbCedula, personaD.listar(), "cedula");
     }
 
     
@@ -48,9 +50,10 @@ public class Frm_Consultar extends javax.swing.JDialog {
         jLabel2 = new javax.swing.JLabel();
         cbCedula = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
-        textFieldConsulta = new javax.swing.JTextField();
+        tfconsulta = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        tAInformacion = new java.awt.TextArea();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -76,7 +79,6 @@ public class Frm_Consultar extends javax.swing.JDialog {
         jLabel2.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel2.setText("Tipo de documentación");
 
-        cbCedula.setEditable(true);
         cbCedula.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Cedula", "Nro de placa" }));
         cbCedula.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -94,7 +96,9 @@ public class Frm_Consultar extends javax.swing.JDialog {
             }
         });
 
-        tAInformacion.setFont(new java.awt.Font("Dialog", 0, 24)); // NOI18N
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -108,16 +112,16 @@ public class Frm_Consultar extends javax.swing.JDialog {
                             .addComponent(jLabel2)
                             .addComponent(cbCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(textFieldConsulta, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(tfconsulta, javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE))))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(62, 62, 62)
                         .addComponent(jButton1)))
-                .addGap(56, 56, 56)
-                .addComponent(tAInformacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(19, 19, 19))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
+                .addGap(0, 204, Short.MAX_VALUE)
                 .addComponent(jLabel1)
                 .addGap(200, 200, 200))
         );
@@ -126,7 +130,7 @@ public class Frm_Consultar extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel1)
                 .addGap(33, 33, 33)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
@@ -134,10 +138,10 @@ public class Frm_Consultar extends javax.swing.JDialog {
                         .addGap(26, 26, 26)
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
-                        .addComponent(textFieldConsulta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(tfconsulta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(27, 27, 27)
                         .addComponent(jButton1))
-                    .addComponent(tAInformacion, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
@@ -186,7 +190,7 @@ public class Frm_Consultar extends javax.swing.JDialog {
                     .addComponent(jLabel4)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jLabel8)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 119, Short.MAX_VALUE)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
                         .addComponent(jTextField3))
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(54, Short.MAX_VALUE))
@@ -246,15 +250,18 @@ public class Frm_Consultar extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if (!textFieldConsulta.getText().isBlank()) {
-            Persona dato = (Persona) (Utilidades.obtenerDato(personaD.listar(), "cedula", textFieldConsulta.getText()));
-            tAInformacion.setText(dato.getNombre() + " " + dato.getApellido() + "\n"
-                    + "Con cedula de intentidad: " + dato.getCedula() + "\n"
-                    + "Direccion: " + dato.getDireccion() + "\n"
-                    + "Telefono: " + dato.getTelefono());
-
-        } else {
-            JOptionPane.showMessageDialog(null, "Persona no encontrada");
+        if(tfconsulta.getText().length() > 0){
+            if(cbCedula.getSelectedIndex() == 0){
+                Persona p = (Persona) personaD.obtenerPersona(tfconsulta.getText());
+                Multa m = (Multa)multaD.obtenerPersona(p.getIdPersona());
+                jTextArea1.setText("Persona: "+p.getNombre()+" "+p.getApellido()+"\n"
+                        + "Direccion: "+p.getDireccion()+" Cedula: "+p.getCedula());
+            }else if(cbCedula.getSelectedIndex() == 1){
+                Vehiculo v = (Vehiculo) vehiculoD.obtenerVehiculo(tfconsulta.getText());
+                Multa m = (Multa)multaD.obtenerPersona(v.getIdPersona());
+                jTextArea1.setText("Persona: "+p.getNombre()+" "+p.getApellido()+"\n"
+                        + "Direccion: "+p.getDireccion()+" Cedula: "+p.getCedula());
+            }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -319,10 +326,11 @@ public class Frm_Consultar extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
-    private java.awt.TextArea tAInformacion;
-    private javax.swing.JTextField textFieldConsulta;
+    private javax.swing.JTextField tfconsulta;
     // End of variables declaration//GEN-END:variables
 }
