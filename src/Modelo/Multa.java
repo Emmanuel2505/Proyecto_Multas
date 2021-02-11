@@ -12,38 +12,37 @@ import java.util.Date;
  * @author ASUS
  */
 public class Multa {
-
     private long idMulta;
     private double valorMulta;
     private Date fecha;
     private double totalPuntos;
     private String tipoMulta;
-    private String agente;
+    private long idAgente;
     private long idPersona;
     private boolean estadoMulta;
-    private String placa;
+    private long idVehiculo;
 
     public Multa() {
     }
 
-    public Multa(double valorMulta, Date fecha, double totalPuntos, String tipoMulta, String agente, long idPersona) {
+    public Multa(double valorMulta, Date fecha, double totalPuntos, String tipoMulta, long idAgente, long idPersona) {
         this.valorMulta = valorMulta;
         this.fecha = fecha;
         this.totalPuntos = totalPuntos;
         this.tipoMulta = tipoMulta;
-        this.agente = agente;
+        this.idAgente = idAgente;
         this.idPersona = idPersona;
-        this.placa = "Multa Peatonal";
+        this.idVehiculo = -1;
     }
 
-    public Multa(double valorMulta, Date fecha, double totalPuntos, String tipoMulta, String agente, long idPersona, String placa) {
+    public Multa(double valorMulta, Date fecha, double totalPuntos, String tipoMulta, String agente, long idPersona, long idVehiculo) {
         this.valorMulta = valorMulta;
         this.fecha = fecha;
         this.totalPuntos = totalPuntos;
         this.tipoMulta = tipoMulta;
-        this.agente = agente;
+        this.idAgente = idAgente;
         this.idPersona = idPersona;
-        this.placa = placa;
+        this.idVehiculo = idVehiculo;
     }
 
     public long getIdMulta() {
@@ -86,12 +85,12 @@ public class Multa {
         this.tipoMulta = tipoMulta;
     }
 
-    public String getAgente() {
-        return agente;
+    public long getIdAgente() {
+        return idAgente;
     }
 
-    public void setAgente(String agente) {
-        this.agente = agente;
+    public void setIdAgente(long idAgente) {
+        this.idAgente = idAgente;
     }
 
     public long getIdPersona() {
@@ -110,11 +109,11 @@ public class Multa {
         this.estadoMulta = estadoMulta;
     }
 
-    public String getPlaca() {
-        return placa;
+    public long getIdVehiculo() {
+        return idVehiculo;
     }
 
-    public void setPlaca(String placa) {
-        this.placa = placa;
+    public void setIdVehiculo(long idVehiculo) {
+        this.idVehiculo = idVehiculo;
     }
 }

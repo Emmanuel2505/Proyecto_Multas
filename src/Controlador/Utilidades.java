@@ -4,7 +4,6 @@
  * and open the template in the editor.
  */
 package Controlador;
-
 import Modelo.TipoVehiculo;
 import java.io.*;
 import java.lang.reflect.Field;
@@ -16,12 +15,11 @@ import java.util.ArrayList;
  * @author ASUS
  */
 public class Utilidades {
-    
     public static TipoVehiculo[] tipoVehiculo(){
         return TipoVehiculo.values();
     }
-
-    public String leerTxtProcetajeMulta() {
+    
+    public String leerTxtProcetajeMulta(){
         String dato = "";
         try {
             FileReader ficheroEntrada = new FileReader("Componentes/porcentajeMulta.txt");
@@ -29,45 +27,19 @@ public class Utilidades {
             String temp = "";
             while (temp != null) {
                 temp = buffer.readLine();
-                if (temp == null) {
+                if (temp == null)
                     break;
-                }
                 dato = dato + "\n" + temp;
             }
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
-        } catch (IOException ex) {
+        } catch (IOException ex){
             ex.printStackTrace();
         }
         return dato;
     }
 
-    public static int compareTo(Object o, Object o1, String atributoClase) {
-        int i = 0;
-        if (o instanceof Integer && o1 instanceof Integer) {
-            Integer uno = (Integer) o;
-            Integer dos = (Integer) o1;
-            if (uno > dos) {
-                i = 1;
-            } else if (uno < dos) {
-                i = -1;
-            }
-
-        } else {
-            String uno = extraccionDato(o, atributoClase);
-            String dos = extraccionDato(o1, atributoClase);
-            if (uno != null && dos != null) {
-                if (uno.toUpperCase().compareTo(dos.toUpperCase()) > 0) {
-                    i = 1;
-                } else {
-                    i = -1;
-                }
-            }
-        }
-        return i;
-    }
-
-    public static ListaSimple obtenerSubLista(ListaSimple lista, String AtributoClase, String palabra) {
+    public static ListaSimple obtenerSubLista(ListaSimple lista, String AtributoClase, String palabra){
         ListaSimple aux = new ListaSimple();
         if (!lista.estaVacia()) {
             for (int i = 0; i < lista.tamanio(); i++) {
@@ -79,8 +51,8 @@ public class Utilidades {
         }
         return aux;
     }
-
-    public static ListaSimple obtenerLista(ListaSimple lista, String AtributoClase, String palabra) {
+    
+    public static ListaSimple obtenerLista(ListaSimple lista, String AtributoClase, String palabra){
         ListaSimple aux = new ListaSimple();
         if (!lista.estaVacia()) {
             for (int i = 0; i < lista.tamanio(); i++) {
@@ -92,8 +64,8 @@ public class Utilidades {
         }
         return aux;
     }
-
-    public static Object obtenerDato(ListaSimple lista, String AtributoClase, String palabra) {
+    
+    public static Object obtenerDato(ListaSimple lista, String AtributoClase, String palabra){
         Object aux = null;
         if (!lista.estaVacia()) {
             for (int i = 0; i < lista.tamanio(); i++) {
@@ -105,6 +77,14 @@ public class Utilidades {
             }
         }
         return aux;
+    }
+    
+    public static String obtenerStringTipos(ArrayList<String> tipos){
+        String texto = "";
+        for (int i = 0; i < tipos.size(); i++) {
+            texto = texto + tipos.get(i) + " ";
+        }
+        return texto;
     }
 
     public static String extraccionDato(Object obj, String atributoClase) {
@@ -133,31 +113,45 @@ public class Utilidades {
         }
         return (informacion != null) ? informacion.toString() : null;
     }
+    
+    public ListaSimple ordenar(ListaSimple lista, String atributo) {
+        ListaSimple temp = lista;
+        temp = qsortInt(0, temp.tamanio() - 1, temp, atributo);
+        return temp;
+    }
+    
+    public ListaSimple qsortInt(int izq, int der, ListaSimple lista, String atributo){
+        int ult, m; 
+        Object temp;
+        if (izq >= der)
+            return lista;
+        temp = lista.obtenerPorPosicion(izq);
+        m = (izq + der)/2;
+        lista.editar(izq, lista.obtenerPorPosicion(m));
+        lista.editar(m, temp);
+        ult = izq;
+        for (int i = izq+1; i <= der; i++) {
+            if (Utilidades.comparar(lista.obtenerPorPosicion(i), lista.obtenerPorPosicion(izq), atributo)) {
+                temp = lista.obtenerPorPosicion(++ult);
+                lista.editar(ult, lista.obtenerPorPosicion(i));
+                lista.editar(i, temp);
+            }
+        }
+        temp = lista.obtenerPorPosicion(izq);
+        lista.editar(izq, lista.obtenerPorPosicion(ult));
+        lista.editar(ult, temp);
+        qsortInt(izq, ult-1, lista, atributo);
+        qsortInt(ult+1, der, lista, atributo);
+        return lista;
+    }
 
-    public static Boolean comparar(String uno, Object obj, String atributoClase) {
-        String dos = extraccionDato(obj, atributoClase);
+    public static Boolean comparar(Object dato1, Object dato2, String atributoClase) {
+        String uno = extraccionDato(dato1, atributoClase);
+        String dos = extraccionDato(dato2, atributoClase);
         return (dos != null) ? uno.equals(dos.toString()) : false;
     }
-
-    public static int comparareTo(String uno, Object obj, String atributoClase) {
-        String dos = extraccionDato(obj, atributoClase);
-        System.out.println("COMPARAR DATOS " + uno + "   " + dos);
-        return (dos != null) ? uno.compareTo(dos.toString()) : -1;
-    }
-
-    public Boolean compararRigido(String uno, String dos) {
-        return uno.equals(dos);
-    }
-
-    public static String obtenerStringTipos(ArrayList<String> tipos) {
-        String texto = "";
-        for (int i = 0; i < tipos.size(); i++) {
-            texto = texto + tipos.get(i) + " ";
-        }
-        return texto;
-    }
-
-    public static Boolean datoRepetido(ListaSimple lista, String atributoClase, String dato) {
+    
+    public static Boolean datoRepetido(ListaSimple lista, String atributoClase, String dato){
         Boolean existe = false;
         if (!lista.estaVacia()) {
             for (int i = 0; i < lista.tamanio(); i++) {
@@ -170,43 +164,43 @@ public class Utilidades {
         }
         return existe;
     }
-
-    public static double montoMulta(String tipoFalta) {
+    
+    public static double montoMulta(String tipoFalta){
         double monto = 0.00;
         double sueldoBasico = 400.00;
         if (tipoFalta.equalsIgnoreCase("Leve de primera clase")) {
             monto = sueldoBasico * 0.05;
-        } else if (tipoFalta.equalsIgnoreCase("Leve de segunda clase")) {
+        }else if(tipoFalta.equalsIgnoreCase("Leve de segunda clase")){
             monto = sueldoBasico * 0.1;
-        } else if (tipoFalta.equalsIgnoreCase("Leve de tercera clase")) {
+        }else if (tipoFalta.equalsIgnoreCase("Leve de tercera clase")) {
             monto = sueldoBasico * 0.15;
-        } else if (tipoFalta.equalsIgnoreCase("Grave de primera clase")) {
+        }else if(tipoFalta.equalsIgnoreCase("Grave de primera clase")){
             monto = sueldoBasico * 0.3;
-        } else if (tipoFalta.equalsIgnoreCase("Grave de segunda clase")) {
+        }else if (tipoFalta.equalsIgnoreCase("Grave de segunda clase")) {
             monto = sueldoBasico * 0.4;
-        } else if (tipoFalta.equalsIgnoreCase("Grave de tercera clase")) {
+        }else if(tipoFalta.equalsIgnoreCase("Grave de tercera clase")){
             monto = sueldoBasico * 0.5;
-        } else if (tipoFalta.equalsIgnoreCase("Muy grave")) {
+        }else if (tipoFalta.equalsIgnoreCase("Muy grave")) {
             monto = sueldoBasico;
         }
         return monto;
     }
-
-    public static double puntosQuitar(String tipoFalta) {
+    
+    public static double puntosQuitar(String tipoFalta){
         double puntos = 0.00;
         if (tipoFalta.equalsIgnoreCase("Leve de primera clase")) {
             puntos = 1.5;
-        } else if (tipoFalta.equalsIgnoreCase("Leve de segunda clase")) {
+        }else if(tipoFalta.equalsIgnoreCase("Leve de segunda clase")){
             puntos = 3;
-        } else if (tipoFalta.equalsIgnoreCase("Leve de tercera clase")) {
+        }else if (tipoFalta.equalsIgnoreCase("Leve de tercera clase")) {
             puntos = 4.5;
-        } else if (tipoFalta.equalsIgnoreCase("Grave de primera clase")) {
+        }else if(tipoFalta.equalsIgnoreCase("Grave de primera clase")){
             puntos = 6;
-        } else if (tipoFalta.equalsIgnoreCase("Grave de segunda clase")) {
+        }else if (tipoFalta.equalsIgnoreCase("Grave de segunda clase")) {
             puntos = 7.5;
-        } else if (tipoFalta.equalsIgnoreCase("Grave de tercera clase")) {
+        }else if(tipoFalta.equalsIgnoreCase("Grave de tercera clase")){
             puntos = 9;
-        } else if (tipoFalta.equalsIgnoreCase("Muy grave")) {
+        }else if (tipoFalta.equalsIgnoreCase("Muy grave")) {
             puntos = 10;
         }
         return puntos;

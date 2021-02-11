@@ -10,7 +10,6 @@ package Modelo;
  * @author ASUS
  */
 public class Rol {
-
     private long idRol;
     private String tipo;
     private String descripcion;

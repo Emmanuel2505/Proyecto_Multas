@@ -47,7 +47,6 @@ public class Componentes extends JFrame {
     
     public static void cargarCombo(JComboBox cb){
         cb.removeAllItems();
-        cb.addItem("");
         for (int i = 0; i < Utilidades.tipoVehiculo().length; i++) {
             cb.addItem(Utilidades.tipoVehiculo()[i]);
         }

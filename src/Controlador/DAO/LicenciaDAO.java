@@ -56,35 +56,21 @@ public class LicenciaDAO extends AdaptadorDAO{
         return dato;
     }
     
-    public void cambiarEstado(long idPersona, String direccion) {
+    public Boolean editar(long idPersona, Object dato) {
         ListaSimple lista = listar();
         boolean estado;
-        for (int i = 0; i < listar().tamanio(); i++) {
-            Licencia aux = (Licencia) listar().obtenerPorPosicion(i);
-            if (aux.getIdPersona()== idPersona) {
-                if (aux.isEstadoLicencia()) {
-                    estado = false;
-                } else {
-                    estado = true;
-                }
-                aux.setEstadoLicencia(estado);
-                lista.editar(i, aux);
+        for (int i = 0; i < lista.tamanio(); i++) {
+            Licencia aux = (Licencia) lista.obtenerPorPosicion(i);
+            if (aux.getIdPersona() == idPersona) {
+                lista.editar(i, dato);
+                break;
             }
         }
-        File fichero = new File(direccion);
         try {
-            PrintWriter pw = new PrintWriter(fichero);
-            pw.print("");
-            pw.close();
+            this.modificar(lista);
+            return true;
         } catch (Exception e) {
-        }
-        for (int i = lista.tamanio() - 1; i >= 0; i--) {
-            try {
-                Licencia aux = (Licencia) lista.obtenerPorPosicion(i);
-                this.guardar(aux);
-            } catch (Exception e) {
-                System.out.println("no se guardo");
-            }
+            return false;
         }
     }
 }

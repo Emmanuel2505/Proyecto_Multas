@@ -21,7 +21,6 @@ public class Normativa {
         this.rubro = rubro;
         this.descripcion = descripcion;
         this.tipoFalta = tipoFalta;
-        
     }
 
     public String getRubro() {

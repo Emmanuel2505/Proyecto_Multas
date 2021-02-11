@@ -10,7 +10,6 @@ package Modelo;
  * @author ASUS
  */
 public class Persona {
-
     private long idPersona;
     private String cedula;
     private String nombre;
@@ -95,4 +94,11 @@ public class Persona {
     public void setIdRol(int idRol) {
         this.idRol = idRol;
     }
+
+    @Override
+    public String toString() {
+        return (cedula + " " + nombre + " " + apellido + " " + direccion + " " + telefono + " " + idRol);
+    }
+    
+    
 }

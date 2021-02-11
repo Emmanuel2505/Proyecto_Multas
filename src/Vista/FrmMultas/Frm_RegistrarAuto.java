@@ -11,8 +11,10 @@ import Controlador.DAO.VehiculoDAO;
 import Controlador.ListaSimple;
 import Controlador.Utilidades;
 import Modelo.Persona;
+import Modelo.Vehiculo;
 import Vista.Frame_Menu_Login;
 import Vista.Tablas.TablaVehiculos;
+import Vista.Tablas.TablaVehiculosEstado;
 import Vista.componentes.Componentes;
 import java.awt.event.ItemEvent;
 import javax.swing.JOptionPane;
@@ -29,38 +31,37 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
     PersonaDAO personaD = new PersonaDAO("Datos");
     MarcaDAO marcaD = new MarcaDAO("Componentes");
     TablaVehiculos modelo = new TablaVehiculos();
+    TablaVehiculosEstado modeloEstado = new TablaVehiculosEstado();
     VehiculoDAO vehiculoD = new VehiculoDAO("Datos");
-    private Persona persona;
-    private int rol;
+    ListaSimple lista = new ListaSimple();
+    int rol;
 
     public Frm_RegistrarAuto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         Componentes.cargarCombo(cbPersona, personaD.listar(), "cedula");
         Componentes.cargarCombo(cbMarca, marcaD.listar(), "nombre");
-        cargarTabla(vehiculoD.listar());
+        lista = vehiculoD.listar();
+        cargarTabla();
         this.setLocationRelativeTo(null);
     }
 
-    public Frm_RegistrarAuto(java.awt.Frame parent, boolean modal, long idPersona) {
+    public Frm_RegistrarAuto(java.awt.Frame parent, boolean modal, long idRol) {
         super(parent, modal);
         initComponents();
-        if (idPersona == -1) {
-            this.rol = 1;
-        } else {
-            this.rol = persona.getIdRol();
-            /*jPanel2.setVisible(false);
-            lbRol.setVisible(false);
-            cbRol.setSelectedIndex(2);
-            cbRol.setVisible(false);
-            jButtonEditar.setVisible(false);
-            jButtonEliminar.setVisible(false);*/
-        }
-        persona = (Persona) personaD.obtenerPersona(idPersona);
         Componentes.cargarCombo(cbPersona, personaD.listar(), "cedula");
         Componentes.cargarCombo(cbMarca, marcaD.listar(), "nombre");
-        cargarTabla(vehiculoD.listar());
         this.setLocationRelativeTo(null);
+        if (idRol == 2) {
+            this.rol = 2;
+            jButtonEditar.setVisible(false);
+            jButtonEliminar.setVisible(false);
+            lista = vehiculoD.obtenerListaPersona(true);
+        } else if (idRol == 1) {
+            this.rol = 1;
+            lista = vehiculoD.listar();
+        }
+        cargarTabla();
     }
 
     public void limpiar() {
@@ -68,15 +69,22 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
         tfColor.setText(null);
     }
 
-    public void cargarTabla(ListaSimple lista) {
-        modelo.setListaPersona(personaD);
-        modelo.setListaVehiculos(lista);
-        tbVehiculos.setModel(modelo);
-        tbVehiculos.updateUI();
+    public void cargarTabla() {
+        if (this.rol == 2) {
+            modelo.setListaPersona(personaD);
+            modelo.setListaVehiculos(lista);
+            tbVehiculos.setModel(modelo);
+            tbVehiculos.updateUI();
+        } else if (this.rol == 1) {
+            modeloEstado.setListaPersona(personaD);
+            modeloEstado.setListaVehiculos(lista);
+            tbVehiculos.setModel(modeloEstado);
+            tbVehiculos.updateUI();
+        }
     }
 
     public void FrameMultas() {
-        Frm_RegistarMultas fm = new Frm_RegistarMultas(null, true, persona.getIdPersona());
+        Frm_RegistarMultas fm = new Frm_RegistarMultas(null, true);
         fm.setVisible(true);
     }
 
@@ -115,6 +123,8 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
         jButton2 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tbVehiculos = new javax.swing.JTable();
+        jButtonEditar = new javax.swing.JButton();
+        jButtonEliminar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setForeground(new java.awt.Color(204, 204, 255));
@@ -173,7 +183,7 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
         });
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Imagenes/114.png"))); // NOI18N
-        jButton2.setText("Salir");
+        jButton2.setText(" Cancelar");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -193,12 +203,21 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
         ));
         jScrollPane1.setViewportView(tbVehiculos);
 
+        jButtonEditar.setText("Editar");
+
+        jButtonEliminar.setText("Eliminar");
+        jButtonEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEliminarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(270, 270, 270)
                         .addComponent(jLabel1))
@@ -222,9 +241,6 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addComponent(lbTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(270, 270, 270)
-                        .addComponent(jLabel6))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addComponent(jLabel7)
                         .addGap(18, 18, 18)
@@ -239,13 +255,21 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
                         .addGap(23, 23, 23)
                         .addComponent(tfColor, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(179, 179, 179)
-                        .addComponent(jButton1)
-                        .addGap(210, 210, 210)
-                        .addComponent(jButton2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 737, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 737, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(94, 94, 94)
+                        .addComponent(jButton1)
+                        .addGap(73, 73, 73)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jButtonEditar)
+                                .addGap(119, 119, 119)
+                                .addComponent(jButtonEliminar)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton2)
+                                .addGap(11, 11, 11))
+                            .addComponent(jLabel6))))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -290,15 +314,15 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
                     .addComponent(tfColor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(39, 39, 39)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
                     .addComponent(jButton1)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(jButton2)))
+                    .addComponent(jButtonEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(18, 18, 18))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -322,14 +346,24 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
                 lbNombre.setText("");
                 lbApellido.setText("");
                 lbTelefono.setText("");
-                cargarTabla(vehiculoD.listar());
+                if (this.rol == 2) {
+                    lista = vehiculoD.obtenerListaPersona(true);
+                } else if (this.rol == 1) {
+                    lista = vehiculoD.listar();
+                }
+                cargarTabla();
             } else {
                 try {
-                    Persona dato = (Persona) personaD.listar().obtenerPorPosicion(cbPersona.getSelectedIndex() - 1);
+                    Persona dato = (Persona) (Utilidades.obtenerDato(personaD.listar(), "cedula", cbPersona.getSelectedItem().toString()));
                     lbNombre.setText(dato.getNombre());
                     lbApellido.setText(dato.getApellido());
                     lbTelefono.setText(dato.getTelefono());
-                    cargarTabla(vehiculoD.obtenerListaPersona(dato.getIdPersona()));
+                    if (this.rol == 2) {
+                        lista = vehiculoD.obtenerListaPersona(dato.getIdPersona(), true);
+                    } else if (this.rol == 1) {
+                        lista = vehiculoD.obtenerListaPersona(dato.getIdPersona());
+                    }
+                    cargarTabla();
                 } catch (Exception e) {
                 }
             }
@@ -346,10 +380,16 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
                 vehiculoD.getVehiculo().setModelo(String.valueOf(cbMarca.getSelectedItem()));
                 vehiculoD.getVehiculo().setColor(tfColor.getText());
                 vehiculoD.getVehiculo().setIdPersona(dato.getIdPersona());
-                if (vehiculoD.guardar(String.valueOf(cbPersona.getSelectedItem()))) {
+                System.out.println(dato.getIdPersona());
+                if (vehiculoD.guardar(dato.getIdPersona())) {
                     JOptionPane.showConfirmDialog(null, "Se guardo correctamente");
                     limpiar();
-                    cargarTabla(vehiculoD.obtenerListaPersona(dato.getIdPersona()));
+                    if (this.rol == 2) {
+                        lista = vehiculoD.obtenerListaPersona(dato.getIdPersona(), true);
+                    } else if (this.rol == 1) {
+                        lista = vehiculoD.listar();
+                    }
+                    cargarTabla();
                 } else {
                     JOptionPane.showConfirmDialog(null, "No se pudo guardar");
                 }
@@ -361,14 +401,31 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        if (rol != 1) {
+        if (rol == 2) {
             this.dispose();
             FrameMultas();
-        } else {
+        } else if (rol == 1) {
             this.dispose();
             FrameMenu();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButtonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarActionPerformed
+        // TODO add your handling code here:
+        int fila = tbVehiculos.getSelectedRow();
+        if (fila >= 0) {
+            Vehiculo temp = (Vehiculo) vehiculoD.listar().obtenerPorPosicion(fila);
+            vehiculoD.cambiarEstado(temp.getIdVehiculo(), "Datos/Vehiculo.json");
+            if (this.rol == 2) {
+                lista = vehiculoD.obtenerListaPersona(temp.getIdPersona(), true);
+            } else if (this.rol == 1) {
+                lista = vehiculoD.listar();
+            }
+            cargarTabla();
+        } else {
+            JOptionPane.showConfirmDialog(null, "Seleccione la persona que desea eliminar");
+        }
+    }//GEN-LAST:event_jButtonEliminarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -417,6 +474,8 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
     private javax.swing.JComboBox<String> cbPersona;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButtonEditar;
+    private javax.swing.JButton jButtonEliminar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

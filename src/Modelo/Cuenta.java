@@ -10,7 +10,6 @@ package Modelo;
  * @author ASUS
  */
 public class Cuenta {
-
     private long idCuenta;
     private boolean estadoCuenta;
     private long idPersona;
@@ -49,7 +48,7 @@ public class Cuenta {
     public void setIdPersona(long idPersona) {
         this.idPersona = idPersona;
     }
-    
+
     public String getUsuario() {
         return usuario;
     }
@@ -65,5 +64,4 @@ public class Cuenta {
     public void setContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
     }
-
 }

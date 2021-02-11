@@ -22,10 +22,7 @@ public class TipoLicencia {
         this.categoria = categoria;
         this.tipo = tipo;
         this.caracteristicas = caracteristicas;
-    }
-    
-    
-    
+    }            
 
     public String getCategoria() {
         return categoria;

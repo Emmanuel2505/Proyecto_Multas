@@ -13,10 +13,9 @@ import java.util.Date;
  * @author ASUS
  */
 public class Licencia {
-
     private long idLicencia;
     private String NroLicencia;
-    private double puntos;
+    private float puntos;
     private long idPersona;
     private boolean estadoLicencia;
     private String fechaCaducidad;
@@ -48,11 +47,11 @@ public class Licencia {
         this.NroLicencia = NroLicencia;
     }
 
-    public double getPuntos() {
+    public float getPuntos() {
         return puntos;
     }
 
-    public void setPuntos(double puntos) {
+    public void setPuntos(float puntos) {
         this.puntos = puntos;
     }
 

@@ -51,14 +51,6 @@ public class PersonaDAO extends AdaptadorDAO {
             return false;
         }
     }
-    
-    public ListaSimple clonar(ListaSimple lista) {
-        ListaSimple ls = new ListaSimple();
-        for (int i = 0; i < lista.tamanio(); i++) {
-            ls.insertar(lista.obtenerPorPosicion(i));
-        }
-        return ls;
-    }
 
     public Object obtenerPersona(long idPersona) {
         Object dato = null;
@@ -117,12 +109,12 @@ public class PersonaDAO extends AdaptadorDAO {
         return lista;
     }
 
-    public void cambiarEstado(long idPersona, String direccion) {
+    public void cambiarEstado(long idPersona) {
         ListaSimple lista = listar();
         boolean estado;
-        for (int i = 0; i < listar().tamanio(); i++) {
-            Persona aux = (Persona) listar().obtenerPorPosicion(i);
-            if (aux.getIdPersona()== idPersona) {
+        for (int i = 0; i < lista.tamanio(); i++) {
+            Persona aux = (Persona) lista.obtenerPorPosicion(i);
+            if (aux.getIdPersona() == idPersona) {
                 if (aux.isEstadoPersona()) {
                     estado = false;
                 } else {
@@ -130,22 +122,32 @@ public class PersonaDAO extends AdaptadorDAO {
                 }
                 aux.setEstadoPersona(estado);
                 lista.editar(i, aux);
+                break;
             }
         }
-        File fichero = new File(direccion);
         try {
-            PrintWriter pw = new PrintWriter(fichero);
-            pw.print("");
-            pw.close();
+            this.modificar(lista);
+            System.out.println("cambios");
         } catch (Exception e) {
+            System.out.println("no se pudo modificar");
         }
-        for (int i = lista.tamanio() - 1; i >= 0; i--) {
-            try {
-                Persona aux = (Persona) lista.obtenerPorPosicion(i);
-                this.guardar(aux);
-            } catch (Exception e) {
-                System.out.println("no se guardo");
+    }
+
+    public Boolean editar(long idPersona, Object dato) {
+        ListaSimple lista = listar();
+        boolean estado;
+        for (int i = 0; i < lista.tamanio(); i++) {
+            Persona aux = (Persona) lista.obtenerPorPosicion(i);
+            if (aux.getIdPersona() == idPersona) {
+                lista.editar(i, dato);
+                break;
             }
+        }
+        try {
+            this.modificar(lista);
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 }

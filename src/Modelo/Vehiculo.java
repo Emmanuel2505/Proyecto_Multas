@@ -10,7 +10,6 @@ package Modelo;
  * @author ASUS
  */
 public class Vehiculo {
-
     private long idVehiculo;
     private long idPersona;
     private String modelo;

@@ -6,28 +6,20 @@
 package Controlador;
 
 /**
- * 
- * @author Eutimio Arevalo, Roy Leon, James Romero
+ *
+ * @author ASUS
  */
 public class ListaSimple {
-    
     public Nodo cabecera;
 
     public ListaSimple() {
         this.cabecera = null;
     }
-    /**
-     * Metodo que verifica si la lista simple esta vacia
-     * @return Dato Booleano
-     */
+    
     public boolean estaVacia(){
         return (this.cabecera == null);
     }
     
-    /**
-     * Metodo para calcular el tamaño de la lista simple
-     * @return El tamaño de la lista 
-     */
     public int tamanio(){
         int tamanio = 0;
         if (!estaVacia()) {
@@ -40,10 +32,6 @@ public class ListaSimple {
         return tamanio;
     }
     
-    /**
-     * Metodo para insertar un valor en la lista 
-     * @param dato 
-     */
     public void insertar(Object dato){
         if (dato == null)
             new NullPointerException("Se debe ingresar un Objeto");
@@ -51,7 +39,6 @@ public class ListaSimple {
         temp.setSiguiente(cabecera);
         cabecera = temp;
     }
-  
     
     public Object obtenerPorPosicion(int posicion){
         Object dato = null;
@@ -66,31 +53,6 @@ public class ListaSimple {
                 dato = temp.getDato();
         }
         return dato;
-    }
-    
-    public Object buscarporDato(String dato) {
-        Object aux = null;
-        String pos = "";
-        if (estaVacia()) {
-            System.out.println("Lista Vacia");
-        } else {
-            Nodo iterador = cabecera;
-            int cont = 0;
-            while (iterador != null) {
-                if (iterador.getDato().equals(dato)) {
-                    aux = iterador.getDato();
-                    pos += cont + ";";
-                }
-                cont++;
-                iterador = iterador.getSiguiente();
-            }
-            if (pos != "") {
-                System.out.println("Se ecnotro en la posicion: " + pos);
-            } else {
-                System.out.println("No existe dato");
-            }
-        }
-        return aux;
     }
     
     public void mostrarDatos(){

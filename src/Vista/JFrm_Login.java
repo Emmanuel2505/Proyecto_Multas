@@ -204,7 +204,7 @@ public class JFrm_Login extends javax.swing.JDialog {
             try {
                 Cuenta cuenta = (Cuenta) Utilidades.obtenerDato(cuentaD.listar(), "usuario", tfUsuario.getText());
                 Persona persona = (Persona)personaD.obtenerPersona(cuenta.getIdPersona());
-                if ((tfClave.getText().equals(cuenta.getContrasenia()) && tfUsuario.getText().equals(cuenta.getUsuario())) && cuenta.isEstadoCuenta()) {
+                if ((tfClave.getText().equals(cuenta.getContrasenia()) && tfUsuario.getText().equals(cuenta.getUsuario())) && persona.getIdRol() == 2) {
                     JOptionPane.showMessageDialog(null, "Bienvenido "+persona.getNombre()+" "+persona.getApellido());
                     this.dispose();
                     new Frame_Menu_Login(cuenta.getIdPersona()).setVisible(true);
@@ -249,7 +249,6 @@ public class JFrm_Login extends javax.swing.JDialog {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(JFrm_Login.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the dialog */
