@@ -59,9 +59,9 @@ public class MultaDAO extends AdaptadorDAO{
     public void cambiarEstado(long idPersona, String direccion) {
         ListaSimple lista = listar();
         boolean estado;
-        for (int i = 0; i < listar().tamanio(); i++) {
-            Multa aux = (Multa) listar().obtenerPorPosicion(i);
-            if (aux.getIdPersona()== idPersona) {
+        for (int i = 0; i < lista.tamanio(); i++) {
+            Multa aux = (Multa) lista.obtenerPorPosicion(i);
+            if (aux.getIdPersona() == idPersona) {
                 if (aux.isEstadoMulta()) {
                     estado = false;
                 } else {
@@ -69,50 +69,28 @@ public class MultaDAO extends AdaptadorDAO{
                 }
                 aux.setEstadoMulta(estado);
                 lista.editar(i, aux);
+                break;
             }
         }
-        File fichero = new File(direccion);
         try {
-            PrintWriter pw = new PrintWriter(fichero);
-            pw.print("");
-            pw.close();
+            this.modificar(lista);
+            System.out.println("cambios");
         } catch (Exception e) {
-        }
-        for (int i = lista.tamanio() - 1; i >= 0; i--) {
-            try {
-                Multa aux = (Multa) lista.obtenerPorPosicion(i);
-                this.guardar(aux);
-            } catch (Exception e) {
-                System.out.println("no se guardo");
-            }
+            System.out.println("no se pudo modificar");
         }
     }
     
     public Boolean editar(long idPersona, Object dato, String direccion) {
+        ListaSimple lista = listar();
+        for (int i = 0; i < lista.tamanio(); i++) {
+            Multa aux = (Multa) lista.obtenerPorPosicion(i);
+            if (aux.getIdPersona() == idPersona) {
+                lista.editar(i, dato);
+                break;
+            }
+        }
         try {
-            ListaSimple lista = listar();
-            boolean estado;
-            for (int i = 0; i < listar().tamanio(); i++) {
-                Multa aux = (Multa) listar().obtenerPorPosicion(i);
-                if (aux.getIdPersona() == idPersona) {
-                    lista.editar(i, dato);
-                }
-            }
-            File fichero = new File(direccion);
-            try {
-                PrintWriter pw = new PrintWriter(fichero);
-                pw.print("");
-                pw.close();
-            } catch (Exception e) {
-            }
-            for (int i = lista.tamanio() - 1; i >= 0; i--) {
-                try {
-                    Multa aux = (Multa) lista.obtenerPorPosicion(i);
-                    this.guardar(aux);
-                } catch (Exception e) {
-                    System.out.println("no se guardo");
-                }
-            }
+            this.modificar(lista);
             return true;
         } catch (Exception e) {
             return false;

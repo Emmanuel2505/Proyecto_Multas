@@ -41,28 +41,27 @@ public class AdaptadorDAO implements InterfazDAO{
 
     @Override
     public void guardar(Object o) throws Exception {
-
         ListaSimple lista = listar();
         lista.insertar(o);
         conexion.getXtrStream().toXML(lista, new FileOutputStream(conexion.getDireccion()+ File.separatorChar + clazz.getSimpleName() + ".json"));
-
     }
 
-     @Override
-    public void modificar(ListaSimple lista, String direccion) {
-        File fichero = new File(direccion);
-         try {
-             PrintWriter pw = new PrintWriter(fichero);
-             pw.print("");
-             pw.close();
-         } catch (Exception e) {
-         }
-            for (int i = 0; i < lista.tamanio(); i++) {
-                try {
-                    this.guardar(lista.obtenerPorPosicion(i));
-                } catch (Exception e) {
-                    System.out.println("no se modificar");
-                }
-            }
+    @Override
+    public void modificar(ListaSimple lista) throws Exception {
+          conexion.getXtrStream().toXML(lista, new FileOutputStream(conexion.getDireccion()+ File.separatorChar + clazz.getSimpleName() + ".json"));
+//        File fichero = new File(direccion);
+//         try {
+//             PrintWriter pw = new PrintWriter(fichero);
+//             pw.print("");
+//             pw.close();
+//         } catch (Exception e) {
+//         }
+//            for (int i = 0; i < lista.tamanio(); i++) {
+//                try {
+//                    this.guardar(lista.obtenerPorPosicion(i));
+//                } catch (Exception e) {
+//                    System.out.println("no se modificar");
+//                }
+//            }
     }
 }
