@@ -23,5 +23,10 @@ public enum  TipoVehiculo {
     Vehiculo,
     Tractor,
     Volqueta,
-    Trolebus,
+    Trolebus,;
+    
+    @Override    
+    public String toString() {
+        return (Vehiculo_de_traccion_animal + "" + Ciclomotor + "" + Motocicleta + ""+ Motocarro +""+ Tricimoto +""+ Quad_Atv +""+ Autobus + "" + Camion + "" + Camioneta + "" +Furgon+ "" + Vehiculo + "" + Tractor + ""+Volqueta+""+Trolebus+"");
+    }
 }

@@ -20,6 +20,7 @@ public class Multa {
     private long idAgente;
     private long idPersona;
     private boolean estadoMulta;
+    private String observaciones;
     private long idVehiculo;
 
     public Multa() {
@@ -35,13 +36,14 @@ public class Multa {
         this.idVehiculo = -1;
     }
 
-    public Multa(double valorMulta, Date fecha, double totalPuntos, String tipoMulta, String agente, long idPersona, long idVehiculo) {
+    public Multa(double valorMulta, Date fecha, double totalPuntos, String tipoMulta, String agente, long idPersona, String observaciones, long idVehiculo) {
         this.valorMulta = valorMulta;
         this.fecha = fecha;
         this.totalPuntos = totalPuntos;
         this.tipoMulta = tipoMulta;
         this.idAgente = idAgente;
         this.idPersona = idPersona;
+        this.observaciones = observaciones;
         this.idVehiculo = idVehiculo;
     }
 
@@ -107,6 +109,14 @@ public class Multa {
 
     public void setEstadoMulta(boolean estadoMulta) {
         this.estadoMulta = estadoMulta;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
     }
 
     public long getIdVehiculo() {

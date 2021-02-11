@@ -201,9 +201,19 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tbVehiculos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbVehiculosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbVehiculos);
 
         jButtonEditar.setText("Editar");
+        jButtonEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditarActionPerformed(evt);
+            }
+        });
 
         jButtonEliminar.setText("Eliminar");
         jButtonEliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -372,7 +382,7 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if (tfColor.getText().length() > 0 && tfPlaca.getText().length() > 0 && cbPersona.getSelectedIndex() != 0 && cbPersona.getSelectedIndex() != 0) {
+        if (tfColor.getText().length() > 0 && tfPlaca.getText().length() > 0 && cbMarca.getSelectedIndex() != 0 && cbPersona.getSelectedIndex() != 0) {
             if (!Utilidades.datoRepetido(vehiculoD.listar(), "placa", tfPlaca.getText())) {
                 vehiculoD.setVehiculo(null);
                 Persona dato = (Persona) (Utilidades.obtenerDato(personaD.listar(), "cedula", cbPersona.getSelectedItem().toString()));
@@ -397,6 +407,7 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
         } else {
             JOptionPane.showMessageDialog(null, "Llene todos los parametros");
         }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -426,6 +437,53 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
             JOptionPane.showConfirmDialog(null, "Seleccione la persona que desea eliminar");
         }
     }//GEN-LAST:event_jButtonEliminarActionPerformed
+
+    private void jButtonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarActionPerformed
+        int fila = tbVehiculos.getSelectedRow();
+        if (fila >= 0) {
+            Vehiculo vehiculo = (Vehiculo) lista.obtenerPorPosicion(fila);
+            Vehiculo Tempvehiculo = new Vehiculo();
+            if (tfColor.getText().length() > 0 && tfPlaca.getText().length() > 0 && cbMarca.getSelectedIndex() != 0) {
+                Tempvehiculo.setIdVehiculo(vehiculo.getIdVehiculo());
+                Tempvehiculo.setIdVehiculo(vehiculo.getIdPersona());
+                Tempvehiculo.setEstadoVehiculo(vehiculo.isEstadoVehiculo());
+                Tempvehiculo.setPlaca(tfPlaca.getText());
+                Tempvehiculo.setModelo(String.valueOf(cbMarca.getSelectedItem()));
+                Tempvehiculo.setColor(tfColor.getText());
+                if(vehiculoD.editar(vehiculo.getIdVehiculo(), Tempvehiculo)){
+                     JOptionPane.showMessageDialog(null, "Se edito correctamente");
+                     cargarTabla();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Llene todos los parametros");
+            }
+
+        } else {
+            JOptionPane.showConfirmDialog(null, "Seleccione los datos del vehiculo que desea editar");
+        }
+    }
+
+    private void jButtonEliminarTipoActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+//        int fila = tbTipos.getSelectedRow();
+//        if (fila >= 0) {
+//            tipos.remove(fila);
+//            cargarTablaTipos();
+//        } else {
+//            JOptionPane.showConfirmDialog(null, "Seleccione el tipo de licencia que desea eliminar");
+//        }
+    }//GEN-LAST:event_jButtonEditarActionPerformed
+
+    private void tbVehiculosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbVehiculosMouseClicked
+        int fila = tbVehiculos.getSelectedRow();
+        if (fila >= 0) {
+            Vehiculo vehiculo = (Vehiculo) lista.obtenerPorPosicion(fila);
+            cbMarca.setSelectedIndex(Utilidades.obtenerPosicionDato(marcaD.listar(), "nombre", vehiculo.getModelo()) + 1);
+            tfColor.setText(vehiculo.getColor());
+            tfPlaca.setText(vehiculo.getPlaca());
+
+        }
+    }//GEN-LAST:event_tbVehiculosMouseClicked
 
     /**
      * @param args the command line arguments

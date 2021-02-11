@@ -205,4 +205,17 @@ public class Utilidades {
         }
         return puntos;
     }
+    public static int obtenerPosicionDato(ListaSimple lista, String AtributoClase, String palabra){
+        int aux = -1;
+        if (!lista.estaVacia()) {
+            for (int i = 0; i < lista.tamanio(); i++) {
+                String dato = extraccionDato(lista.obtenerPorPosicion(i), AtributoClase);
+                if (dato.equals(palabra)) {
+                    aux = i;
+                    break;
+                }
+            }
+        }
+        return aux;
+    }
 }

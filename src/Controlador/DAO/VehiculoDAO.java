@@ -115,11 +115,11 @@ public class VehiculoDAO extends AdaptadorDAO{
         }
     }
     
-    public Boolean editar(long idPersona, Object dato, String direccion) {
+    public Boolean editar(long idVehiculo, Object dato) {
         ListaSimple lista = listar();
         for (int i = 0; i < lista.tamanio(); i++) {
             Vehiculo aux = (Vehiculo) lista.obtenerPorPosicion(i);
-            if (aux.getIdPersona() == idPersona) {
+            if (aux.getIdVehiculo()== idVehiculo) {
                 lista.editar(i, dato);
                 break;
             }
