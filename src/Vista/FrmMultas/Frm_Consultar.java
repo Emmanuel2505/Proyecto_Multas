@@ -5,12 +5,16 @@
  */
 package Vista.FrmMultas;
 
+import Controlador.DAO.LicenciaDAO;
 import Controlador.DAO.MultaDAO;
 import Controlador.DAO.PersonaDAO;
 import Controlador.DAO.VehiculoDAO;
+import Controlador.Utilidades;
+import Modelo.Licencia;
 import Modelo.Multa;
 import Modelo.Persona;
 import Modelo.Vehiculo;
+import Vista.Tablas.TablaMultas;
 import javax.swing.JOptionPane;
 
 /**
@@ -22,7 +26,9 @@ public class Frm_Consultar extends javax.swing.JDialog {
     VehiculoDAO vehiculoD = new VehiculoDAO("Datos");
     PersonaDAO personaD = new PersonaDAO("Datos");
     MultaDAO multaD = new MultaDAO("Datos");
+    LicenciaDAO licenciaD = new LicenciaDAO("Datos");
     String mensaje = "";
+    TablaMultas tmodel = new TablaMultas();
 
     /**
      * Creates new form Frm_Consultar
@@ -31,10 +37,18 @@ public class Frm_Consultar extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
+        jTextArea1.setEditable(false);
+        jnombre.setText("Consultar Infracción");
         //Componentes.cargarCombo(cbCedula, personaD.listar(), "cedula");
     }
 
-    
+    public void cargarTabla() {
+        tmodel.setListaMultas(multaD.listar());
+        tmodel.setPersonas(personaD);
+        tmodel.setListaLicencia(licenciaD);
+        tMultas.setModel(tmodel);
+        tMultas.updateUI();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -46,7 +60,7 @@ public class Frm_Consultar extends javax.swing.JDialog {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jnombre = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         cbCedula = new javax.swing.JComboBox<>();
         jLabel3 = new javax.swing.JLabel();
@@ -54,6 +68,8 @@ public class Frm_Consultar extends javax.swing.JDialog {
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tMultas = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -73,8 +89,8 @@ public class Frm_Consultar extends javax.swing.JDialog {
         jPanel1.setForeground(new java.awt.Color(153, 153, 255));
         jPanel1.setToolTipText("");
 
-        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jLabel1.setText("Consulta de Infracción");
+        jnombre.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jnombre.setText("Consulta de Infracción");
 
         jLabel2.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel2.setText("Tipo de documentación");
@@ -100,6 +116,19 @@ public class Frm_Consultar extends javax.swing.JDialog {
         jTextArea1.setRows(5);
         jScrollPane1.setViewportView(jTextArea1);
 
+        tMultas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane2.setViewportView(tMultas);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -107,42 +136,50 @@ public class Frm_Consultar extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(cbCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(tfconsulta, javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE))))
+                        .addGap(274, 274, 274)
+                        .addComponent(jnombre))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(62, 62, 62)
-                        .addComponent(jButton1)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 204, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(200, 200, 200))
+                        .addGap(35, 35, 35)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanel1Layout.createSequentialGroup()
+                                        .addComponent(cbCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(42, 42, 42))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(tfconsulta)
+                                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 681, Short.MAX_VALUE)
+                                    .addComponent(jScrollPane1)))
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jLabel1)
-                .addGap(33, 33, 33)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addContainerGap()
+                .addComponent(jnombre)
+                .addGap(23, 23, 23)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
-                        .addComponent(cbCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
+                        .addComponent(cbCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
                         .addComponent(tfconsulta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(27, 27, 27)
+                        .addGap(18, 18, 18)
                         .addComponent(jButton1))
-                    .addComponent(jScrollPane1))
-                .addContainerGap(23, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(107, 107, 107))
         );
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 255));
@@ -190,10 +227,10 @@ public class Frm_Consultar extends javax.swing.JDialog {
                     .addComponent(jLabel4)
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jLabel8)
-                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE)
+                        .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jTextField3))
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(54, Short.MAX_VALUE))
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(195, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -210,39 +247,39 @@ public class Frm_Consultar extends javax.swing.JDialog {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel6)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(36, 36, 36)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel8)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(37, Short.MAX_VALUE))
+                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(32, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -250,17 +287,51 @@ public class Frm_Consultar extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if(tfconsulta.getText().length() > 0){
-            if(cbCedula.getSelectedIndex() == 0){
-                Persona p = (Persona) personaD.obtenerPersona(tfconsulta.getText());
-                Multa m = (Multa)multaD.obtenerPersona(p.getIdPersona());
-                jTextArea1.setText("Persona: "+p.getNombre()+" "+p.getApellido()+"\n"
-                        + "Direccion: "+p.getDireccion()+" Cedula: "+p.getCedula());
-            }else if(cbCedula.getSelectedIndex() == 1){
-                Vehiculo v = (Vehiculo) vehiculoD.obtenerVehiculo(tfconsulta.getText());
-                /*Multa m = (Multa)multaD.obtenerPersona(v.getIdPersona());
-                jTextArea1.setText("Persona: "+p.getNombre()+" "+p.getApellido()+"\n"
-                        + "Direccion: "+p.getDireccion()+" Cedula: "+p.getCedula());*/
+        Persona p = null;
+        Licencia l = null;
+        Vehiculo v = null;
+        if (tfconsulta.getText().length() > 0) {
+            if (cbCedula.getSelectedIndex() == 0) {
+                p = (Persona) personaD.obtenerPersona(tfconsulta.getText());
+                l = (Licencia) licenciaD.obtenerPersona(p.getIdPersona());
+                if (!(p == null)) {
+                    Multa m = (Multa) multaD.obtenerPersona(p.getIdPersona());
+                    if (!(m == null)) {
+                        jnombre.setText("Consultar Infracción: "+p.getNombre()+" "+p.getApellido());
+                        jTextArea1.setText("Persona: " + p.getNombre() + " " + p.getApellido() + "\n"
+                                + "Direccion: " + p.getDireccion() + "\tCedula: " + p.getCedula() + "\n\n"
+                                + "Nro Licencia: " + l.getNroLicencia() + "\tFecha de Caducidad: " + l.getFechaCaducidad() + "\tPuntos: " + l.getPuntos()
+                        );
+                        cargarTabla();
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Esta persona no tiene multa: " + p.getNombre() + " " + p.getApellido());
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "NO se encontro persona con cedula: " + tfconsulta.getText());
+                }
+
+            } else if (cbCedula.getSelectedIndex() == 1) {
+                v = (Vehiculo) vehiculoD.obtenerVehiculo(tfconsulta.getText());
+                p = (Persona) personaD.obtenerPersona(v.getIdPersona());
+                l = (Licencia) licenciaD.obtenerPersona(p.getIdPersona());
+                if (!(v == null)) {
+                    Multa m = (Multa) multaD.obtenerPersona(v.getIdPersona());
+                    if (!(m == null)) {
+                        jnombre.setText("Consultar Infracción: "+p.getNombre()+" "+p.getApellido());
+                        jTextArea1.setText("Persona: " + p.getNombre() + " " + p.getApellido() + "\n"
+                                + "Direccion: " + p.getDireccion() + "\tCedula: " + p.getCedula() + "\n\n"
+                                + "Nro Licencia: " + l.getNroLicencia() + "\tFecha de Caducidad: " + l.getFechaCaducidad() + "\tPuntos: " + l.getPuntos());
+                        cargarTabla();
+                        jTextArea1.setEnabled(false);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Esta persona no tiene multa: " + p.getNombre() + " " + p.getApellido());
+                    }
+
+                } else {
+                    JOptionPane.showMessageDialog(null, "NO se encontro persona con placa vehicular: " + tfconsulta.getText());
+                }
+
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -316,7 +387,6 @@ public class Frm_Consultar extends javax.swing.JDialog {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -327,10 +397,13 @@ public class Frm_Consultar extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
+    private javax.swing.JLabel jnombre;
+    private javax.swing.JTable tMultas;
     private javax.swing.JTextField tfconsulta;
     // End of variables declaration//GEN-END:variables
 }

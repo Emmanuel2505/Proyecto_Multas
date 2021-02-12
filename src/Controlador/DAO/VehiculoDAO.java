@@ -151,7 +151,7 @@ public class VehiculoDAO extends AdaptadorDAO{
         Object dato = null;
         for (int i = 0; i < listar().tamanio(); i++) {
             Vehiculo aux = (Vehiculo)listar().obtenerPorPosicion(i);
-            if (aux.getPlaca() == placa) {
+            if (aux.getPlaca().equals(placa)) {
                 dato = aux;
                 break;
             }
