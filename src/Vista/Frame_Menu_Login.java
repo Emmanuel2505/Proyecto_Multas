@@ -9,10 +9,13 @@ import Controlador.DAO.PersonaDAO;
 import Modelo.Persona;
 import Vista.FrmMultas.Frm_Biblioteca;
 import Vista.FrmMultas.Frm_Consultar;
+import Vista.FrmMultas.Frm_EliminarMulta;
 import Vista.FrmMultas.Frm_GenerarInforme;
+import Vista.FrmMultas.Frm_Licencia;
 import Vista.FrmMultas.Frm_RegistarMultas;
 import Vista.FrmMultas.Frm_RegistrarAuto;
 import Vista.FrmMultas.Frm_RegistrarPersona;
+import java.awt.Color;
 import java.awt.Frame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
@@ -36,6 +39,7 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
     public Frame_Menu_Login() {
         initComponents();
         this.setLocationRelativeTo(null);
+        
     }
 
     public Frame_Menu_Login(long idPersona) {
@@ -75,6 +79,12 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
         fm.setVisible(true);
 
     }
+    
+    public void FrmEliminarMulta() {
+        Frm_EliminarMulta fm = new Frm_EliminarMulta(this, true);
+        fm.setVisible(true);
+
+    }
 
     public void FrmInforme() {
         Frm_GenerarInforme fm = new Frm_GenerarInforme(this, true);
@@ -90,6 +100,11 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
 
     public void FrmAgente() {
         new Frm_RegistrarPersona(this, true, -1).setVisible(true);
+    }
+    
+    public void FrmLicencia(){
+        Frm_Licencia fm = new Frm_Licencia(this, true);
+        fm.setVisible(true);
     }
 
     /**
@@ -117,24 +132,37 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
         csboton1 = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
-        Boton_Agentes2 = new javax.swing.JButton();
+        Boton_Agentes = new javax.swing.JButton();
         jLabel18 = new javax.swing.JLabel();
         csboton2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        Boton_Vehiculo = new javax.swing.JButton();
         jLabel19 = new javax.swing.JLabel();
+        Boton_Eliminar = new javax.swing.JButton();
+        jLabel20 = new javax.swing.JLabel();
+        Boton_Puntos = new javax.swing.JButton();
+        jLabel21 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jTabbedPane.setToolTipText("");
+        jTabbedPane.setMinimumSize(new java.awt.Dimension(710, 602));
+        jTabbedPane.setOpaque(true);
+        jTabbedPane.setPreferredSize(new java.awt.Dimension(710, 602));
         jTabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 jTabbedPaneStateChanged(evt);
             }
         });
 
+        jPanel1.setBackground(new java.awt.Color(204, 204, 255));
+        jPanel1.setMinimumSize(new java.awt.Dimension(710, 602));
+
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
         jLabel1.setText("GESTOR DE MULTAS");
 
+        Boton_Biblioteca.setOpaque(false);
+        Boton_Biblioteca.setContentAreaFilled(false);
+        Boton_Biblioteca.setBorderPainted(false);
         Boton_Biblioteca.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Imagenes/documentacion.png"))); // NOI18N
         Boton_Biblioteca.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -142,6 +170,9 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
             }
         });
 
+        Boton_Consultar.setOpaque(false);
+        Boton_Consultar.setContentAreaFilled(false);
+        Boton_Consultar.setBorderPainted(false);
         Boton_Consultar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Imagenes/investigacion.png"))); // NOI18N
         Boton_Consultar.setMargin(new java.awt.Insets(0, 0, 0, 0));
         Boton_Consultar.addActionListener(new java.awt.event.ActionListener() {
@@ -161,40 +192,51 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(180, 180, 180)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(Boton_Consultar))
-                        .addGap(215, 215, 215)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(Boton_Biblioteca)
-                            .addComponent(jLabel2))))
-                .addContainerGap(340, Short.MAX_VALUE))
+                        .addGap(160, 160, 160)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(280, 280, 280)
+                        .addComponent(jLabel3))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(297, 297, 297)
+                        .addComponent(Boton_Consultar))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(280, 280, 280)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabel2)
+                            .addComponent(Boton_Biblioteca))))
+                .addContainerGap(170, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addComponent(jLabel1)
-                .addGap(43, 43, 43)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jLabel2))
+                .addGap(20, 20, 20)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Boton_Biblioteca)
-                    .addComponent(Boton_Consultar))
-                .addContainerGap())
+                .addComponent(Boton_Consultar)
+                .addGap(59, 59, 59)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(Boton_Biblioteca)
+                .addContainerGap(87, Short.MAX_VALUE))
         );
 
         jTabbedPane.addTab("ACCESO PUBLICO", jPanel1);
 
+        jPanel4.setBackground(new java.awt.Color(204, 204, 255));
+        jPanel4.setMinimumSize(new java.awt.Dimension(710, 602));
+        jPanel4.setPreferredSize(new java.awt.Dimension(1298, 351));
+
         jLabel11.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
         jLabel11.setText("GESTOR DE MULTAS");
 
+        Boton_Multas1.setOpaque(false);
+        Boton_Multas1.setContentAreaFilled(false);
+        Boton_Multas1.setBorderPainted(false);
         Boton_Multas1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Imagenes/billete.png"))); // NOI18N
         Boton_Multas1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -202,6 +244,9 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
             }
         });
 
+        Boton_Informe1.setOpaque(false);
+        Boton_Informe1.setContentAreaFilled(false);
+        Boton_Informe1.setBorderPainted(false);
         Boton_Informe1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Imagenes/historial-de-trabajo.png"))); // NOI18N
         Boton_Informe1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -215,6 +260,9 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
         jLabel16.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel16.setText("Generar informe");
 
+        csboton1.setOpaque(false); 
+        csboton1.setContentAreaFilled(false); 
+        csboton1.setBorderPainted(false);
         csboton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Imagenes/boton-x.png"))); // NOI18N
         csboton1.setText("CERRAR SESION");
         csboton1.addActionListener(new java.awt.event.ActionListener() {
@@ -228,57 +276,74 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(320, 320, 320)
-                .addComponent(jLabel11)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(227, 227, 227)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel14)
-                    .addComponent(Boton_Multas1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel16)
-                    .addComponent(Boton_Informe1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(240, 240, 240))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(csboton1)
-                .addGap(445, 445, 445))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(180, 180, 180)
+                                .addComponent(jLabel11))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(310, 310, 310)
+                                .addComponent(jLabel14))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(290, 290, 290)
+                                .addComponent(Boton_Multas1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(310, 310, 310)
+                                .addComponent(jLabel16))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(300, 300, 300)
+                                .addComponent(Boton_Informe1, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 142, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(csboton1)))
+                .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
+                .addGap(30, 30, 30)
                 .addComponent(jLabel11)
-                .addGap(39, 39, 39)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14)
-                    .addComponent(jLabel16))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(Boton_Informe1)
-                    .addComponent(Boton_Multas1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addGap(17, 17, 17)
+                .addComponent(jLabel14)
+                .addGap(9, 9, 9)
+                .addComponent(Boton_Multas1)
+                .addGap(103, 103, 103)
+                .addComponent(jLabel16)
+                .addGap(9, 9, 9)
+                .addComponent(Boton_Informe1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(csboton1)
-                .addContainerGap())
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         jTabbedPane.addTab("ACCESO AGENTE", jPanel4);
 
+        jPanel5.setBackground(new java.awt.Color(204, 204, 255));
+        jPanel5.setPreferredSize(new java.awt.Dimension(710, 602));
+
         jLabel12.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
         jLabel12.setText("GESTOR DE MULTAS");
 
-        Boton_Agentes2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Imagenes/policia.png"))); // NOI18N
-        Boton_Agentes2.addActionListener(new java.awt.event.ActionListener() {
+        Boton_Agentes.setOpaque(false);
+        Boton_Agentes.setContentAreaFilled(false);
+        Boton_Agentes.setBorderPainted(false);
+        Boton_Agentes.setBackground(new java.awt.Color(204, 204, 255));
+        Boton_Agentes.setForeground(new java.awt.Color(204, 204, 255));
+        Boton_Agentes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Imagenes/policia.png"))); // NOI18N
+        Boton_Agentes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                Boton_Agentes2ActionPerformed(evt);
+                Boton_AgentesActionPerformed(evt);
             }
         });
 
         jLabel18.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel18.setText("Regisrar/Modificar/Eliminar Persona");
 
+        csboton2.setOpaque(false);
+        csboton2.setContentAreaFilled(false);
+        csboton2.setBorderPainted(false);
         csboton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Imagenes/boton-x.png"))); // NOI18N
         csboton2.setText("CERRAR SESION");
         csboton2.addActionListener(new java.awt.event.ActionListener() {
@@ -287,55 +352,107 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Insertar Imagen");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        Boton_Vehiculo.setOpaque(false);
+        Boton_Vehiculo.setContentAreaFilled(false);
+        Boton_Vehiculo.setBorderPainted(false);
+        Boton_Vehiculo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Imagenes/coche (1).png"))); // NOI18N
+        Boton_Vehiculo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                Boton_VehiculoActionPerformed(evt);
             }
         });
 
         jLabel19.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         jLabel19.setText("Regisrar/Modificar/Eliminar Vehiculo");
 
+        Boton_Eliminar.setOpaque(false); Boton_Eliminar.setContentAreaFilled(false); Boton_Eliminar.setBorderPainted(false);
+        Boton_Eliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Imagenes/borrar.png"))); // NOI18N
+        Boton_Eliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Boton_EliminarActionPerformed(evt);
+            }
+        });
+
+        jLabel20.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        jLabel20.setText("Eliminar Multa");
+
+        Boton_Puntos.setOpaque(false);
+        Boton_Puntos.setContentAreaFilled(false);
+        Boton_Puntos.setBorderPainted(false);
+        Boton_Puntos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Imagenes/cambiar.png"))); // NOI18N
+        Boton_Puntos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                Boton_PuntosActionPerformed(evt);
+            }
+        });
+
+        jLabel21.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        jLabel21.setText("Cambiar Puntos");
+
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(345, Short.MAX_VALUE)
-                .addComponent(jLabel12)
-                .addGap(327, 327, 327))
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(csboton2)
+                .addContainerGap())
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(438, 438, 438)
-                        .addComponent(csboton2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(170, 170, 170)
+                        .addComponent(jLabel12))
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(20, 20, 20)
                         .addComponent(jLabel18)
-                        .addGap(68, 68, 68)
+                        .addGap(109, 109, 109)
                         .addComponent(jLabel19))
                     .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGap(73, 73, 73)
-                        .addComponent(Boton_Agentes2, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(186, 186, 186)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(438, Short.MAX_VALUE))
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(88, 88, 88)
+                                .addComponent(Boton_Agentes, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(79, 79, 79)
+                                .addComponent(Boton_Eliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(110, 110, 110)
+                                .addComponent(jLabel20)))
+                        .addGap(9, 9, 9)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGap(205, 205, 205)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(Boton_Puntos, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(Boton_Vehiculo, javax.swing.GroupLayout.PREFERRED_SIZE, 166, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel21)
+                                .addGap(22, 22, 22)))))
+                .addGap(18, 26, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addGap(10, 10, 10)
                 .addComponent(jLabel12)
-                .addGap(13, 13, 13)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGap(27, 27, 27)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel18)
                     .addComponent(jLabel19))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Boton_Agentes2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(Boton_Agentes)
+                    .addComponent(Boton_Vehiculo))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel21, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel20, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(Boton_Puntos)
+                    .addComponent(Boton_Eliminar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(csboton2)
                 .addContainerGap())
         );
@@ -346,13 +463,13 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jTabbedPane, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 378, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jTabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -378,15 +495,14 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
 
     private void Boton_Informe1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Boton_Informe1ActionPerformed
         // TODO add your handling code here:
-
         FrmInforme();
     }//GEN-LAST:event_Boton_Informe1ActionPerformed
 
-    private void Boton_Agentes2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Boton_Agentes2ActionPerformed
+    private void Boton_AgentesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Boton_AgentesActionPerformed
         // TODO add your handling code here:
         this.dispose();
         FrmAgente();
-    }//GEN-LAST:event_Boton_Agentes2ActionPerformed
+    }//GEN-LAST:event_Boton_AgentesActionPerformed
 
     private void jTabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPaneStateChanged
         // TODO add your handling code here:
@@ -422,13 +538,23 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_csboton2ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void Boton_VehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Boton_VehiculoActionPerformed
         // TODO add your handling code here:
         this.dispose();
         Frm_RegistrarAuto fip;
         fip = new Frm_RegistrarAuto((Frame) SwingUtilities.getWindowAncestor(this), true, 1);
         fip.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_Boton_VehiculoActionPerformed
+
+    private void Boton_EliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Boton_EliminarActionPerformed
+        // TODO add your handling code here:
+        FrmEliminarMulta();
+    }//GEN-LAST:event_Boton_EliminarActionPerformed
+
+    private void Boton_PuntosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_Boton_PuntosActionPerformed
+        // TODO add your handling code here:
+        FrmLicencia();
+    }//GEN-LAST:event_Boton_PuntosActionPerformed
 
     /**
      * @param args the command line arguments
@@ -466,14 +592,16 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton Boton_Agentes2;
+    private javax.swing.JButton Boton_Agentes;
     private javax.swing.JButton Boton_Biblioteca;
     private javax.swing.JButton Boton_Consultar;
+    private javax.swing.JButton Boton_Eliminar;
     private javax.swing.JButton Boton_Informe1;
     private javax.swing.JButton Boton_Multas1;
+    private javax.swing.JButton Boton_Puntos;
+    private javax.swing.JButton Boton_Vehiculo;
     private javax.swing.JButton csboton1;
     private javax.swing.JButton csboton2;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -482,6 +610,8 @@ public class Frame_Menu_Login extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel4;

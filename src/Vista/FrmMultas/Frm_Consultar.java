@@ -9,9 +9,9 @@ import Controlador.DAO.LicenciaDAO;
 import Controlador.DAO.MultaDAO;
 import Controlador.DAO.PersonaDAO;
 import Controlador.DAO.VehiculoDAO;
+import Controlador.ListaSimple;
 import Controlador.Utilidades;
 import Modelo.Licencia;
-import Modelo.Multa;
 import Modelo.Persona;
 import Modelo.Vehiculo;
 import Vista.Tablas.TablaMultas;
@@ -29,7 +29,7 @@ public class Frm_Consultar extends javax.swing.JDialog {
     LicenciaDAO licenciaD = new LicenciaDAO("Datos");
     String mensaje = "";
     TablaMultas tmodel = new TablaMultas();
-
+    ListaSimple lista = new ListaSimple();
     /**
      * Creates new form Frm_Consultar
      */
@@ -43,7 +43,7 @@ public class Frm_Consultar extends javax.swing.JDialog {
     }
 
     public void cargarTabla() {
-        tmodel.setListaMultas(multaD.listar());
+        tmodel.setListaMultas(lista);
         tmodel.setPersonas(personaD);
         tmodel.setListaLicencia(licenciaD);
         tMultas.setModel(tmodel);
@@ -70,6 +70,8 @@ public class Frm_Consultar extends javax.swing.JDialog {
         jTextArea1 = new javax.swing.JTextArea();
         jScrollPane2 = new javax.swing.JScrollPane();
         tMultas = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jLabelTotalPagar = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -129,6 +131,10 @@ public class Frm_Consultar extends javax.swing.JDialog {
         ));
         jScrollPane2.setViewportView(tMultas);
 
+        jLabel1.setText("Total a pagar:");
+
+        jLabelTotalPagar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -141,21 +147,26 @@ public class Frm_Consultar extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(35, 35, 35)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(cbCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(42, 42, 42))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(tfconsulta, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel3)
+                                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(cbCedula, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(42, 42, 42))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(tfconsulta)
-                                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 136, Short.MAX_VALUE))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 681, Short.MAX_VALUE)
-                                    .addComponent(jScrollPane1)))
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3))))
+                                .addComponent(jLabel2)
+                                .addGap(52, 52, 52)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 681, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 681, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabelTotalPagar, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -163,23 +174,31 @@ public class Frm_Consultar extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jnombre)
-                .addGap(23, 23, 23)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(23, 23, 23)
                         .addComponent(jLabel2)
                         .addGap(18, 18, 18)
                         .addComponent(cbCedula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
                         .addComponent(jLabel3)
                         .addGap(18, 18, 18)
                         .addComponent(tfconsulta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1))
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(107, 107, 107))
+                        .addComponent(jButton1)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 23, Short.MAX_VALUE)
+                    .addComponent(jLabelTotalPagar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 255));
@@ -276,7 +295,7 @@ public class Frm_Consultar extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -295,13 +314,14 @@ public class Frm_Consultar extends javax.swing.JDialog {
                 p = (Persona) personaD.obtenerPersona(tfconsulta.getText());
                 l = (Licencia) licenciaD.obtenerPersona(p.getIdPersona());
                 if (!(p == null)) {
-                    Multa m = (Multa) multaD.obtenerPersona(p.getIdPersona());
-                    if (!(m == null)) {
+                    lista =  multaD.obtenerPersona(p.getIdPersona());
+                    if (!lista.estaVacia()) {
                         jnombre.setText("Consultar Infracción: "+p.getNombre()+" "+p.getApellido());
                         jTextArea1.setText("Persona: " + p.getNombre() + " " + p.getApellido() + "\n"
                                 + "Direccion: " + p.getDireccion() + "\tCedula: " + p.getCedula() + "\n\n"
                                 + "Nro Licencia: " + l.getNroLicencia() + "\tFecha de Caducidad: " + l.getFechaCaducidad() + "\tPuntos: " + l.getPuntos()
                         );
+                        jLabelTotalPagar.setText(String.valueOf(Utilidades.obtenerTotalMulta(lista)));
                         cargarTabla();
                     } else {
                         JOptionPane.showMessageDialog(null, "Esta persona no tiene multa: " + p.getNombre() + " " + p.getApellido());
@@ -316,8 +336,8 @@ public class Frm_Consultar extends javax.swing.JDialog {
                 p = (Persona) personaD.obtenerPersona(v.getIdPersona());
                 l = (Licencia) licenciaD.obtenerPersona(p.getIdPersona());
                 if (!(v == null)) {
-                    Multa m = (Multa) multaD.obtenerPersona(v.getIdPersona());
-                    if (!(m == null)) {
+                    lista = multaD.obtenerPersona(v.getIdPersona());
+                    if (!lista.estaVacia()) {
                         jnombre.setText("Consultar Infracción: "+p.getNombre()+" "+p.getApellido());
                         jTextArea1.setText("Persona: " + p.getNombre() + " " + p.getApellido() + "\n"
                                 + "Direccion: " + p.getDireccion() + "\tCedula: " + p.getCedula() + "\n\n"
@@ -387,6 +407,7 @@ public class Frm_Consultar extends javax.swing.JDialog {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -394,6 +415,7 @@ public class Frm_Consultar extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabelTotalPagar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

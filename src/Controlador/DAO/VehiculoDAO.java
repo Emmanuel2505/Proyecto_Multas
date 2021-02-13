@@ -94,7 +94,7 @@ public class VehiculoDAO extends AdaptadorDAO{
     public void cambiarEstado(long idVehiculo, String direccion) {
         ListaSimple lista = listar();
         boolean estado;
-        for (int i = 0; i < listar().tamanio(); i++) {
+        for (int i = 0; i < lista.tamanio(); i++) {
             Vehiculo aux = (Vehiculo) listar().obtenerPorPosicion(i);
             if (aux.getIdVehiculo()== idVehiculo) {
                 if (aux.isEstadoVehiculo()) {
@@ -115,32 +115,17 @@ public class VehiculoDAO extends AdaptadorDAO{
         }
     }
     
-    public Boolean editar(long idPersona, Object dato, String direccion) {
+    public Boolean editar(long idVehiculo, Object dato) {
+        ListaSimple lista = listar();
+        for (int i = 0; i < lista.tamanio(); i++) {
+            Vehiculo aux = (Vehiculo) lista.obtenerPorPosicion(i);
+            if (aux.getIdVehiculo()== idVehiculo) {
+                lista.editar(i, dato);
+                break;
+            }
+        }
         try {
-            ListaSimple lista = listar();
-            boolean estado;
-            for (int i = 0; i < listar().tamanio(); i++) {
-                Vehiculo aux = (Vehiculo) listar().obtenerPorPosicion(i);
-                if (aux.getIdPersona() == idPersona) {
-                    lista.editar(i, dato);
-                    break;
-                }
-            }
-            File fichero = new File(direccion);
-            try {
-                PrintWriter pw = new PrintWriter(fichero);
-                pw.print("");
-                pw.close();
-            } catch (Exception e) {
-            }
-            for (int i = lista.tamanio() - 1; i >= 0; i--) {
-                try {
-                    Vehiculo aux = (Vehiculo) lista.obtenerPorPosicion(i);
-                    this.guardar(aux);
-                } catch (Exception e) {
-                    System.out.println("no se guardo");
-                }
-            }
+            this.modificar(lista);
             return true;
         } catch (Exception e) {
             return false;
@@ -151,7 +136,7 @@ public class VehiculoDAO extends AdaptadorDAO{
         Object dato = null;
         for (int i = 0; i < listar().tamanio(); i++) {
             Vehiculo aux = (Vehiculo)listar().obtenerPorPosicion(i);
-            if (aux.getPlaca().equals(placa)) {
+            if (aux.getPlaca() == placa) {
                 dato = aux;
                 break;
             }

@@ -135,7 +135,6 @@ public class PersonaDAO extends AdaptadorDAO {
 
     public Boolean editar(long idPersona, Object dato) {
         ListaSimple lista = listar();
-        boolean estado;
         for (int i = 0; i < lista.tamanio(); i++) {
             Persona aux = (Persona) lista.obtenerPorPosicion(i);
             if (aux.getIdPersona() == idPersona) {

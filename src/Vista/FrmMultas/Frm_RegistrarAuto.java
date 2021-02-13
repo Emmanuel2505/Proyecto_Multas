@@ -17,7 +17,9 @@ import Vista.Tablas.TablaVehiculos;
 import Vista.Tablas.TablaVehiculosEstado;
 import Vista.componentes.Componentes;
 import java.awt.event.ItemEvent;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -35,6 +37,7 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
     VehiculoDAO vehiculoD = new VehiculoDAO("Datos");
     ListaSimple lista = new ListaSimple();
     int rol;
+    Persona persona;
 
     public Frm_RegistrarAuto(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -46,20 +49,22 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);
     }
 
-    public Frm_RegistrarAuto(java.awt.Frame parent, boolean modal, long idRol) {
+    public Frm_RegistrarAuto(java.awt.Frame parent, boolean modal, long idPersona) {
         super(parent, modal);
         initComponents();
+        persona = (Persona)personaD.obtenerPersona(idPersona);
         Componentes.cargarCombo(cbPersona, personaD.listar(), "cedula");
         Componentes.cargarCombo(cbMarca, marcaD.listar(), "nombre");
         this.setLocationRelativeTo(null);
-        if (idRol == 2) {
-            this.rol = 2;
+        if (persona.getIdRol() == -1) {
+            this.rol = 1;
+            
+        } else if (persona.getIdRol() == 1) {
+            this.rol = persona.getIdRol();
+            lista = vehiculoD.listar();
             jButtonEditar.setVisible(false);
             jButtonEliminar.setVisible(false);
             lista = vehiculoD.obtenerListaPersona(true);
-        } else if (idRol == 1) {
-            this.rol = 1;
-            lista = vehiculoD.listar();
         }
         cargarTabla();
     }
@@ -84,7 +89,7 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
     }
 
     public void FrameMultas() {
-        Frm_RegistarMultas fm = new Frm_RegistarMultas(null, true);
+        Frm_RegistarMultas fm = new Frm_RegistarMultas(null, true, persona.getIdPersona());
         fm.setVisible(true);
     }
 
@@ -129,7 +134,7 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setForeground(new java.awt.Color(204, 204, 255));
 
-        jPanel1.setBackground(new java.awt.Color(153, 153, 255));
+        jPanel1.setBackground(new java.awt.Color(204, 204, 255));
         jPanel1.setForeground(new java.awt.Color(153, 153, 255));
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
@@ -183,7 +188,7 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
         });
 
         jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Imagenes/114.png"))); // NOI18N
-        jButton2.setText(" Cancelar");
+        jButton2.setText("Salir");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -201,9 +206,19 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tbVehiculos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbVehiculosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tbVehiculos);
 
         jButtonEditar.setText("Editar");
+        jButtonEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEditarActionPerformed(evt);
+            }
+        });
 
         jButtonEliminar.setText("Eliminar");
         jButtonEliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -217,19 +232,10 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(270, 270, 270)
                         .addComponent(jLabel1))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(cbPersona, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(205, 205, 205)
-                        .addComponent(jLabel4)
-                        .addGap(20, 20, 20)
-                        .addComponent(lbApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addComponent(jLabel3)
@@ -257,19 +263,28 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(20, 20, 20)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 737, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(94, 94, 94)
-                        .addComponent(jButton1)
-                        .addGap(73, 73, 73)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jButtonEditar)
-                                .addGap(119, 119, 119)
-                                .addComponent(jButtonEliminar)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButton2)
-                                .addGap(11, 11, 11))
-                            .addComponent(jLabel6))))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(94, 94, 94)
+                            .addComponent(jButton1)
+                            .addGap(73, 73, 73)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel1Layout.createSequentialGroup()
+                                    .addComponent(jButtonEditar)
+                                    .addGap(119, 119, 119)
+                                    .addComponent(jButtonEliminar)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(jButton2))
+                                .addComponent(jLabel6)))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(30, 30, 30)
+                            .addComponent(jLabel2)
+                            .addGap(18, 18, 18)
+                            .addComponent(cbPersona, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(205, 205, 205)
+                            .addComponent(jLabel4)
+                            .addGap(20, 20, 20)
+                            .addComponent(lbApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -372,7 +387,7 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if (tfColor.getText().length() > 0 && tfPlaca.getText().length() > 0 && cbPersona.getSelectedIndex() != 0 && cbPersona.getSelectedIndex() != 0) {
+        if (tfColor.getText().length() > 0 && tfPlaca.getText().length() > 0 && cbMarca.getSelectedIndex() != 0 && cbPersona.getSelectedIndex() != 0) {
             if (!Utilidades.datoRepetido(vehiculoD.listar(), "placa", tfPlaca.getText())) {
                 vehiculoD.setVehiculo(null);
                 Persona dato = (Persona) (Utilidades.obtenerDato(personaD.listar(), "cedula", cbPersona.getSelectedItem().toString()));
@@ -397,17 +412,20 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
         } else {
             JOptionPane.showMessageDialog(null, "Llene todos los parametros");
         }
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        if (rol == 2) {
+        /*if (rol == 2) {
             this.dispose();
             FrameMultas();
         } else if (rol == 1) {
             this.dispose();
             FrameMenu();
-        }
+        }*/
+        this.dispose();
+        FrameMultas();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButtonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarActionPerformed
@@ -426,6 +444,56 @@ public class Frm_RegistrarAuto extends javax.swing.JDialog {
             JOptionPane.showConfirmDialog(null, "Seleccione la persona que desea eliminar");
         }
     }//GEN-LAST:event_jButtonEliminarActionPerformed
+
+    private void jButtonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarActionPerformed
+        int fila = tbVehiculos.getSelectedRow();
+        if (fila >= 0) {
+            Vehiculo vehiculo = (Vehiculo) lista.obtenerPorPosicion(fila);
+            Vehiculo Tempvehiculo = new Vehiculo();
+            if (tfColor.getText().length() > 0 && tfPlaca.getText().length() > 0 && cbMarca.getSelectedIndex() != 0) {
+                System.out.println(vehiculo.getIdVehiculo());
+                Tempvehiculo.setIdVehiculo(vehiculo.getIdVehiculo());
+                Tempvehiculo.setIdPersona(vehiculo.getIdPersona());
+                Tempvehiculo.setEstadoVehiculo(vehiculo.isEstadoVehiculo());
+                Tempvehiculo.setPlaca(tfPlaca.getText());
+                Tempvehiculo.setModelo(String.valueOf(cbMarca.getSelectedItem()));
+                Tempvehiculo.setColor(tfColor.getText());
+                System.out.println();
+                if(vehiculoD.editar(Tempvehiculo.getIdVehiculo(), Tempvehiculo)){
+                     JOptionPane.showMessageDialog(null, "Se edito correctamente");
+                     lista = vehiculoD.listar();
+                     cargarTabla();
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Llene todos los parametros");
+            }
+
+        } else {
+            JOptionPane.showConfirmDialog(null, "Seleccione los datos del vehiculo que desea editar");
+        }
+    }
+
+    private void jButtonEliminarTipoActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+//        int fila = tbTipos.getSelectedRow();
+//        if (fila >= 0) {
+//            tipos.remove(fila);
+//            cargarTablaTipos();
+//        } else {
+//            JOptionPane.showConfirmDialog(null, "Seleccione el tipo de licencia que desea eliminar");
+//        }
+    }//GEN-LAST:event_jButtonEditarActionPerformed
+
+    private void tbVehiculosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbVehiculosMouseClicked
+        int fila = tbVehiculos.getSelectedRow();
+        if (fila >= 0) {
+            Vehiculo vehiculo = (Vehiculo) lista.obtenerPorPosicion(fila);
+            cbMarca.setSelectedIndex(Utilidades.obtenerPosicionDato(marcaD.listar(), "nombre", vehiculo.getModelo()) + 1);
+            tfColor.setText(vehiculo.getColor());
+            tfPlaca.setText(vehiculo.getPlaca());
+
+        }
+    }//GEN-LAST:event_tbVehiculosMouseClicked
 
     /**
      * @param args the command line arguments

@@ -98,7 +98,5 @@ public class Persona {
     @Override
     public String toString() {
         return (cedula + " " + nombre + " " + apellido + " " + direccion + " " + telefono + " " + idRol);
-    }
-    
-    
+    }  
 }

@@ -86,4 +86,9 @@ public class Licencia {
     public void setTipos(ArrayList<String> tipos) {
         this.tipos = tipos;
     }
+
+    @Override
+    public String toString() {
+        return (NroLicencia + " " + fechaCaducidad + " " + tipos.toString());
+    }
 }

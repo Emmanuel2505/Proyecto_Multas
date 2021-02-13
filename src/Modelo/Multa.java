@@ -12,7 +12,6 @@ import java.util.Date;
  * @author ASUS
  */
 public class Multa {
-
     private long idMulta;
     private double valorMulta;
     private Date fecha;

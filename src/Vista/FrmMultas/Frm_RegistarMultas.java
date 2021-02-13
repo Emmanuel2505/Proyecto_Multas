@@ -550,7 +550,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
         // TODO add your handling code here:
         this.dispose();
         Frm_RegistrarAuto fip;
-        fip = new Frm_RegistrarAuto((Frame) SwingUtilities.getWindowAncestor(this), true, agente.getIdRol());
+        fip = new Frm_RegistrarAuto((Frame) SwingUtilities.getWindowAncestor(this), true, agente.getIdPersona());
         fip.setVisible(true);
 
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -616,6 +616,7 @@ public class Frm_RegistarMultas extends javax.swing.JDialog {
             double puntoAct = Double.parseDouble(lbPuntosAct.getText());
             double puntoDes = Double.parseDouble(lbPuntosDesc.getText());
             multaD.getMulta().setTotalPuntos(puntoDes);
+            multaD.getMulta().setObservaciones(taObservaciones.getText());
 
             if (multaD.guardar()) {
                 JOptionPane.showMessageDialog(null, "La multa se ha registrado con exito");

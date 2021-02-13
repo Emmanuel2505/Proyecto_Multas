@@ -64,4 +64,9 @@ public class Cuenta {
     public void setContrasenia(String contrasenia) {
         this.contrasenia = contrasenia;
     }
+
+    @Override
+    public String toString() {
+        return (usuario + " " + contrasenia);
+    }
 }

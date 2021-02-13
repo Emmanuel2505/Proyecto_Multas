@@ -56,7 +56,6 @@ public class CuentaDAO extends AdaptadorDAO{
     
     public Boolean editar(long idPersona, Object dato) {
         ListaSimple lista = listar();
-        boolean estado;
         for (int i = 0; i < lista.tamanio(); i++) {
             Cuenta aux = (Cuenta) lista.obtenerPorPosicion(i);
             if (aux.getIdPersona() == idPersona) {
