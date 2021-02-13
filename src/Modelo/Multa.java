@@ -5,6 +5,7 @@
  */
 package Modelo;
 
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -12,9 +13,10 @@ import java.util.Date;
  * @author ASUS
  */
 public class Multa {
+
     private long idMulta;
     private double valorMulta;
-    private Date fecha;
+    private Calendar fecha;
     private double totalPuntos;
     private String tipoMulta;
     private long idAgente;
@@ -26,7 +28,7 @@ public class Multa {
     public Multa() {
     }
 
-    public Multa(double valorMulta, Date fecha, double totalPuntos, String tipoMulta, long idAgente, long idPersona) {
+    public Multa(double valorMulta, Calendar fecha, double totalPuntos, String tipoMulta, long idAgente, long idPersona) {
         this.valorMulta = valorMulta;
         this.fecha = fecha;
         this.totalPuntos = totalPuntos;
@@ -36,7 +38,7 @@ public class Multa {
         this.idVehiculo = -1;
     }
 
-    public Multa(double valorMulta, Date fecha, double totalPuntos, String tipoMulta, String agente, long idPersona, String observaciones, long idVehiculo) {
+    public Multa(double valorMulta, Calendar fecha, double totalPuntos, String tipoMulta, String agente, long idPersona, String observaciones, long idVehiculo) {
         this.valorMulta = valorMulta;
         this.fecha = fecha;
         this.totalPuntos = totalPuntos;
@@ -63,11 +65,11 @@ public class Multa {
         this.valorMulta = valorMulta;
     }
 
-    public Date getFecha() {
+    public Calendar getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(Calendar fecha) {
         this.fecha = fecha;
     }
 
