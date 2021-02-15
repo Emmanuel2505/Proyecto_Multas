@@ -75,9 +75,11 @@ public class Frm_EliminarMulta extends javax.swing.JDialog {
         ));
         jScrollPane3.setViewportView(tablaMultas);
 
+        jLabel9.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel9.setText("MULTAS");
 
-        jButton3.setText("Eliminar");
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vista/Imagenes/167.png"))); // NOI18N
+        jButton3.setText(" Eliminar");
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -94,15 +96,14 @@ public class Frm_EliminarMulta extends javax.swing.JDialog {
                         .addContainerGap()
                         .addComponent(jScrollPane3))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(446, 446, 446)
-                                .addComponent(jLabel9))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(422, 422, 422)
-                                .addComponent(jButton3)))
-                        .addGap(0, 447, Short.MAX_VALUE)))
+                        .addGap(422, 422, 422)
+                        .addComponent(jButton3)
+                        .addGap(0, 445, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jLabel9)
+                .addGap(426, 426, 426))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

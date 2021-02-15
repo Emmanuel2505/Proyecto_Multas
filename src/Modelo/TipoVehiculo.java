@@ -7,7 +7,7 @@ package Modelo;
 
 /**
  *
- * @author ASUS
+ *  Autores: Eutimio Arévalo, James Romero, Roy León
  */
 public enum  TipoVehiculo {
     Vehiculo_de_traccion_animal,

@@ -7,7 +7,7 @@ package Modelo;
 
 /**
  *
- * @author ASUS
+ * Autores: Eutimio Arévalo, James Romero, Roy León
  */
 public class Persona {
     private long idPersona;

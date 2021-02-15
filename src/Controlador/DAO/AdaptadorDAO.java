@@ -15,7 +15,7 @@ import java.io.PrintWriter;
 
 /**
  *
- * @author ASUS
+ * Autor: Roy León
  */
 public class AdaptadorDAO implements InterfazDAO{
     private  Conexion conexion;
@@ -25,7 +25,11 @@ public class AdaptadorDAO implements InterfazDAO{
         this.conexion = conexion;
         this.clazz = clazz;
     }
-
+    
+    /**
+     * El siguiente método permite listar los datos del archivo
+     * @return 
+     */
     @Override
     public ListaSimple listar() {
         ListaSimple lista = new ListaSimple();
@@ -39,6 +43,11 @@ public class AdaptadorDAO implements InterfazDAO{
         return lista;
     }
 
+    /**
+     * El siguiente método permite guardar los datos del archivo
+     * @param o
+     * @throws Exception 
+     */
     @Override
     public void guardar(Object o) throws Exception {
         ListaSimple lista = listar();
@@ -46,6 +55,11 @@ public class AdaptadorDAO implements InterfazDAO{
         conexion.getXtrStream().toXML(lista, new FileOutputStream(conexion.getDireccion()+ File.separatorChar + clazz.getSimpleName() + ".json"));
     }
 
+    /**
+     * El siguiente método permite modificar los datos del archivo
+     * @param lista
+     * @throws Exception 
+     */
     @Override
     public void modificar(ListaSimple lista) throws Exception {
           conexion.getXtrStream().toXML(lista, new FileOutputStream(conexion.getDireccion()+ File.separatorChar + clazz.getSimpleName() + ".json"));

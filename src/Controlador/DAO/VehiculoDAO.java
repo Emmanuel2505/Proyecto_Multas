@@ -14,7 +14,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author ASUS
+ * Autor: Roy León
  */
 public class VehiculoDAO extends AdaptadorDAO{
     private Vehiculo vehiculo;
@@ -33,6 +33,11 @@ public class VehiculoDAO extends AdaptadorDAO{
         this.vehiculo = vehiculo;
     }
     
+    /**
+     * El siguiente método permite verificar que se ah guardado correctamente el vehículo
+     * @param idPersona
+     * @return 
+     */
     public Boolean guardar(long idPersona){
         try {
             this.getVehiculo().setIdVehiculo(Long.parseLong(String.valueOf(listar().tamanio() + 1)));
@@ -46,6 +51,11 @@ public class VehiculoDAO extends AdaptadorDAO{
         }
     }
     
+    /**
+     * El siguiente método permite obtener el identirficador de la persona
+     * @param idPersona
+     * @return 
+     */
     public Object obtenerPersona(long idPersona){
         Object dato = null;
         for (int i = 0; i < listar().tamanio(); i++) {
@@ -58,6 +68,11 @@ public class VehiculoDAO extends AdaptadorDAO{
         return dato;
     }
     
+    /**
+     * El siguiente método permite obtener el identificador del vehículo
+     * @param idVehiculo
+     * @return 
+     */
     public Object obtenerVehiculo(long idVehiculo){
         Object dato = null;
         for (int i = 0; i < listar().tamanio(); i++) {
@@ -70,6 +85,11 @@ public class VehiculoDAO extends AdaptadorDAO{
         return dato;
     }
     
+    /**
+     * El siguiente método permite obtener la lista de personas por medio del identificador
+     * @param idPersona
+     * @return 
+     */
     public ListaSimple obtenerListaPersona(long idPersona){
         ListaSimple lista = new ListaSimple();
         for (int i = 0; i < listar().tamanio(); i++) {
@@ -81,6 +101,11 @@ public class VehiculoDAO extends AdaptadorDAO{
         return lista;
     }
     
+    /**
+     * El siguiente método permite obtener la lista de personas por medio del estado
+     * @param estado
+     * @return 
+     */
     public ListaSimple obtenerListaPersona(boolean estado) {
         ListaSimple lista = new ListaSimple();
         for (int i = 0; i < listar().tamanio(); i++) {
@@ -92,6 +117,12 @@ public class VehiculoDAO extends AdaptadorDAO{
         return lista;
     }
     
+    /**
+     * El siguiente método permite obtener la lista de personas por medio del identificador y el estado
+     * @param idPersona
+     * @param estado
+     * @return 
+     */
     public ListaSimple obtenerListaPersona(long idPersona, boolean estado) {
         ListaSimple lista = new ListaSimple();
         for (int i = 0; i < listar().tamanio(); i++) {
@@ -103,6 +134,11 @@ public class VehiculoDAO extends AdaptadorDAO{
         return lista;
     }
     
+    /**
+     * El siguiente método permite cambiar el estado del vehículo
+     * @param idVehiculo
+     * @param direccion 
+     */
     public void cambiarEstado(long idVehiculo, String direccion) {
         ListaSimple lista = listar();
         boolean estado;
@@ -127,6 +163,12 @@ public class VehiculoDAO extends AdaptadorDAO{
         }
     }
     
+    /**
+     * El siguiente método permite editar los datos del vehículo
+     * @param idVehiculo
+     * @param dato
+     * @return 
+     */
     public Boolean editar(long idVehiculo, Object dato) {
         ListaSimple lista = listar();
         for (int i = 0; i < lista.tamanio(); i++) {
@@ -144,6 +186,11 @@ public class VehiculoDAO extends AdaptadorDAO{
         }
     }
     
+    /**
+     * El siguiente método permite obtener la placa del vehículo
+     * @param placa
+     * @return 
+     */
     public Object obtenerVehiculo(String placa){
         Object dato = null;
         for (int i = 0; i < listar().tamanio(); i++) {

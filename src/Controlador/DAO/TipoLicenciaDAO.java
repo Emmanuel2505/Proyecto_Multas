@@ -10,7 +10,7 @@ import Modelo.TipoLicencia;
 
 /**
  *
- * @author ASUS
+ * Autor: Roy León
  */
 public class TipoLicenciaDAO extends AdaptadorDAO{
     private TipoLicencia tipoLicencia;

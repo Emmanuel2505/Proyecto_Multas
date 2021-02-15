@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author ASUS
+ * Autor: Roy León
  */
 public class LicenciaDAO extends AdaptadorDAO{
     private Licencia licencia;
@@ -32,6 +32,10 @@ public class LicenciaDAO extends AdaptadorDAO{
         this.licencia = licencia;
     }
     
+    /**
+     * El siguiente método permite verificar que se ah guardado correctamente la licencia
+     * @return 
+     */
     public Boolean guardar(){
         try {
             this.getLicencia().setIdLicencia(Long.parseLong(String.valueOf(listar().tamanio() + 1)));
@@ -44,6 +48,11 @@ public class LicenciaDAO extends AdaptadorDAO{
         }
     }
     
+    /**
+     * El siguiente método permite obtener el identificador de la persona
+     * @param idPersona
+     * @return 
+     */
     public Object obtenerPersona(long idPersona){
         Object dato = null;
         for (int i = 0; i < listar().tamanio(); i++) {
@@ -56,6 +65,12 @@ public class LicenciaDAO extends AdaptadorDAO{
         return dato;
     }
     
+    /**
+     * El siguiente método permite editar los datos de ka persona
+     * @param idPersona
+     * @param dato
+     * @return 
+     */
     public Boolean editar(long idPersona, Object dato) {
         ListaSimple lista = listar();
         for (int i = 0; i < lista.tamanio(); i++) {

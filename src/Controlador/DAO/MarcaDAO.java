@@ -10,7 +10,7 @@ import Modelo.Marca;
 
 /**
  *
- * @author ASUS
+ * Autor: Roy León
  */
 public class MarcaDAO extends AdaptadorDAO{
     private Marca marca;

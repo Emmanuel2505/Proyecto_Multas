@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author ASUS
+ * Autor: Roy León
  */
 public class RolDAO extends AdaptadorDAO{
     private Rol rol;
@@ -28,6 +28,10 @@ public class RolDAO extends AdaptadorDAO{
         this.rol = rol;
     }
     
+    /**
+     * El siguiente método permite verificar que se ha guardado correctamente el rol de la persona
+     * @return 
+     */
     public Boolean guardar() {
         try {
             this.getRol().setIdRol(Long.parseLong(String.valueOf(listar().tamanio() + 1)));
@@ -39,6 +43,9 @@ public class RolDAO extends AdaptadorDAO{
         }
     }
 
+    /**
+     * El siguiente método permite crear los roles para las personas
+     */
     public void crearRoles() {
         if (listar().tamanio()== 0) {
             Rol admin = new Rol("Administrador","Tiene acceso a todo el programa");

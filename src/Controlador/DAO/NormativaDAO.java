@@ -10,7 +10,7 @@ import Modelo.Normativa;
 
 /**
  *
- * @author ASUS
+ * Autor: Roy León
  */
 public class NormativaDAO extends AdaptadorDAO{
     private Normativa normativa;

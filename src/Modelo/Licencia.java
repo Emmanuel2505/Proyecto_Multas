@@ -10,7 +10,7 @@ import java.util.Date;
 
 /**
  *
- * @author ASUS
+ * Autores: Eutimio Arévalo, James Romero, Roy León
  */
 public class Licencia {
     private long idLicencia;

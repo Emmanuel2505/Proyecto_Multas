@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author ASUS
+ * Autor: Roy león
  */
 public class MultaDAO extends AdaptadorDAO{
     private Multa multa;
@@ -32,6 +32,10 @@ public class MultaDAO extends AdaptadorDAO{
         this.multa = multa;
     }
     
+    /**
+     * El siguiente método permite verificar que se ah guardado corectamente los datos de la multa
+     * @return 
+     */
     public Boolean guardar(){
         try {
             this.getMulta().setIdMulta(Long.parseLong(String.valueOf(listar().tamanio() + 1)));
@@ -44,6 +48,11 @@ public class MultaDAO extends AdaptadorDAO{
         }
     }
     
+    /**
+     * El siguiente método permite obtener el identificador de la persona
+     * @param idPersona
+     * @return 
+     */
     public ListaSimple obtenerPersona(long idPersona){
         ListaSimple lista = new ListaSimple();
         for (int i = 0; i < listar().tamanio(); i++) {
@@ -55,6 +64,10 @@ public class MultaDAO extends AdaptadorDAO{
         return lista;
     }
     
+    /**
+     * El siguiente método permite cambiar el estado de la multa
+     * @param idMulta 
+     */
     public void cambiarEstado(long idMulta) {
         ListaSimple lista = listar();
         boolean estado;
@@ -79,6 +92,13 @@ public class MultaDAO extends AdaptadorDAO{
         }
     }
     
+    /**
+     * El siguiente método permite editar la multa
+     * @param idPersona
+     * @param dato
+     * @param direccion
+     * @return 
+     */
     public Boolean editar(long idPersona, Object dato, String direccion) {
         try {
             ListaSimple lista = listar();

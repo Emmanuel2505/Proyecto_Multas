@@ -19,7 +19,7 @@ import javax.xml.transform.stream.StreamResult;
 
 /**
  *
- * @author ASUS
+ * Autor: Roy León
  */
 public class PersonaDAO extends AdaptadorDAO {
 
@@ -40,6 +40,10 @@ public class PersonaDAO extends AdaptadorDAO {
         this.persona = persona;
     }
 
+    /**
+     * El siguiente método permite vefificar que se ha guardado correctamente la persona
+     * @return 
+     */
     public Boolean guardar() {
         try {
             this.getPersona().setIdPersona(Long.parseLong(String.valueOf(listar().tamanio() + 1)));
@@ -52,6 +56,11 @@ public class PersonaDAO extends AdaptadorDAO {
         }
     }
 
+    /**
+     * El siguiente método permite obtener el identificador de la persona
+     * @param idPersona
+     * @return 
+     */
     public Object obtenerPersona(long idPersona) {
         Object dato = null;
         for (int i = 0; i < listar().tamanio(); i++) {
@@ -64,6 +73,11 @@ public class PersonaDAO extends AdaptadorDAO {
         return dato;
     }
 
+    /**
+     * El siguiente método permite obtener la cédula de la persona
+     * @param cedula
+     * @return 
+     */
     public Object obtenerPersona(String cedula) {
         Object dato = null;
         for (int i = 0; i < listar().tamanio(); i++) {
@@ -76,6 +90,11 @@ public class PersonaDAO extends AdaptadorDAO {
         return dato;
     }
 
+    /**
+     * El siguiente método permite obtener la lista de peronas mediante el rol
+     * @param idRol
+     * @return 
+     */
     public ListaSimple obtenerListaPersona(long idRol) {
         ListaSimple lista = new ListaSimple();
         for (int i = 0; i < listar().tamanio(); i++) {
@@ -87,6 +106,12 @@ public class PersonaDAO extends AdaptadorDAO {
         return lista;
     }
 
+    /**
+     * El siguiente método permite obtener la lista de personas con el rol y su estado
+     * @param idRol
+     * @param estado
+     * @return 
+     */
     public ListaSimple obtenerListaPersona(long idRol, boolean estado) {
         ListaSimple lista = new ListaSimple();
         for (int i = 0; i < listar().tamanio(); i++) {
@@ -98,6 +123,10 @@ public class PersonaDAO extends AdaptadorDAO {
         return lista;
     }
 
+    /**
+     * El siguiente método perimite obtener la lista completa de las personas
+     * @return 
+     */
     public ListaSimple obtenerListaPersona() {
         ListaSimple lista = new ListaSimple();
         for (int i = 0; i < listar().tamanio(); i++) {
@@ -109,6 +138,10 @@ public class PersonaDAO extends AdaptadorDAO {
         return lista;
     }
 
+    /**
+     * El siguiente método permite cambiar el estado de la persona
+     * @param idPersona 
+     */
     public void cambiarEstado(long idPersona) {
         ListaSimple lista = listar();
         boolean estado;
@@ -133,6 +166,12 @@ public class PersonaDAO extends AdaptadorDAO {
         }
     }
 
+    /**
+     * El siguiente método permite edidar los datos de la persona
+     * @param idPersona
+     * @param dato
+     * @return 
+     */
     public Boolean editar(long idPersona, Object dato) {
         ListaSimple lista = listar();
         for (int i = 0; i < lista.tamanio(); i++) {

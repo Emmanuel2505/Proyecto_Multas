@@ -13,13 +13,17 @@ import java.util.ArrayList;
 
 /**
  *
- * @author ASUS
+ * Autor: Roy León
  */
 public class Utilidades {
     public static TipoVehiculo[] tipoVehiculo(){
         return TipoVehiculo.values();
     }
     
+    /**
+     * El método siguiente permite leer el porcentaje de la multa mediante el archivo
+     * @return 
+     */
     public String leerTxtProcetajeMulta(){
         String dato = "";
         try {
@@ -39,7 +43,14 @@ public class Utilidades {
         }
         return dato;
     }
-
+    
+    /**
+     * El siguiente método permite obtener una sublista
+     * @param lista
+     * @param AtributoClase
+     * @param palabra
+     * @return 
+     */
     public static ListaSimple obtenerSubLista(ListaSimple lista, String AtributoClase, String palabra){
         ListaSimple aux = new ListaSimple();
         if (!lista.estaVacia()) {
@@ -53,6 +64,13 @@ public class Utilidades {
         return aux;
     }
     
+    /**
+     * El siguiente método permite obtener la lista completa
+     * @param lista
+     * @param AtributoClase
+     * @param palabra
+     * @return 
+     */
     public static ListaSimple obtenerLista(ListaSimple lista, String AtributoClase, String palabra){
         ListaSimple aux = new ListaSimple();
         if (!lista.estaVacia()) {
@@ -66,6 +84,13 @@ public class Utilidades {
         return aux;
     }
     
+    /**
+     * El siguiente método permite obtener datos de la lista
+     * @param lista
+     * @param AtributoClase
+     * @param palabra
+     * @return 
+     */
     public static Object obtenerDato(ListaSimple lista, String AtributoClase, String palabra){
         Object aux = null;
         if (!lista.estaVacia()) {
@@ -80,6 +105,11 @@ public class Utilidades {
         return aux;
     }
     
+    /**
+     * El siguiente método permite obtener texto
+     * @param tipos
+     * @return 
+     */
     public static String obtenerStringTipos(ArrayList<String> tipos){
         String texto = "";
         for (int i = 0; i < tipos.size(); i++) {
@@ -87,7 +117,13 @@ public class Utilidades {
         }
         return texto;
     }
-
+    
+    /**
+     * El siguiente método permite extraer un dato 
+     * @param obj
+     * @param atributoClase
+     * @return 
+     */
     public static String extraccionDato(Object obj, String atributoClase) {
         Class clase = obj.getClass();
         Field atributo = null;
@@ -115,12 +151,26 @@ public class Utilidades {
         return (informacion != null) ? informacion.toString() : null;
     }
     
+    /**
+     * El siguiente método permite ordenar la lista
+     * @param lista
+     * @param atributo
+     * @return 
+     */
     public ListaSimple ordenar(ListaSimple lista, String atributo) {
         ListaSimple temp = lista;
         temp = qsortInt(0, temp.tamanio() - 1, temp, atributo);
         return temp;
     }
     
+    /**
+     * El siguiente método permite ordenar la lista por medio de quicksort
+     * @param izq
+     * @param der
+     * @param lista
+     * @param atributo
+     * @return 
+     */
     public ListaSimple qsortInt(int izq, int der, ListaSimple lista, String atributo){
         int ult, m; 
         Object temp;
@@ -146,11 +196,26 @@ public class Utilidades {
         return lista;
     }
 
+    /**
+     * El siguiente método permite comparar los tipos de dato
+     * @param dato1
+     * @param dato2
+     * @param atributoClase
+     * @return 
+     */
     public static Boolean comparar(Object dato1, Object dato2, String atributoClase) {
         String uno = extraccionDato(dato1, atributoClase);
         String dos = extraccionDato(dato2, atributoClase);
         return (dos != null) ? uno.equals(dos.toString()) : false;
     }
+    
+    /**
+     * El siguiente método permite verificar si existe un dato repetido en el archivo
+     * @param lista
+     * @param atributoClase
+     * @param dato
+     * @return 
+     */
     
     public static Boolean datoRepetido(ListaSimple lista, String atributoClase, String dato){
         Boolean existe = false;
@@ -166,6 +231,12 @@ public class Utilidades {
         return existe;
     }
     
+    /**
+     * El siguiente método permite verificar si existe un dato repetido en la lista
+     * @param lista
+     * @param dato
+     * @return 
+     */
     public static Boolean datoRepetido(ListaSimple lista, String dato){
         Boolean existe = false;
         if (!lista.estaVacia()) {
@@ -180,6 +251,11 @@ public class Utilidades {
         return existe;
     }
     
+    /**
+     * El siguiente método permite listar las fechas de la lista
+     * @param lista
+     * @return 
+     */
     public static ListaSimple listaFechas(ListaSimple lista){
         ListaSimple ls = new ListaSimple();
         for (int i = 0; i < lista.tamanio(); i++) {
@@ -191,6 +267,12 @@ public class Utilidades {
         return ls;
     }
     
+    /**
+     * El siguiente método permite listar las fechas de las multas
+     * @param lista
+     * @param fecha
+     * @return 
+     */
     public static ListaSimple listaFechas(ListaSimple lista, String fecha){
         ListaSimple ls = new ListaSimple();
         for (int i = 0; i < lista.tamanio(); i++) {
@@ -202,6 +284,11 @@ public class Utilidades {
         return ls;
     }
     
+    /**
+     * El siguiente método permite calcular y describir la multa
+     * @param tipoFalta
+     * @return 
+     */
     public static double montoMulta(String tipoFalta){
         double monto = 0.00;
         double sueldoBasico = 400.00;
@@ -223,6 +310,11 @@ public class Utilidades {
         return monto;
     }
     
+    /**
+     * El siguiente método permite quitar los puntos de la licencia
+     * @param tipoFalta
+     * @return 
+     */
     public static double puntosQuitar(String tipoFalta){
         double puntos = 0.00;
         if (tipoFalta.equalsIgnoreCase("Leve de primera clase")) {
@@ -243,6 +335,13 @@ public class Utilidades {
         return puntos;
     }
     
+    /**
+     * El siguiente método permite obtener la posicion donde se encuentra ubicado un dato de la lista
+     * @param lista
+     * @param AtributoClase
+     * @param palabra
+     * @return 
+     */
     public static int obtenerPosicionDato(ListaSimple lista, String AtributoClase, String palabra){
         int aux = -1;
         if (!lista.estaVacia()) {
@@ -257,6 +356,11 @@ public class Utilidades {
         return aux;
     }
     
+    /**
+     * El siguiente método permite obtener el total de la multa
+     * @param lista
+     * @return 
+     */
     public  static double obtenerTotalMulta(ListaSimple lista){
         double multa = 0.0;
         for (int i = 0; i < lista.tamanio(); i++) {

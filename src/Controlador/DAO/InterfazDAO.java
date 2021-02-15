@@ -9,7 +9,7 @@ import Controlador.ListaSimple;
 
 /**
  *
- * @author ASUS
+ * Autor: Roy León
  */
 public interface InterfazDAO {
     public void guardar(Object o)throws Exception;

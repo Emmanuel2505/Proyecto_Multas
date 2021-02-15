@@ -7,7 +7,7 @@ package Controlador;
 
 /**
  *
- * @author ASUS
+ * Autor: Roy León
  */
 public class Nodo {
     private Object dato;

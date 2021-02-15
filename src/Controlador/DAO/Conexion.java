@@ -10,7 +10,7 @@ import com.thoughtworks.xstream.io.json.JettisonMappedXmlDriver;
 
 /**
  *
- * @author ASUS
+ * Autor: Roy León
  */
 public class Conexion {
     private String direccion;
