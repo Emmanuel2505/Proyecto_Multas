@@ -87,6 +87,7 @@ public class Frm_RegistrarPersona extends javax.swing.JDialog {
             jPanel3.setVisible(false);
             jButtonEditar.setVisible(false);
             jButtonEliminar.setVisible(false);
+            cbRol.setVisible(false);
         }
 
         Componentes.cargarCombo(jComboBoxTipoLicencia, tipoLicenciaD.listar(), "tipo");
